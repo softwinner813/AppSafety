@@ -131,26 +131,48 @@ var KTWizard3 = function () {
 		// Submit event
 		_wizardObj.on('submit', function (wizard) {
 			// Validate form before submit
-			var validator = _validations[wizard.getStep() - 1]; // get validator for currnt step
+			// var validator = _validations[wizard.getStep() - 1]; // get validator for currnt step
 
-			if (validator) {
-				validator.validate().then(function (status) {
-					if (status == 'Valid') {
-						_formEl.submit(); // submit form
-					} else {
-						Swal.fire({
-							text: "Sorry, looks like there are some errors detected, please try again.",
-							icon: "error",
-							buttonsStyling: false,
-							confirmButtonText: "Ok, got it!",
-							customClass: {
-								confirmButton: "btn font-weight-bold btn-light"
-							}
-						}).then(function () {
-							KTUtil.scrollTop();
-						});
+			// if (validator) {
+			// 	validator.validate().then(function (status) {
+			// 		if (status == 'Valid') {
+			// 			_formEl.submit(); // submit form
+			// 		} else {
+			// 			Swal.fire({
+			// 				text: "Sorry, looks like there are some errors detected, please try again.",
+			// 				icon: "error",
+			// 				buttonsStyling: false,
+			// 				confirmButtonText: "Ok, got it!",
+			// 				customClass: {
+			// 					confirmButton: "btn font-weight-bold btn-light"
+			// 				}
+			// 			}).then(function () {
+			// 				KTUtil.scrollTop();
+			// 			});
+			// 		}
+			// 	});
+			// }
+
+			if(priceType == 0 || methodType == 0) {
+				Swal.fire({
+					text: "Sorry, looks like there are some errors detected, please try again.",
+					icon: "error",
+					buttonsStyling: false,
+					confirmButtonText: "Ok, got it!",
+					customClass: {
+						confirmButton: "btn font-weight-bold btn-light"
 					}
+				}).then(function () {
+					KTUtil.scrollTop();
 				});
+			} else {
+				// Paypal
+				if(methodType == 1) {
+					$('#membershipID').val(priceType);
+					$('#paypal-form').submit();
+				} else if( methodType == 2) {
+
+				}
 			}
 		});
 
@@ -259,7 +281,7 @@ var KTWizard3 = function () {
 					expireMonth: {
 						validators: {
 							notEmpty: {
-								message: 'This is required'
+								message: 'This field is required'
 							},
 							digits: {
 								message: 'This field is not valid number'
@@ -269,7 +291,7 @@ var KTWizard3 = function () {
 					expireYear: {
 						validators: {
 							notEmpty: {
-								message: 'This is required'
+								message: 'This field is required'
 							},
 							digits: {
 								message: 'This field is not valid number'
@@ -279,7 +301,7 @@ var KTWizard3 = function () {
 					cvv: {
 						validators: {
 							notEmpty: {
-								message: 'Package length is required'
+								message: 'This field is required'
 							},
 							digits: {
 								message: 'The value added is not valid'
@@ -336,58 +358,7 @@ var KTWizard3 = function () {
 			}
 		));
 
-		// Step 4
-		_validations.push(FormValidation.formValidation(
-			_formEl,
-			{
-				fields: {
-					locaddress1: {
-						validators: {
-							notEmpty: {
-								message: 'Address is required'
-							}
-						}
-					},
-					locpostcode: {
-						validators: {
-							notEmpty: {
-								message: 'Postcode is required'
-							}
-						}
-					},
-					loccity: {
-						validators: {
-							notEmpty: {
-								message: 'City is required'
-							}
-						}
-					},
-					locstate: {
-						validators: {
-							notEmpty: {
-								message: 'State is required'
-							}
-						}
-					},
-					loccountry: {
-						validators: {
-							notEmpty: {
-								message: 'Country is required'
-							}
-						}
-					}
-				},
-				plugins: {
-					trigger: new FormValidation.plugins.Trigger(),
-					// Validate fields when clicking the Submit button
-					// Bootstrap Framework Integration
-					bootstrap: new FormValidation.plugins.Bootstrap({
-						//eleInvalidClass: '',
-						eleValidClass: '',
-					})
-				}
-			}
-		));
+		
 	}
 
 	return {
@@ -411,7 +382,7 @@ jQuery(document).ready(function () {
 function setPrice(e, membership){
 	$('.price-active').removeClass('price-active');
 	e.parent().parent().addClass('price-active');
-	priceType = membership.price;
+	priceType = membership.id;
 	var title = membership.type == 0 ? "Monthly Subscription" : "Annual Subscription";
 	$('#final-price-type').text(title);
 	$('#final-icon').html(membership.icon);
