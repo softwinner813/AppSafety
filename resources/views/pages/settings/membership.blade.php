@@ -268,25 +268,25 @@
 														<div class="row">
 															<div class="form-group col-md-6">
 																<label>Card Holder Name</label>
-																<input type="text" id="final-cardname"  disabled class="form-control" placeholder="Jack Son" >
+																<input type="text" id="final-cardname"  disabled class="form-control final-cardname" placeholder="Jack Son" >
 															</div>
 															<div class="form-group col-md-6">
 																<label>Card Number</label>
-																<input type="text" id="final-cardnumber" disabled class="form-control" placeholder="4242 4242 4242 4242">
+																<input type="text" id="final-cardnumber" disabled class="form-control final-cardnumber" placeholder="4242 4242 4242 4242">
 															</div>
 															
 															<div class="form-group col-md-4">
 																<label>Expiry Month</label>
-																<input type="text" id="final-cardmonth" disabled placeholder="MM" class="form-control">
+																<input type="text" id="final-cardmonth" disabled placeholder="MM" class="form-control final-cardmonth">
 															</div>
 															<div class="form-group col-md-4">
 																<label>Expiry Year</label>
-																<input type="text" disabled id="final-cardyear" class="form-control" placeholder="YY">
+																<input type="text" disabled id="final-cardyear" class="form-control final-cardyear" placeholder="YY">
 															</div>
 
 															<div class="form-group col-md-4">
 																<label>CVV</label>
-																<input type="password" id="final-cardcvv" disabled class="form-control">
+																<input type="password" id="final-cardcvv" disabled class="form-control final-cardcvv">
 															</div>
 														</div>	
 													</div>
@@ -307,7 +307,7 @@
 										<button type="button" class="btn btn-light-primary font-weight-bolder text-uppercase px-9 py-4" data-wizard-type="action-prev">Previous</button>
 									</div>
 									<div>
-										<button type="button" class="btn btn-success font-weight-bolder text-uppercase px-9 py-4" data-wizard-type="action-submit"><i class="fas fa-cart-plus"></i> Purchase</button>
+										<button type="button" class="btn btn-success font-weight-bolder text-uppercase px-9 py-4" data-wizard-type="action-submit" id="submit_btn"><i class="fas fa-cart-plus"></i> Purchase</button>
 										<button type="button" class="btn btn-primary font-weight-bolder text-uppercase px-9 py-4" data-wizard-type="action-next">Next</button>
 									</div>
 								</div>
@@ -316,7 +316,17 @@
 							<!--end: Wizard Form-->
 							<form method="POST" id="paypal-form" role="form" class="d-none" action="{!! URL::route('membership-postPaypal') !!}" >
 	                            {{ csrf_field() }}
-	                            <input type="text" name="membershipID" id="membershipID">
+	                            <input type="text" name="membershipID" id="membershipID" class="membershipID">
+	                        </form>
+
+	                        <form method="POST" id="stripe-form" role="form" class="" action="{!! URL::route('membership.stripePost') !!}" >
+	                            {{ csrf_field() }}
+	                            <input type="text" name="membershipID" id="membershipID" class="membershipID">
+								<input type="text"   class="form-control final-cardname" name="cardName" placeholder="Jack Son" >
+								<input type="text"  class="form-control final-cardnumber" name="cardNumber" placeholder="4242 4242 4242 4242">
+								<input type="text"  placeholder="MM" class="form-control final-cardmonth" name="cardMonth">
+								<input type="text"  class="form-control final-cardyear" name="cardYear" placeholder="YY">
+								<input type="text"  class="form-control final-cardcvv" name="cardCVV">
 	                        </form>
 						</div>
 					</div>

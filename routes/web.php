@@ -54,9 +54,12 @@ Route::group(['prefix' => 'setting', 'middleware' => 'auth'], function () {
         Route::get('/', 'SettingController@membership')->name('membership');
         Route::post('/getCheckout', 'SettingController@getCheckout')->name('membership-getCheckout');
         //Paypal Payment
-        Route::get('/paypalResult','Payment\PaypalController@paypalResult')->name('membership-paypalResult');
+        Route::get('/paymentResult','Payment\PaypalController@paymentResult')->name('membership.paymentResult');
         Route::post('/paypal','Payment\PaypalController@postPaymentWithpaypal')->name('membership-postPaypal');
         Route::get('/paypal','Payment\PaypalController@getPaymentStatus')->name('membership-statusPaypal');
+        // Stripe Payment
+        Route::get('/stripe','Payment\StripeController@stripe')->name('membership.stripe');
+        Route::post('/stripe','Payment\StripeController@stripePost')->name('membership.stripePost');
     });
 });
 
