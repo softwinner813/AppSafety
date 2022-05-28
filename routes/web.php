@@ -53,6 +53,10 @@ Route::group(['prefix' => 'setting', 'middleware' => 'auth'], function () {
     Route::group(['prefix' => 'membership', 'middleware' => 'auth'], function () {
         Route::get('/', 'SettingController@membership')->name('membership');
         Route::post('/getCheckout', 'SettingController@getCheckout')->name('membership-getCheckout');
+        //Paypal Payment
+        Route::get('/paypalResult','Payment\PaypalController@paypalResult')->name('membership-paypalResult');
+        Route::post('/paypal','Payment\PaypalController@postPaymentWithpaypal')->name('membership-postPaypal');
+        Route::get('/paypal','Payment\PaypalController@getPaymentStatus')->name('membership-statusPaypal');
     });
 });
 

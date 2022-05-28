@@ -254,6 +254,8 @@
 										<div class="col-md-6">
 											<div class="d-none justify-content-center align-item-center" id="final-payal-board" >
 												<img src="/media/payment/paypal.png" width="250">
+
+
 											</div>
 
 											<div class="d-none flex-column justify-content-center align-item-center" id="final-stripe-board" >
@@ -312,6 +314,10 @@
 								<!--end: Wizard Actions-->
 							</form>
 							<!--end: Wizard Form-->
+							<form method="POST" id="paypal-form" role="form" class="d-none" action="{!! URL::route('membership-postPaypal') !!}" >
+	                            {{ csrf_field() }}
+	                            <input type="text" name="membershipID" id="membershipID">
+	                        </form>
 						</div>
 					</div>
 					<!--end: Wizard Body-->
