@@ -47,20 +47,20 @@ class PaypalController extends Controller
         $this->_api_context->setConfig($paypal_configuration['settings']);
     }
 
-    public function paypalResult()
+    public function paymentResult()
     {
         // var_dump(Session::get('success'));die();
         // $noneSubheader = true;
         $page_title = 'Membership';
         $page_description = 'Subscription Membership Result';
-        return view('pages.settings.paypalResult', compact('page_title', 'page_description'));
+        return view('pages.settings.paymentResult', compact('page_title', 'page_description'));
     }
 
     public function postPaymentWithpaypal(Request $request)
     {
         if(!isset($request->membershipID)) {
             \Session::put('error','Unknown error occurred. Please retry!');
-            return Redirect::route('membership-paypalResult');
+            return Redirect::route('membership.paymentResult');
         }
 
         $membership = Membership::find($request->membershipID);
@@ -69,7 +69,7 @@ class PaypalController extends Controller
 
         if(!isset($membership)) {
             \Session::put('error',"Can't find price. Please retry!");
-            return Redirect::route('membership-paypalResult');
+            return Redirect::route('membership.paymentResult');
         }
 
         \Session::put('membershipID', $membership->id);
@@ -110,13 +110,13 @@ class PaypalController extends Controller
             ->setTransactions(array($transaction));            
         try {
             $payment->create($this->_api_context);
-        } catch (\PayPal\Exception\PPConnectionException $ex) {
+        } catch (\PayPal\Exception\PayPalConnectionException $ex) {
             if (\Config::get('app.debug')) {
                 \Session::put('error','Connection timeout');
-                return Redirect::route('membership-paypalResult');                
+                return Redirect::route('membership.paymentResult');                
             } else {
                 \Session::put('error','Some error occur, sorry for inconvenient');
-                return Redirect::route('membership-paypalResult');                
+                return Redirect::route('membership.paymentResult');                
             }
         }
 
@@ -134,7 +134,7 @@ class PaypalController extends Controller
         }
 
         \Session::put('error','Unknown error occurred');
-        return Redirect::route('membership-paypalResult');
+        return Redirect::route('membership.paymentResult');
     }
 
     public function getPaymentStatus(Request $request)
@@ -145,7 +145,7 @@ class PaypalController extends Controller
         Session::forget('paypal_payment_id');
         if (empty($request->input('PayerID')) || empty($request->input('token'))) {
             \Session::put('error','Payment failed');
-            return Redirect::route('membership-paypalResult');
+            return Redirect::route('membership.paymentResult');
         }
 
         $payment = Payment::get($payment_id, $this->_api_context);        
@@ -157,16 +157,16 @@ class PaypalController extends Controller
         if ($result->getState() == 'approved') {
             if($this->saveTransaction($payment_id, $request->membershipID)) {
                 \Session::put('success','Congratulation! Payment Success!');
-                 return Redirect::route('membership-paypalResult');
+                 return Redirect::route('membership.paymentResult');
             } else {
                 \Session::put('error','Payment success. But Database error. Please contact support team with this payment id : '. $payment_id);
-                 return Redirect::route('membership-paypalResult');
+                 return Redirect::route('membership.paymentResult');
             }     
             
         }
 
         \Session::put('error','Sorry! Payment failed. Please retry!');
-        return Redirect::route('membership-paypalResult');
+        return Redirect::route('membership.paymentResult');
     }
 
     public function saveTransaction($payment_id) {

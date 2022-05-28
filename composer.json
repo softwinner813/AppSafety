@@ -19,7 +19,8 @@
         "laravel/ui": "^3.3",
         "league/color-extractor": "0.3.*",
         "paypal/rest-api-sdk-php": "^1.14",
-        "phpmailer/phpmailer": "^6.5"
+        "phpmailer/phpmailer": "^6.5",
+        "stripe/stripe-php": "^8.4"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",

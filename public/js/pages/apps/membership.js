@@ -110,16 +110,18 @@ var KTWizard3 = function () {
 			var step = wizard.getStep();
 			// Final Step
 			if(step == 3) {
+				$('.membershipID').val(priceType);
+
 				if(methodType == 1) {
 					$('#final-stripe-board').removeClass('d-flex').addClass('d-none');
 					$('#final-payal-board').removeClass('d-none').addClass('d-flex');
 
 				} else if(methodType == 2) {
-					$('#final-cardname').val($('#cardName').val()); 
-					$('#final-cardnumber').val($('#cardNumber').val()); 
-					$('#final-cardmonth').val($('#expireMonth').val()); 
-					$('#final-cardyear').val($('#expireYear').val()); 
-					$('#final-cardcvv').val($('#cvv').val()); 
+					$('.final-cardname').val($('#cardName').val()); 
+					$('.final-cardnumber').val($('#cardNumber').val()); 
+					$('.final-cardmonth').val($('#expireMonth').val()); 
+					$('.final-cardyear').val($('#expireYear').val()); 
+					$('.final-cardcvv').val($('#cvv').val()); 
 
 					$('#final-payal-board').removeClass('d-flex').addClass('d-none');
 					$('#final-stripe-board').removeClass('d-none').addClass('d-flex');
@@ -166,12 +168,12 @@ var KTWizard3 = function () {
 					KTUtil.scrollTop();
 				});
 			} else {
+				$('#submit_btn').attr('disabled', true);
 				// Paypal
 				if(methodType == 1) {
-					$('#membershipID').val(priceType);
 					$('#paypal-form').submit();
 				} else if( methodType == 2) {
-
+					$('#stripe-form').submit();
 				}
 			}
 		});
