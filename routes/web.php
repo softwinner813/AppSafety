@@ -23,7 +23,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/policy', [App\Http\Controllers\HomeController::class, 'policy'])->name('policy');
-Route::get('/permit', [App\Http\Controllers\HomeController::class, 'permit'])->name('permit');
+// Route::get('/permit', [App\Http\Controllers\PermitController::class, 'index'])->name('permit');
 
 // Profile
 Route::group(['prefix' => 'setting', 'middleware' => 'auth'], function () {
@@ -61,6 +61,18 @@ Route::group(['prefix' => 'setting', 'middleware' => 'auth'], function () {
         Route::get('/stripe','Payment\StripeController@stripe')->name('membership.stripe');
         Route::post('/stripe','Payment\StripeController@stripePost')->name('membership.stripePost');
     });
+});
+
+// Document
+Route::group(['prefix' => 'document', 'middleware' => 'auth'], function () {
+    Route::get('/', function() {
+        return redirect()->route('document',[1]);
+    });
+    Route::get('/list/{type}', 'DocumentController@index')->name('document');
+    Route::get('/edit/{type}', 'DocumentController@edit')->name('document.edit');
+    Route::post('/upload', 'DocumentController@upload')->name('document.upload');
+    Route::post('/delete', 'DocumentController@delete')->name('document.delete');
+
 });
 
 

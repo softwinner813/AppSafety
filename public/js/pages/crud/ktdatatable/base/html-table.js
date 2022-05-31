@@ -63,8 +63,8 @@ var KTDatatableHtmlTableDemo = function() {
 						return '<span class="label font-weight-bold label-lg' + status[row.Status].class + ' label-inline">' + status[row.Status].title + '</span>';
 					},
 				}, {
-					field: 'Type',
-					title: 'Type',
+					field: 'Action',
+					title: 'Action',
 					autoHide: false,
 					// callback function support for column rendering
 					template: function(row) {
