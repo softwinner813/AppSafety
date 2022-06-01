@@ -108,6 +108,11 @@
                             <input class="form-control h-auto text-white placeholder-white bg-dark-o-70 rounded-pill border-0 py-4 px-8 mb-5 "  placeholder="Email" id="email" type="email" name="email"  required autocomplete="email" autofocus />
                           
                         </div>
+
+                        <div class="form-group">
+                            <input class="form-control h-auto text-white placeholder-white bg-dark-o-70 rounded-pill border-0 py-4 px-8 mb-5 "  placeholder="Full Name" id="name" type="text" name="name"  required autocomplete="name" autofocus />
+                          
+                        </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">CLOSE</button>

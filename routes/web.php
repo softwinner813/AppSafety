@@ -72,6 +72,8 @@ Route::group(['prefix' => 'document', 'middleware' => 'auth'], function () {
     Route::get('/edit/{type}', 'DocumentController@edit')->name('document.edit');
     Route::post('/upload', 'DocumentController@upload')->name('document.upload');
     Route::post('/delete', 'DocumentController@delete')->name('document.delete');
+    Route::get('/sendEmail', 'DocumentController@sendEmail')->name('document.sendEmail');
+    Route::get('/testEmail', 'DocumentController@testEmail')->name('document.testEmail');
 
 });
 

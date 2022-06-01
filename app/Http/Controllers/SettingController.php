@@ -122,6 +122,7 @@ class SettingController extends Controller
         $employee = new Employee();
         $employee->user_id = Auth::user()->id;
         $employee->email  = $req->email;
+        $employee->name  = $req->name;
         if($employee->save()) {
           return response()->json([
               'status' => 200,

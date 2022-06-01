@@ -114,7 +114,7 @@ class DocumentController extends Controller
     }
 
     /**
-     * Delete Employee email
+     * Delete Document
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -135,5 +135,32 @@ class DocumentController extends Controller
               'message' => "Database error"
           ], 500);
         }
+    }
+
+    /**
+     * Share document with Employee email
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function sendEmail(Request $req) 
+    {
+        $details = [
+            'subject' => 'Test Notification'
+        ];
+        
+        $job = (new \App\Jobs\SendQueueEmail($details))
+                ->delay(now()->addSeconds(2)); 
+
+        dispatch($job);
+        echo "Mail send successfully !!";
+    }
+
+
+    public function testEmail(Request $req) 
+    {
+        $name = "Daniel, Han";
+        $link = "fdsfdfsdfsd";
+        $fromname = "Admin";
+        return view('emails.docEmail', compact('name', 'link', 'fromname'));
     }
 }

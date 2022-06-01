@@ -74,6 +74,13 @@ var KTAddEmail = function() {
 							message: 'The value is not a valid email address'
 						}
 					},
+					name: {
+						validators: {
+							notEmpty: {
+								message: 'Name is required'
+							}
+						}
+					},
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
