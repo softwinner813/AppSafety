@@ -120,40 +120,6 @@ class PaypalController extends Controller
         return Redirect::route('membership.paymentResult');
     }
 
-
-
-    public function getPaymentStatus(Request $request)
-    {        
-        $payment_id = Session::get('paypal_payment_id');
-
-
-        Session::forget('paypal_payment_id');
-        if (empty($request->input('PayerID')) || empty($request->input('token'))) {
-            \Session::put('error','Payment failed');
-            return Redirect::route('membership.paymentResult');
-        }
-
-        $payment = Payment::get($payment_id, $this->_api_context);        
-        $execution = new PaymentExecution();
-        $execution->setPayerId($request->input('PayerID'));        
-        $result = $payment->execute($execution, $this->_api_context);
-        
-
-        if ($result->getState() == 'approved') {
-            if($this->saveTransaction($payment_id, $request->membershipID)) {
-                \Session::put('success','Congratulation! Payment Success!');
-                 return Redirect::route('membership.paymentResult');
-            } else {
-                \Session::put('error','Payment success. But Database error. Please contact support team with this payment id : '. $payment_id);
-                 return Redirect::route('membership.paymentResult');
-            }     
-            
-        }
-
-        \Session::put('error','Sorry! Payment failed. Please retry!');
-        return Redirect::route('membership.paymentResult');
-    }
-
     public function saveTransaction($payment_id) {
 
 
