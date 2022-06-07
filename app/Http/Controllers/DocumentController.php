@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Document;
+use App\Models\Signature;
 use Auth;
 class DocumentController extends Controller
 {
@@ -28,6 +29,8 @@ class DocumentController extends Controller
     protected $AUDIT = 2;
     protected $PERMIT = 3;
     protected $GUIDANCE = 4;
+    protected $INCIDENT = 5;
+    protected $INDUCTION = 6;
 
     /**
      * Show the application dashboard.
@@ -37,27 +40,45 @@ class DocumentController extends Controller
     public function index(Request $req)
     {
         $type = $req->type;
+        $page_title  = '';
+        $page_page_description = '';
+        $noneSubheader = true;
+
         switch ($type) {
             case $this->RA:
                 // code...
+                $page_title = 'Risk Assessment';
+                $page_description = 'Risk Assessment';
+                break;
+            case $this->AUDIT:
+                // code...
+                $page_title = 'AUDIT';
+                $page_description = 'AUDIT';
+                return view('pages.documents.auditsEdit', compact('page_title', 'page_description', 'noneSubheader', 'type'));
                 break;
             case $this->PERMIT:
-                    $page_title = 'Permit';
-                    $page_description = 'Permits';
-                    $noneSubheader = true;
-                    $documents = Document::where('user_id', Auth::user()->id)->where('type', $this->PERMIT)->get();
-                    return view('pages.documents.myDocuments', compact('page_title', 'page_description', 'documents', 'type'));
+                $page_title = 'Permit';
+                $page_description = 'Permits';
+                break;
+            case $this->GUIDANCE:
+                $page_title = 'Guidance';
+                $page_description = 'Guidance';
+                break;
+            case $this->INCIDENT:
+                $page_title = 'Incident Forms';
+                $page_description = 'Incident Forms';
+                break;
+            case $this->INDUCTION:
+                $page_title = 'Induction Forms';
+                $page_description = 'Induction Forms';
                 break;
             
             default:
                 // code...
                 break;
         }
-
-        // $page_title = 'Permit';
-        // $page_description = 'Permits';
-        // $noneSubheader = true;
-        // return view('pages.permits.permit', compact('page_title', 'page_description', 'noneSubheader'));
+        $documents = Document::where('user_id', Auth::user()->id)->where('type', $type)->get();
+        return view('pages.documents.myDocuments', compact('page_title', 'page_description', 'documents', 'type'));
     }
 
     /**
@@ -71,7 +92,37 @@ class DocumentController extends Controller
         $page_description = 'Edit / Upload Docuemnt';
         $noneSubheader = true;
         $type = $req->type;
-        return view('pages.documents.editPdf', compact('page_title', 'page_description', 'noneSubheader', 'type'));
+        $docname = "";
+        switch ($type) {
+            case $this->RA:
+                $docname = 'Risk Assessment';
+                break;
+            case $this->AUDIT:
+                $docname = 'Audit';
+                break;
+            case $this->PERMIT:
+                $docname = 'Permit';
+                break;
+            case $this->GUIDANCE:
+                $docname = 'Guidance';
+                break;
+            case $this->INCIDENT:
+                $docname = 'Incident';
+                break;
+            case $this->INDUCTION:
+                $docname = 'Induction';
+                break;
+            
+            default:
+                // code...
+                break;
+        }
+        if($type == $this->AUDIT) {
+            return view('pages.documents.auditsEdit', compact('page_title', 'page_description', 'noneSubheader', 'type'));
+        } else {
+            $templates = $this->getFiles($type);
+            return view('pages.documents.editPdf', compact('page_title', 'page_description', 'noneSubheader', 'type', 'templates', 'docname'));
+        }
     }
 
     /**
@@ -138,29 +189,129 @@ class DocumentController extends Controller
     }
 
     /**
+     * Delete Document
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function saveSign(Request $req) 
+    {
+        $sign = $req->sign;
+        $signature = new Signature();
+        $signature->sign = $sign;
+        $signature->user_id = Auth::user()->id;
+        if($signature->save()) {
+          return response()->json([
+              'status' => 200,
+              'data' => $signature
+          ], 200);
+        } else {
+         return response()->json([
+              'status' => 500,
+              'message' => "Database error"
+          ], 500);
+        }
+    }
+
+    /**
      * Share document with Employee email
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function sendEmail(Request $req) 
     {
+        $id = $req->id;
+        $document = Document::find($req->id);
         $details = [
-            'subject' => 'Test Notification'
+            'type' => 'SHARE_DOCUMENT',
+            'email' => $req->email,
+            'fromname' => Auth::user()->name,
+            'name' => 'How are you?',
+            'link' => 'http://'.request()->getHost().'/'.$document->file
+            // 'file'  => '',
         ];
         
         $job = (new \App\Jobs\SendQueueEmail($details))
-                ->delay(now()->addSeconds(2)); 
+                ->delay(now()->addSeconds(1)); 
 
         dispatch($job);
-        echo "Mail send successfully !!";
+        // echo "Mail send successfully !!";
+        return response()->json([
+          'status' => 200,
+          'result' => true,
+          'message' => "Mail send successfully !!"
+        ], 200);
+
     }
 
 
     public function testEmail(Request $req) 
     {
-        $name = "Daniel, Han";
-        $link = "fdsfdfsdfsd";
-        $fromname = "Admin";
-        return view('emails.docEmail', compact('name', 'link', 'fromname'));
+        // $d = dir(getcwd().'/template/Guidances');
+
+        // echo "Handle: " . $d->handle . "<br>";
+        // echo "Path: " . $d->path . "<br>";
+
+        // while (($file = $d->read()) !== false){
+        //   echo "filename: " . $file . "<br>";
+        // }
+        // $d->close();
+        $files = $this->getFiles(4);
+        var_dump($files);
+        die();
+        // $currentCount = User::where('company_id', Auth::user()->id)->count();
+
+        // // var_dump($currentCount);die();
+        // $name = "Daniel, Han";
+        // $company_name = "Company1";
+        // $email = "dsf@fds.com";
+        // $password = "SDFSD";
+        // return view('emails.newAccount', compact('name', 'company_name', 'email', 'password'));
+    }
+
+    public function getFiles($type) {
+        $path = 'Policies';
+        $files = array();
+
+        switch ($type) {
+            case 1:
+                $path = "RA";
+                break;
+
+            case 2:
+                $path = "AUDIT";
+                break;
+
+            case 3:
+                $path = "Permits";
+                break;
+
+            case 4:
+                $path = "Guidances";
+                break;
+
+            case 5:
+                $path = "Incidents";
+                break;
+            case 6:
+                $path = "Inductions";
+                break;
+            default:
+                // code...
+                break;
+        }
+        $dir = getcwd().'/template/'.$path;
+        if (file_exists($dir)) {
+            $d = dir(getcwd().'/template/'.$path);
+            while (($file = $d->read()) !== false){
+                $arr = explode(".",$file);
+                if($arr[count($arr) - 1] == "pdf") {
+                    array_push($files, $file);
+                }
+            }
+            $d->close();
+            return $files;
+        } else {
+            return array();
+        }
     }
 }

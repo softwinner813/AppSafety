@@ -10,5 +10,12 @@ class Membership extends Model
     use HasFactory;
 
   	protected $table = 'memberships';
+    
+   /**
+    *  Associate User for membership.
+    */
+    public function user() {
+        return $this->hasOne(User::class);
+    }
 
 }

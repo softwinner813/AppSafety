@@ -17,7 +17,20 @@ use Illuminate\Support\Facades\Route;
 // Quick search dummy route to display html elements in search dropdown (header search)
 Route::get('/quick-search', 'PagesController@quickSearch')->name('quick-search');
 
+
+
 Auth::routes();
+
+/*
+|--------------------------------------------------------------------------
+| Forget Password Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('forget-password', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('forget.password.get');
+// Route::post('forget-password', 'Auth\ForgotPasswordController@submitForgetPasswordForm')->name('forget.password.post'); 
+// Route::get('reset-password/{token}', 'Auth\ForgotPasswordController@showResetPasswordForm')->name('reset.password.get');
+// Route::post('reset-password', 'Auth\ForgotPasswordController@submitResetPasswordForm')->name('reset.password.post');
+
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -37,7 +50,7 @@ Route::group(['prefix' => 'setting', 'middleware' => 'auth'], function () {
     });
 
     // Employee Email List
-    Route::group(['prefix' => 'employee', 'middleware' => 'auth'], function () {
+    Route::group(['prefix' => 'employee', 'middleware' => 'paid'], function () {
         Route::get('/', 'SettingController@employee')->name('employee');
         Route::post('/save', 'SettingController@employeeSave')->name('employee-save');
         Route::post('/delete', 'SettingController@employeeDelete')->name('employee-delete');
@@ -57,6 +70,8 @@ Route::group(['prefix' => 'setting', 'middleware' => 'auth'], function () {
         Route::get('/paymentResult','Payment\PaypalController@paymentResult')->name('membership.paymentResult');
         Route::post('/paypal','Payment\PaypalController@postPaymentWithpaypal')->name('membership-postPaypal');
         Route::get('/paypal','Payment\PaypalController@getPaymentStatus')->name('membership-statusPaypal');
+        Route::get('/paypal/cancel', 'Payment\PayPalController@cancel')->name('membership.paypal.cancel');
+        Route::get('/paypal/success', 'Payment\PayPalController@success')->name('membership.paypal.success');
         // Stripe Payment
         Route::get('/stripe','Payment\StripeController@stripe')->name('membership.stripe');
         Route::post('/stripe','Payment\StripeController@stripePost')->name('membership.stripePost');
@@ -70,9 +85,11 @@ Route::group(['prefix' => 'document', 'middleware' => 'auth'], function () {
     });
     Route::get('/list/{type}', 'DocumentController@index')->name('document');
     Route::get('/edit/{type}', 'DocumentController@edit')->name('document.edit');
-    Route::post('/upload', 'DocumentController@upload')->name('document.upload');
+    Route::post('/save', 'DocumentController@upload')->name('document.upload');
     Route::post('/delete', 'DocumentController@delete')->name('document.delete');
-    Route::get('/sendEmail', 'DocumentController@sendEmail')->name('document.sendEmail');
+    Route::post('/sendEmail', 'DocumentController@sendEmail')->name('document.sendEmail');
+    Route::post('/saveSign', 'DocumentController@saveSign')->name('document.saveSign');
+
     Route::get('/testEmail', 'DocumentController@testEmail')->name('document.testEmail');
 
 });

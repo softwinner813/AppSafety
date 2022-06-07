@@ -30,30 +30,6 @@
 
 @if (config('layout.self.layout') != 'blank')
 
-    @if (config('layout.extras.search.layout') == 'offcanvas')
-        @include('layout.partials.extras.offcanvas._quick-search')
-    @endif
-
-    @if (config('layout.extras.notifications.layout') == 'offcanvas')
-        @include('layout.partials.extras.offcanvas._quick-notifications')
-    @endif
-
-    @if (config('layout.extras.quick-actions.layout') == 'offcanvas')
-        @include('layout.partials.extras.offcanvas._quick-actions')
-    @endif
-
-    @if (config('layout.extras.user.layout') == 'offcanvas')
-        @include('layout.partials.extras.offcanvas._quick-user')
-    @endif
-
-    @if (config('layout.extras.quick-panel.display'))
-        @include('layout.partials.extras.offcanvas._quick-panel')
-    @endif
-
- 
-    @if (config('layout.extras.chat.display'))
-        @include('layout.partials.extras._chat')
-    @endif
 
     @include('layout.partials.extras._scrolltop')
 

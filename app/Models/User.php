@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'address', 'phonenumber', 'role', 'free_end_date', 'membership_end_date', 'membership_id'
+        'name','company_id', 'email', 'password', 'address', 'phonenumber', 'role', 'free_end_date', 'membership_end_date', 'membership_id'
     ];
 
     /**
@@ -40,11 +40,20 @@ class User extends Authenticatable
 
 
    /**
+    * Get the membership associated with the user.
+    */
+    public function membership()
+    {
+        return $this->belongsTo(Membership::class);
+    }
+
+
+   /**
     * Get the track options associated with the user.
     */
-    public function employee()
+    public function signatures()
     {
-        return $this->hasMany(Employee::class);
+        return $this->hasMany(Signature::class);
     }
 
 
@@ -53,7 +62,7 @@ class User extends Authenticatable
     */
     public function physicalTrack()
     {
-        return $this->hasOne(PhysicalTrack::class);
+        return $this->belongsTo(PhysicalTrack::class);
     }
 
 

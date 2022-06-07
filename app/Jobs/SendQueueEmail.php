@@ -35,23 +35,60 @@ class SendQueueEmail implements ShouldQueue
      */
     public function handle()
     {
-        //
-        $data = Employee::all();
-        $input['subject'] = $this->details['subject'];
 
-        try {
-            foreach ($data as $key => $value) {
-                $input['email'] = $value->email;
+        $type = $this->details['type'];
+        switch ($type) {
+            case 'CREATE_USER':
+                // code...
+                $input['subject'] = "New Account for AppSafely";
+                $input['email'] = $this->details['email'];
                 // $input['name'] = $value->name;
-                $input['name'] = "TEST USER";
-                \Mail::send('mail.docEmail', [], function($message) use($input){
-                    $message->to($input['email'], $input['name'])
-                        ->subject($input['subject']);
-                });
-            }
-        } catch (\Swift_TransportException $e) {
-            echo $e;
+                $input['name'] = $this->details['name'];
+                try {
+                    \Mail::send('emails.newAccount', $this->details, function($message) use($input){
+                        $message->to($input['email'], $input['name'])
+                            ->subject($input['subject']);
+                    });
+                } catch (\Swift_TransportException $e) {
+                    return false;
+                }
+                return true;
+                break;
+
+            case 'SHARE_DOCUMENT':
+                $input['subject'] = "New Document from AppSafely";
+                $input['email'] = $this->details['email'];
+                $input['name'] = 'AppSafely';
+                // $input['name'] = $this->details['name'];
+                try {
+                    \Mail::send('emails.docEmail', $this->details, function($message) use($input){
+                        $message->to($input['email'], $input['name'])
+                            ->subject($input['subject']);
+                    });
+                } catch (\Swift_TransportException $e) {
+                    return false;
+                }
+                return true;
+                break;
+            default:
+                // code...
+                break;
         }
+       
+
+        // try {
+        //     foreach ($data as $key => $value) {
+        //         $input['email'] = $value->email;
+        //         // $input['name'] = $value->name;
+        //         $input['name'] = "TEST USER";
+        //         \Mail::send('mail.docEmail', [], function($message) use($input){
+        //             $message->to($input['email'], $input['name'])
+        //                 ->subject($input['subject']);
+        //         });
+        //     }
+        // } catch (\Swift_TransportException $e) {
+        //     echo $e;
+        // }
         
     }
 }

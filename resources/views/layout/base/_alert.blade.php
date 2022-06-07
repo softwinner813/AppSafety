@@ -7,7 +7,7 @@
             <div class="container d-flex align-items-stretch justify-content-between">
                 <div class="alert-icon"><i class="flaticon-warning"></i></div>
                 <div class="alert-text">
-                    You are trial for 3 days!
+                    You are 3 day trial period!
                   
                 </div>
  

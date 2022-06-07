@@ -161,7 +161,7 @@
 
                                                             <h1 class="v-text-align"
                                                                 style="margin: 0px; color: #ffffff; line-height: 120%; text-align: center; word-wrap: break-word; font-weight: normal; font-family: arial black,avant garde,arial; font-size: 25px;">
-                                                                <strong>AppSafety</strong>
+                                                                <strong>AppSafely</strong>
                                                             </h1>
 
                                                         </td>
@@ -214,7 +214,7 @@
                                                                         align="center">
 
                                                                         <img align="center" border="0"
-                                                                            src="{{$host}}/media/email/image-8.jpeg" alt="Hero Image"
+                                                                            src="http://{{$host}}/media/email/image-8.jpeg" alt="Hero Image"
                                                                             title="Hero Image"
                                                                             style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 561px;"
                                                                             width="561" />
@@ -319,7 +319,7 @@
                                                                                     <a href="https://facebook.com/"
                                                                                         title="Facebook"
                                                                                         target="_blank">
-                                                                                        <img src="{{$host}}/media/email/image-5.png"
+                                                                                        <img src="http://{{$host}}/media/email/image-5.png"
                                                                                             alt="Facebook"
                                                                                             title="Facebook" width="32"
                                                                                             style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
@@ -341,7 +341,7 @@
                                                                                     <a href="https://linkedin.com/"
                                                                                         title="LinkedIn"
                                                                                         target="_blank">
-                                                                                        <img src="{{$host}}/media/email/image-7.png"
+                                                                                        <img src="http://{{$host}}/media/email/image-7.png"
                                                                                             alt="LinkedIn"
                                                                                             title="LinkedIn" width="32"
                                                                                             style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
@@ -363,7 +363,7 @@
                                                                                     <a href="https://instagram.com/"
                                                                                         title="Instagram"
                                                                                         target="_blank">
-                                                                                        <img src="{{$host}}/media/email/image-1.png"
+                                                                                        <img src="http://{{$host}}/media/email/image-1.png"
                                                                                             alt="Instagram"
                                                                                             title="Instagram" width="32"
                                                                                             style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
@@ -384,7 +384,7 @@
                                                                                     style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
                                                                                     <a href="https://youtube.com/"
                                                                                         title="YouTube" target="_blank">
-                                                                                        <img src="{{$host}}/media/email/image-4.png"
+                                                                                        <img src="http://{{$host}}/media/email/image-4.png"
                                                                                             alt="YouTube"
                                                                                             title="YouTube" width="32"
                                                                                             style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
@@ -424,7 +424,7 @@
                                                                 <p style="font-size: 14px; line-height: 140%;">&nbsp;
                                                                 </p>
                                                                 <p style="font-size: 14px; line-height: 140%;">&copy;
-                                                                    2022 AppSafety. All Rights Reserved.</p>
+                                                                    2022 AppSafely. All Rights Reserved.</p>
                                                             </div>
 
                                                         </td>

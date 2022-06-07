@@ -63,6 +63,7 @@
                                 <tr>
                                     <th title="Field #1">#No</th>
                                     <th class="col-md-6 text-center" title="Field #2">Document Name</th>
+                                    <th class="col-md-6 text-center" title="Field #2">Created</th>
                                     <th title="Field #3">Status</th>
                                     <th title="Field #4">Actions</th>
                                 </tr>
@@ -76,9 +77,10 @@
                                             {{  $doc->name }}    
                                         </a>
                                     </td>
+                                    <td>{{ $doc->created_at }}</td>
                                     <td >
                                         @if(!$doc->status)
-                                        <button class="btn btn-light-success" onclick="deleteEmail(`{{$doc->id}}`)"><i class="fa fa-link"></i> Share</button>
+                                        <button class="btn btn-light-success" onclick="showShareModal(`{{$doc->id}}`)"><i class="fa fa-link"></i> Share</button>
                                         @else
                                         <span class="label label-lg font-weight-bold label-light-danger label-inline"></span>
                                         @endif
@@ -102,27 +104,27 @@
 </div>
 
 <!-- Modal-->
-<div class="modal fade" id="exampleModalCustomScrollable" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+<div class="modal fade" id="sendEmailModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
     <div class="modal-dialog " role="document">
         <div class="modal-content">
-            <form class="form" id="kt_add_email_form"  method="POST" action="{{ route('employee-save') }}">
+            <form class="form" id="kt_add_email_form"  method="POST" action="{{ route('document.sendEmail') }}">
                     @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add New Email Dialog</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Document Share Dialog</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <i aria-hidden="true" class="ki ki-close"></i>
                     </button>
                 </div>
                 <div class="modal-body">
-                  
+                        <label for="email">Email To :</label>
                         <div class="form-group">
-                            <input class="form-control h-auto text-white placeholder-white bg-dark-o-70 rounded-pill border-0 py-4 px-8 mb-5 "  placeholder="Email" id="email" type="email" name="email"  required autocomplete="email" autofocus />
-                          
+                            <input class="form-control h-auto text-dark placeholder-dark bg-dark-o-20 rounded-pill border-0 py-4 px-8 mb-5 "  placeholder="Email" id="email" type="email" name="email"  required autocomplete="email" autofocus />
+                            <input type="text" name="doc_id" class="d-none" id="doc_id">
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">CLOSE</button>
-                    <button type="submit" class="btn btn-primary font-weight-bold" id="add_btn">ADD</button>
+                    <button type="button" class="btn btn-danger font-weight-bold" data-dismiss="modal">CLOSE</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" id="sendEm_btn"><i class="fab fa-telegram-plane"></i>&nbsp;SEND EMAIL</button>
                 </div>
             </form>
         </div>

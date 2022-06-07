@@ -16,7 +16,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	<!--begin::Head-->
 	<head>
 		<meta charset="utf-8" />
-		<title>SignIn | AppSafety</title>
+		<title>SignIn | AppSafely</title>
 		<meta name="description" content="Login page example" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 		<link rel="canonical" href="https://keenthemes.com/metronic" />
@@ -59,14 +59,14 @@ License: You must have a valid license purchased only from themeforest(the above
 						<!--begin::Login Header-->
 						<div class="d-flex flex-center mb-15">
 							<a href="#">
-								<img src="/media/logos/logo-letter-9.png" class="max-h-100px" alt="" />
+								<img src="/media/logos/android-chrome-512x512.png" class="max-h-100px" alt="" />
 							</a>
 						</div>
 						<!--end::Login Header-->
 						<!--begin::Login Sign in form-->
 						<div class="login-signin">
 							<div class="mb-20">
-								<h3>Sign In To AppSafety</h3>
+								<h3>Sign In To AppSafely</h3>
 								<p class="opacity-60 font-weight-bold">Enter your details to login to your account:</p>
 							</div>
 							<form class="form" id="kt_login_signin_form"  method="POST" action="{{ route('login') }}">
@@ -94,7 +94,7 @@ License: You must have a valid license purchased only from themeforest(the above
 										<input type="checkbox" name="remember" />
 										<span></span>Remember me</label>
 									</div>
-									<a href="javascript:;" id="kt_login_forgot" class="text-white font-weight-bold">Forget Password ?</a>
+									<a href="{!! Route('forget.password.get') !!}" class="text-white font-weight-bold">Forgotten password ?</a>
 								</div>
 								<div class="form-group text-center mt-10">
 									<button id="kt_login_signin_submit" class="btn btn-pill btn-outline-white font-weight-bold opacity-90 px-15 py-3">Sign In</button>
