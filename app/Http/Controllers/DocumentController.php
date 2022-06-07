@@ -255,17 +255,18 @@ class DocumentController extends Controller
         //   echo "filename: " . $file . "<br>";
         // }
         // $d->close();
-        $files = $this->getFiles(4);
-        var_dump($files);
-        die();
+        // $files = $this->getFiles(4);
+        // var_dump($files);
+        // die();
         // $currentCount = User::where('company_id', Auth::user()->id)->count();
 
         // // var_dump($currentCount);die();
-        // $name = "Daniel, Han";
-        // $company_name = "Company1";
-        // $email = "dsf@fds.com";
-        // $password = "SDFSD";
-        // return view('emails.newAccount', compact('name', 'company_name', 'email', 'password'));
+        $name = "Daniel, Han";
+        $company = "AppSafely";
+        $phone = "Company1";
+        $email = "dsf@fds.com";
+        $comment = "SDFSD";
+        return view('emails.contactEmail', compact('name', 'phone', 'email', 'comment', 'company'));
     }
 
     public function getFiles($type) {

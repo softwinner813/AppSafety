@@ -216,7 +216,7 @@
                         </li>
                         
 
-                        <li class="menu-item menu-item-submenu menu-item-rel {{ request()->is('policy') ? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">
+                        <li class="menu-item menu-item-submenu {{ request()->is('policy') ? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">
                             <a href="{!! Route('policy') !!}" class="menu-link ">
                                 <span class="menu-text">Policy</span>
                                 <span class="menu-desc"></span>
@@ -224,8 +224,8 @@
                             </a>
                         </li>
                         
-                        <li class="menu-item menu-item-submenu " data-menu-toggle="click" aria-haspopup="true">
-                            <a href="javascript:;" class="menu-link ">
+                        <li class="menu-item menu-item-submenu {{ request()->is('contact') ? 'menu-item-here' : '' }} " data-menu-toggle="click" aria-haspopup="true">
+                            <a href="{!! Route('contact') !!}" class="menu-link ">
                                 <span class="menu-text">Contact us</span>
                                 <span class="menu-desc"></span>
                                 <i class="menu-arrow"></i>

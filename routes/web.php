@@ -107,3 +107,10 @@ Route::group(['prefix' => 'users', 'middleware' => 'admin'], function () {
     Route::post('/individual_detail/datePicker', 'Admin\UserAdminController@individual_detail_datePicker');
     Route::get('/pdf_download', 'Admin\UserAdminController@pdf_download');
 });
+
+
+// Contact us
+Route::group(['prefix' => 'contact'], function () {
+    Route::get('/', 'ContactController@index')->name('contact');
+    Route::post('/send', 'ContactController@send')->name('contact.send');
+});
