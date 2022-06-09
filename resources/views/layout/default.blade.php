@@ -13,8 +13,14 @@
         
         <meta name="csrf-token" content="{{ csrf_token() }}">
         {{-- Favicon --}}
-        <link rel="shortcut icon" href="{{ asset('media/logos/favicon.ico') }}" />
-
+        <!-- <link rel="shortcut icon" href="{{ asset('media/logos/favicon.ico') }}" /> -->
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('media/logos/apple-touch-icon.png') }}/">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('media/logos/favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('media/logos/favicon-16x16.png') }}">
+        <link rel="manifest" href="{{ asset('media/logos/site.webmanifest') }}">
+        <link rel="mask-icon" href="{{ asset('media/logos/safari-pinned-tab.svg') }}" color="#5bbad5">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
         {{-- Fonts --}}
         {{ Metronic::getGoogleFontsInclude() }}
 
@@ -23,10 +29,6 @@
             <link href="{{ config('layout.self.rtl') ? asset(Metronic::rtlCssPath($style)) : asset($style) }}" rel="stylesheet" type="text/css"/>
         @endforeach
 
-        {{-- Layout Themes (used by all pages) --}}
-        @foreach (Metronic::initThemes() as $theme)
-            <link href="{{ config('layout.self.rtl') ? asset(Metronic::rtlCssPath($theme)) : asset($theme) }}" rel="stylesheet" type="text/css"/>
-        @endforeach
 
         {{-- Includable CSS --}}
         @yield('styles')
@@ -41,7 +43,8 @@
 
         @include('layout.base._layout')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
-        <script>var HOST_URL = "{{ route('quick-search') }}";
+        <script>
+            var HOST_URL = "{{ route('quick-search') }}";
             var CSRF_TOKEN = "{{csrf_token()}}"
         </script>
 
@@ -54,10 +57,6 @@
         @foreach(config('layout.resources.js') as $script)
             <script src="{{ asset($script) }}" type="text/javascript"></script>
         @endforeach
-        <script>
-            var fileName = 'Nutrition Data';
-            var currentdate = '';
-        </script>
         <script src="/js/pages/features/miscellaneous/toastr.js"></script>
         {{-- Includable JS --}}
         @yield('scripts')

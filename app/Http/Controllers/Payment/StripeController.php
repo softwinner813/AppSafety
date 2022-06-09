@@ -65,7 +65,7 @@ class StripeController extends Controller
                     "amount" => $membership->price * 100,
                     "currency" => strtolower($membership->currency_name),
                     "source" => $response['id'],
-                    "description" => "AppSafety Membership Subscription" 
+                    "description" => "AppSafely Membership Subscription" 
             ]);
 
             if( $this->saveTransaction($result->id, $membership)){

@@ -17,13 +17,23 @@ var KTDatatableHtmlTableDemo = function() {
 			},
 			columns: [
 				{
-					field: 'No',
+					field: '#No',
+					width: 30,
 					type: 'number',
 				},
+				{
+					field: 'Name',
+					width: 100,
+					type: 'text',
+				}, 
 				{
 					field: 'Email',
 					type: 'email',
 				}, 
+				{
+					field: 'Created',
+					type: 'text',
+				},
 				{
 					field: 'Delete',
 				}, 
@@ -74,13 +84,6 @@ var KTAddEmail = function() {
 							message: 'The value is not a valid email address'
 						}
 					},
-					name: {
-						validators: {
-							notEmpty: {
-								message: 'Name is required'
-							}
-						}
-					},
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
@@ -106,22 +109,38 @@ var KTAddEmail = function() {
 				        success: function(data) {
 				            $('#exampleModalCustomScrollable').modal('hide');  
 				            // Ajax call completed successfully
-                           toastr.info("Email added successfully", "SUCCESS");
+                           toastr.info("User added successfully", "SUCCESS");
 
                            location.reload();
 				        },
 				        error: function(data) {
-				              
+				            console.log("AAAAAAA", data['responseJSON']);
 				            // Some error in ajax call
-				            swal.fire({
-				                text:data['message'],
-				                icon: "error",
-				                buttonsStyling: false,
-				                confirmButtonText: "Ok",
-				                confirmButtonClass: "btn font-weight-bold btn-light"
-				            }).then(function() {
-								KTUtil.scrollTop();
-							});
+				            var message = 'Error!';
+        					if(data['status'] == 500) {
+        						message = "Sorry, Server error. Please retry after for a while!";
+        					} else {
+        					    var res = data['responseJSON'];
+        						message = res['message']['email'];
+        						if( message == undefined) {
+        							message = res['message'];
+        						}
+
+        						if( message == undefined) {
+        							message = "Some error occured. Please retry!";
+        						}
+
+        					}			          
+        			        // Some error in ajax call
+        			        swal.fire({
+        			            text:message,
+        			            icon: "error",
+        			            buttonsStyling: false,
+        			            confirmButtonText: "Ok",
+        			            confirmButtonClass: "btn font-weight-bold btn-light"
+        			        }).then(function(e) {
+        						KTUtil.scrollTop();
+        					});
 				        }
 				    });
 			 		$(this).removeAttr('disabled');
@@ -165,7 +184,7 @@ function deleteEmail(id) {
 
 	swal.fire({
 	    title: "Warning",
-        text:"Are you sure to remove this email from your list?",
+        text:"Are you sure to remove this user from your list?",
         icon: "warning",
         buttonsStyling: false,
         confirmButtonText: "Yes",
@@ -185,7 +204,7 @@ function deleteEmail(id) {
 			    data: {id: id},
 			    success: function(data) {
 			        // Ajax call completed successfully
-			       toastr.info("Email deleted from your list successfully", "SUCCESS");
+			       toastr.info("User deleted from your list successfully", "SUCCESS");
 			       location.reload();
 			    },
 			    error: function(data) {

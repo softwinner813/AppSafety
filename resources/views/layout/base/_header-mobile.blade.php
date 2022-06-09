@@ -10,17 +10,17 @@
             @if (config('layout.aside.self.display') == false)
 
                 @if (config('layout.header.self.theme') === 'light')
-                    @php $kt_logo_image = 'logo-dark.png' @endphp
+                    @php $kt_logo_image = 'apple-touch-icon.png' @endphp
                 @elseif (config('layout.header.self.theme') === 'dark')
-                    @php $kt_logo_image = 'logo-light.png' @endphp
+                    @php $kt_logo_image = 'apple-touch-icon.png' @endphp
                 @endif
 
             @else
 
                 @if (config('layout.brand.self.theme') === 'light')
-                    @php $kt_logo_image = 'logo-dark.png' @endphp
+                    @php $kt_logo_image = 'apple-touch-icon.png' @endphp
                 @elseif (config('layout.brand.self.theme') === 'dark')
-                    @php $kt_logo_image = 'logo-light.png' @endphp
+                    @php $kt_logo_image = 'apple-touch-icon.png' @endphp
                 @endif
 
             @endif

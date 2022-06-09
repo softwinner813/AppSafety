@@ -10,7 +10,8 @@ var pdfRowData ;
 //   pageImageCompression: "MEDIUM", // FAST, MEDIUM, SLOW(Helps to control the new PDF file size)
 // });
 var pdf;
-
+var isSignActive = false;
+var signData;
 // $('input[type=file]').change(function () {
 $('.loadPDF').change(function (e) {
     // document.querySelector(domID).addEventListener("change", function(e){
@@ -26,24 +27,6 @@ $('.loadPDF').change(function (e) {
         fileReader.onload = function() {
             var typedarray = new Uint8Array(this.result);
             console.log("ARRAY", typedarray);
-            // PDFJS.getDocument(typedarray).then(function(pdf) {
-            //  // you can now use *pdf* here
-            //  console.log("the pdf has ",pdf.numPages, "page(s).")
-            //  pdf.getPage(pdf.numPages).then(function(page) {
-            //      // you can now use *page* here
-            //      var viewport = page.getViewport(2.0);
-            //      var canvas = document.querySelector("canvas")
-            //      canvas.height = viewport.height;
-            //      canvas.width = viewport.width;
-
-
-            //      page.render({
-            //          canvasContext: canvas.getContext('2d'),
-            //          viewport: viewport
-            //      });
-            //  });
-
-            // });
 
             pdf = new PDFAnnotate("pdf-container", typedarray, {
               onPageUpdated(page, oldData, newData) {
@@ -60,6 +43,58 @@ $('.loadPDF').change(function (e) {
         fileReader.readAsArrayBuffer(file);
     // })
 });
+
+function selectTemplate(filename) {
+    var path = "";
+    switch (type * 1) {
+        case 1:
+            path = "RA";
+            break;
+
+        case 2:
+            path = "Audits";
+            break;
+
+        case 3:
+            path = "Permits";
+            break;
+
+        case 4:
+            path = "Guidances";
+            break;
+        case 5:
+            path = "Incidents";
+            break;
+        case 6:
+            path = "Inductions";
+            break;
+        default:
+            // code...
+            break;
+    }
+    var dir = '/template/' + path + '/' + filename; 
+    console.log(dir);
+
+    pdf = new PDFAnnotate("pdf-container", dir, {
+      onPageUpdated(page, oldData, newData) {
+        console.log(page, oldData, newData);
+      },
+      ready() {
+        console.log("Plugin initialized successfully");
+        $('#template_board').removeClass('d-flex').addClass('d-none');
+      },
+      scale: 1.5,
+      pageImageCompression: "MEDIUM", // FAST, MEDIUM, SLOW(Helps to control the new PDF file size)
+    });
+
+
+}
+
+
+function showTemplates() {
+    $('#pdf-container').html('');
+    $('#template_board').removeClass('d-none').addClass('d-flex');
+}
 
 function changeActiveTool(event) {
     var element = $(event.target).hasClass("tool-button")
@@ -95,7 +130,7 @@ function enableAddArrow(event) {
 
 function addImage(event) {
     event.preventDefault();
-    pdf.addImageToCanvas()
+    pdf.addImageToCanvas(event)
 }
 
 function enableRectangle(event) {
@@ -152,11 +187,19 @@ function getTypeName(type) {
         case '4':
             return "Guidance";
             break;
+        case '5':
+            return "Incidents";
+            break;
+        case '6':
+            return "Inductions";
+            break;
         default:
             return "Document"
             break;
     }
 }
+
+
 
 $(function () {
     $('.color-tool').click(function () {
@@ -174,12 +217,40 @@ $(function () {
     $('#font-size').change(function () {
         var font_size = $(this).val();
         pdf.setFontSize(font_size);
+
     });
 
     $('#documentFile').change(function(e){
         var filename = e.target.files[0];
         $('#uploadFileTxt').text(filename.name);
     });
-    // $('#kt_header')
-    // kt_header
+
+    $('#selected_sign').click(function(){
+
+        signData = $(this).attr('src');
+        console.log("SignData", signData);
+        if(signData != undefined && signData != '') {
+            isSignActive = true;
+        }
+    });
+
+    $('#pdf-container').mouseup(function(e) {
+        if(isSignActive) {
+            const target = e.target;
+
+            // Get the bounding rectangle of target
+            const rect = target.getBoundingClientRect();
+
+            // Mouse position
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            console.log("Mouse Position: ", x, y);
+            pdf.addSignature(signData, x, y, function(){
+                signData = '';
+                isSignActive = false;
+            });
+        }
+    });
 });
+
+

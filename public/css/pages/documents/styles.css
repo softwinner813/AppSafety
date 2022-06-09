@@ -14,15 +14,34 @@ canvas, .canvas-container {
 
 .toolbar {
     width: 100%;
+    /*background-color: #e7ebee;*/
+    height: auto;
+    position: fixed;
+    left: 0;
+    top: 100!important;
+    z-index: 1;
+}
+/*.toolbar:first-child {
+    
+
+}
+.toolbar:nth-child(2) {
+    top: 150!important;
+    z-index: 100;
+
+}*/
+/*.toolbar {
+    width: 100%;
     background-color: #e7ebee;
     height: 50px;
     position: fixed;
-    top: 100;
+    top: 150;
     left: 0;
     z-index: 10;
-}
+}*/
 
 #pdf-container {
+    display: flex;
     margin-top: 60px;
     padding-left: 10px;
     text-align: center;
@@ -75,14 +94,27 @@ button:focus {
 }
 
 .toolbar .tool .tool-button {
-    background-color: rgb(50, 54, 57);
+    /*background-color: rgb(50, 54, 57);
     border: 1px solid rgb(50, 54, 57);
     color: #fff;
-    cursor: pointer;
+    cursor: pointer;*/
 }
 
 .toolbar .tool .tool-button:hover,
 .toolbar .tool .tool-button.active {
     background-color: rgb(82, 86, 89);
     border-color: rgb(82, 86, 89);
+}
+
+
+#drawCanvans {
+    /*width: 100%;*/
+    /*min-height: 250px;*/
+    margin: 0px;
+    border: 0.1px solid grey;
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    box-shadow: none;
+    touch-action: none; 
+    user-select: none;
 }

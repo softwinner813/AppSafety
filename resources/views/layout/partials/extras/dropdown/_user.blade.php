@@ -18,7 +18,7 @@
             {{-- Symbol --}}
             <div class="symbol bg-white-o-15 mr-3">
                 <!-- <span class="symbol-label text-success font-weight-bold font-size-h4">S</span> --> 
-                <div class="symbol-label" style="background-image:url('{{ Auth::user()->avatar }}')"></div>
+                <div class="symbol-label" style="background-image:url('{{ Auth::user()->logo }}')"></div>
             </div>
 
             {{-- Text --}}

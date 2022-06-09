@@ -6,7 +6,8 @@
         <div class="row">
             <div class="col-xl-4">
                 <!--begin::Tiles Widget 11-->
-                <a href="https://docs.google.com/document/d/1aqs_BV8ZfYA7OTxYFtiesfAgkxP6RzwmoavYMinAqnw/edit?usp=sharing" target="_blank">
+                <!-- <a href="https://docs.google.com/document/d/1aqs_BV8ZfYA7OTxYFtiesfAgkxP6RzwmoavYMinAqnw/edit?usp=sharing" target="_blank"> -->
+                <a href="/template/Policies/Accident _ Incident reporting policy.pdf" target="_blank">
                     <div class="card card-custom bg-default gutter-b" style="height: 150px">
                         <div class="card-body">
                             <span class="svg-icon svg-icon-danger svg-icon-3x  ml-n2">
@@ -32,7 +33,8 @@
 
             <div class="col-xl-4">
                 <!--begin::Tiles Widget 11-->
-                <a href="https://docs.google.com/document/d/1iCO6QpaKl41sQqstqM4UCr1XcVtFmoMU1rJEBpQebo8/edit?usp=sharing" target="_blank">
+                <!-- <a href="https://docs.google.com/document/d/1iCO6QpaKl41sQqstqM4UCr1XcVtFmoMU1rJEBpQebo8/edit?usp=sharing" target="_blank"> -->
+                <a href="/template/Policies/Adverse Weather Policy.pdf" target="_blank">
                     <div class="card card-custom bg-default gutter-b" style="height: 150px">
                         <div class="card-body">
                             <span class="svg-icon svg-icon-danger svg-icon-3x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Weather\Cloud-sun.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -52,7 +54,8 @@
 
             <div class="col-xl-4">
                 <!--begin::Tiles Widget 11-->
-                <a href="https://docs.google.com/document/d/1HaRDEsrvwdBHTTBz7HEB1VBXK3o4Tw9i/edit?usp=sharing&ouid=116940525297979367653&rtpof=true&sd=true" target="_blank">
+                <a href="/template/Policies/Confined Space policy.docx.pdf" target="_blank">
+                <!-- <a href="https://docs.google.com/document/d/1HaRDEsrvwdBHTTBz7HEB1VBXK3o4Tw9i/edit?usp=sharing&ouid=116940525297979367653&rtpof=true&sd=true" target="_blank"> -->
                     <div class="card card-custom bg-default gutter-b" style="height: 150px">
                         <div class="card-body">
                             <span class="svg-icon svg-icon-danger svg-icon-3x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Code\Compiling.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -71,7 +74,8 @@
 
             <div class="col-xl-4">
                 <!--begin::Tiles Widget 11-->
-                <a href="https://docs.google.com/document/d/1wXJE9s96AcrKneuIhqXDk7nmuwqB9ec6B0zHdkryMFs/edit?usp=sharing" target="_blank">
+                <a href="/template/Policies/Drone Policy.pdf" target="_blank">
+                <!-- <a href="https://docs.google.com/document/d/1wXJE9s96AcrKneuIhqXDk7nmuwqB9ec6B0zHdkryMFs/edit?usp=sharing" target="_blank"> -->
                     <div class="card card-custom bg-default gutter-b" style="height: 150px">
                         <div class="card-body">
                             <span class="svg-icon svg-icon-danger svg-icon-3x">
@@ -86,7 +90,9 @@
 
             <div class="col-xl-4">
                 <!--begin::Tiles Widget 11-->
-                <a href="https://docs.google.com/document/d/1Gdhz7slj818DUNlFqLamoGi2bBoIKl4bU9SnmMj10SU/edit?usp=sharing" target="_blank">
+                
+                <a href="/template/Policies/Hazardous Waste Policy.pdf" target="_blank">
+                <!-- <a href="https://docs.google.com/document/d/1Gdhz7slj818DUNlFqLamoGi2bBoIKl4bU9SnmMj10SU/edit?usp=sharing" target="_blank"> -->
                     <div class="card card-custom bg-default gutter-b" style="height: 150px">
                         <div class="card-body">
                             <span class="svg-icon svg-icon-3x  ml-n2">
@@ -102,7 +108,8 @@
 
             <div class="col-xl-4">
                 <!--begin::Tiles Widget 11-->
-                <a href="https://docs.google.com/document/d/144xeduUay-MD_Ow06epsOE9h_Hl5oWU6VU0-9JTJNPU/edit?usp=sharing" target="_blank">
+                <a href="/template/Policies/LOLER policy.pdf" target="_blank">
+                <!-- <a href="https://docs.google.com/document/d/144xeduUay-MD_Ow06epsOE9h_Hl5oWU6VU0-9JTJNPU/edit?usp=sharing" target="_blank"> -->
                     <div class="card card-custom bg-default gutter-b" style="height: 150px">
                         <div class="card-body">
                             <span class="svg-icon svg-icon-3x  ml-n2">
@@ -118,7 +125,8 @@
 
             <div class="col-xl-4">
                 <!--begin::Tiles Widget 11-->
-                <a href="https://docs.google.com/document/d/1tmnckYxKLnt_kW-hz48VQWjSu0_t4OIvKeuyNlrTtLs/edit?usp=sharing" target="_blank">
+                <a href="/template/Policies/Lone Worker Policy.pdf" target="_blank">
+                <!-- <a href="https://docs.google.com/document/d/1tmnckYxKLnt_kW-hz48VQWjSu0_t4OIvKeuyNlrTtLs/edit?usp=sharing" target="_blank"> -->
                     <div class="card card-custom bg-default gutter-b" style="height: 150px">
                         <div class="card-body">
                             <span class="svg-icon svg-icon-danger svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Communication\Shield-user.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -138,7 +146,9 @@
 
             <div class="col-xl-4">
                 <!--begin::Tiles Widget 11-->
-                <a href="https://docs.google.com/document/d/14swUSFmKuLRDTojHVp42em9HFauaVVdNZGKqz6b0v4Q/edit?usp=sharing" target="_blank">
+                
+                <a href="/template/Policies/Safeguarding Policy.pdf" target="_blank">
+                <!-- <a href="https://docs.google.com/document/d/14swUSFmKuLRDTojHVp42em9HFauaVVdNZGKqz6b0v4Q/edit?usp=sharing" target="_blank"> -->
                     <div class="card card-custom bg-default gutter-b" style="height: 150px">
                         <div class="card-body">
                             <span class="svg-icon svg-icon-3x  ml-n2">
@@ -153,10 +163,12 @@
 
             <div class="col-xl-4">
                 <!--begin::Tiles Widget 11-->
-                <a href="https://docs.google.com/document/d/1vaz8axgjZlptcg4bH_qp_9TXbaSYAL4Y/edit?usp=sharing&ouid=116940525297979367653&rtpof=true&sd=true" target="_blank">
+                
+                <a href="/template/Policies/Weapons procedure.pdf" target="_blank">
+                <!-- <a href="https://docs.google.com/document/d/1vaz8axgjZlptcg4bH_qp_9TXbaSYAL4Y/edit?usp=sharing&ouid=116940525297979367653&rtpof=true&sd=true" target="_blank"> -->
                     <div class="card card-custom bg-default gutter-b" style="height: 150px">
                         <div class="card-body">
-                            <span class="svg-icon svg-icon-3x  ml-n2">
+                            <span class="svg-icon svg-icon-danger  svg-icon-3x  ml-n2">
                                 <!--begin::Svg Icon | path:/media/svg/icons/Layout/Layout-4-blocks.svg-->
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
                                     height="24px" viewBox="0 0 24 24" version="1.1">
@@ -179,10 +191,11 @@
 
             <div class="col-xl-4">
                 <!--begin::Tiles Widget 11-->
-                <a href="https://docs.google.com/document/d/111rSmMgqhlm_UI4wkx4gSl14k9N6nFxBcIn3a2-6DBI/edit?usp=sharing" target="_blank">
+                <a href="/template/Policies/Working at Height policy.pdf" target="_blank">
+                <!-- <a href="https://docs.google.com/document/d/111rSmMgqhlm_UI4wkx4gSl14k9N6nFxBcIn3a2-6DBI/edit?usp=sharing" target="_blank"> -->
                     <div class="card card-custom bg-default gutter-b" style="height: 150px">
                         <div class="card-body">
-                            <span class="svg-icon svg-icon-3x  ml-n2">
+                            <span class="svg-icon svg-icon-danger  svg-icon-3x  ml-n2">
                                 <!--begin::Svg Icon | path:/media/svg/icons/Layout/Layout-4-blocks.svg-->
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
                                     height="24px" viewBox="0 0 24 24" version="1.1">
@@ -205,10 +218,11 @@
 
             <div class="col-xl-4">
                 <!--begin::Tiles Widget 11-->
-                <a href="https://docs.google.com/document/d/1Wk_Z0Kxm4USu8eYIT4bGQxEdCkX0GQw4/edit?usp=sharing&ouid=116940525297979367653&rtpof=true&sd=true" target="_blank">
+                <a href="/template/Policies/Young worker policy.pdf" target="_blank">
+                <!-- <a href="https://docs.google.com/document/d/1Wk_Z0Kxm4USu8eYIT4bGQxEdCkX0GQw4/edit?usp=sharing&ouid=116940525297979367653&rtpof=true&sd=true" target="_blank"> -->
                     <div class="card card-custom bg-default gutter-b" style="height: 150px">
                         <div class="card-body">
-                            <span class="svg-icon svg-icon-3x  ml-n2">
+                            <span class="svg-icon svg-icon-danger  svg-icon-3x  ml-n2">
                                 <!--begin::Svg Icon | path:/media/svg/icons/Layout/Layout-4-blocks.svg-->
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
                                     height="24px" viewBox="0 0 24 24" version="1.1">

@@ -14,8 +14,8 @@
                 <div class="card card-custom">
                     <div class="card-header flex-wrap border-0 pt-6 pb-0">
                         <div class="card-title">
-                            <h3 class="card-label">Employee Email List
-                            <span class="d-block text-muted pt-2 font-size-sm">You can add or remove employee email</span></h3>
+                            <h3 class="card-label">Users List
+                            <span class="d-block text-muted pt-2 font-size-sm">You can add or delete user</span></h3>
                         </div>
                         <div class="card-toolbar">
                             <!--begin::Button-->
@@ -30,7 +30,7 @@
                                     </g>
                                 </svg>
                                 <!--end::Svg Icon-->
-                            </span>Add New Email</button>
+                            </span>Add New User </button>
                             <!--end::Button-->
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                         <!--begin::Search Form-->
                         <div class="mb-7">
                             <div class="row align-items-center">
-                                <div class="col-lg-9 col-xl-8">
+                                <div class="col-lg-12 col-xl-12">
                                     <div class="row align-items-center">
                                         <div class="col-md-4 my-2 my-md-0">
                                             <div class="input-icon">
@@ -49,10 +49,8 @@
                                                 </span>
                                             </div>
                                         </div>
+                                        <a href="#" class="btn btn-light-primary px-6 font-weight-bold">Search</a>
                                     </div>
-                                </div>
-                                <div class="col-lg-3 col-xl-4 mt-5 mt-lg-0">
-                                    <a href="#" class="btn btn-light-primary px-6 font-weight-bold">Search</a>
                                 </div>
                             </div>
                         </div>
@@ -63,7 +61,9 @@
                             <thead>
                                 <tr>
                                     <th style="width: 20px;" title="Field #1">#No</th>
+                                    <th  style="width: 50px;" title="Field #1">Name</th>
                                     <th  style="width: 50px;" title="Field #1">Email</th>
+                                    <th  style="width: 50px;" title="Field #1">Created</th>
                                     <th  style="width: 20px;" title="Field #3">Delete</th>
                                 </tr>
                             </thead>
@@ -71,7 +71,9 @@
                                 @foreach ($employees as $key => $employee) 
                                 <tr>
                                     <td style="width: 20px;" class="col-md-2">{{ $key + 1 }}</td>
+                                    <td class="col-md-3">{{  $employee->name }}</td>
                                     <td class="col-md-3">{{  $employee->email }}</td>
+                                    <td class="col-md-3">{{  $employee->created_at }}</td>
                                     <td class="col-md-3">
                                         <button class="btn btn-light-danger" onclick="deleteEmail(`{{$employee->id}}`)"><i class="fa fa-trash"></i></button>
                                     </td>
@@ -103,16 +105,19 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                  
                         <div class="form-group">
-                            <input class="form-control h-auto text-white placeholder-white bg-dark-o-70 rounded-pill border-0 py-4 px-8 mb-5 "  placeholder="Email" id="email" type="email" name="email"  required autocomplete="email" autofocus />
+                            <input class="form-control h-auto text-dark placeholder-dark bg-dark-o-20 rounded-pill border-0 py-4 px-8 mb-5 "  placeholder="Full Name" id="name" type="text" name="name"  required autocomplete="name" autofocus />
                           
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control h-auto text-dark placeholder-dark bg-dark-o-20 rounded-pill border-0 py-4 px-8 mb-5 "  placeholder="Email" id="email" type="email" name="email"  required autocomplete="email" autofocus />
+                        </div>
+                        <div class="alert alert-primary text-center" role="alert">
+                            Password will generated automatically. <br/>
+                            All information will send to user via email.
                         </div>
 
-                        <div class="form-group">
-                            <input class="form-control h-auto text-white placeholder-white bg-dark-o-70 rounded-pill border-0 py-4 px-8 mb-5 "  placeholder="Full Name" id="name" type="text" name="name"  required autocomplete="name" autofocus />
-                          
-                        </div>
+                       
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">CLOSE</button>

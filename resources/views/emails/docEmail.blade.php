@@ -28,7 +28,7 @@
 
 	                                    <h1 class="v-text-align"
 	                                        style="margin: 0px; line-height: 140%; text-align: left; word-wrap: break-word; font-weight: normal; font-family: 'Open Sans',sans-serif; font-size: 19px;">
-	                                        Hello, {{$name}},
+	                                        Hello, How are you?,
 	                                    </h1>
 
 	                                </td>
@@ -48,7 +48,7 @@
 	                                        style="color: #6b6b6b; line-height: 140%; text-align: left; word-wrap: break-word;">
 	                                        <p style="font-size: 14px; line-height: 140%;"><span
 	                                                style="font-family: Lato, sans-serif;">New
-	                                                document is received from <strong>{{ $fromname }}</strong>. Please click below
+	                                                document is received from <strong>{{ $from }}</strong>. Please click below
 	                                                button or link.</span></p>
 	                                    </div>
 

@@ -11,29 +11,17 @@ use URL;
 use Session;
 use Redirect;
 use Input;
-use PayPal\Rest\ApiContext;
-use PayPal\Auth\OAuthTokenCredential;
-use PayPal\Api\Amount;
-use PayPal\Api\Details;
-use PayPal\Api\Item;
-use PayPal\Api\ItemList;
-use PayPal\Api\Payer;
-use PayPal\Api\Payment;
-use PayPal\Api\RedirectUrls;
-use PayPal\Api\ExecutePayment;
-use PayPal\Api\PaymentExecution;
-use PayPal\Api\Transaction;
 
 use Auth;
 use App\Models\Membership;
 use App\Models\TransactionHistory;
 use App\Models\User;
 
+// use Srmklive\PayPal\Services\PayPal as PayPalClient;
+use Srmklive\PayPal\Services\ExpressCheckout;
 class PaypalController extends Controller
 {
     
-    private $_api_context;
-
     /**
      * Create a new controller instance.
      *
@@ -42,15 +30,14 @@ class PaypalController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $paypal_configuration = \Config::get('paypal');
-        $this->_api_context = new ApiContext(new OAuthTokenCredential($paypal_configuration['client_id'], $paypal_configuration['secret']));
-        $this->_api_context->setConfig($paypal_configuration['settings']);
     }
 
     public function paymentResult()
     {
-        // var_dump(Session::get('success'));die();
-        // $noneSubheader = true;
+        if(empty(Session::get('success')) && empty(Session::get('success')) ) {
+            return Redirect::route('membership');
+        } 
+
         $page_title = 'Membership';
         $page_description = 'Subscription Membership Result';
         return view('pages.settings.paymentResult', compact('page_title', 'page_description'));
@@ -65,8 +52,6 @@ class PaypalController extends Controller
 
         $membership = Membership::find($request->membershipID);
 
-        // var_dump($membership->currency_name);die();
-
         if(!isset($membership)) {
             \Session::put('error',"Can't find price. Please retry!");
             return Redirect::route('membership.paymentResult');
@@ -74,95 +59,61 @@ class PaypalController extends Controller
 
         \Session::put('membershipID', $membership->id);
 
-        $payer = new Payer();
-        $payer->setPaymentMethod('paypal');
+        $data = [];
+        $data['items'] = [
+            [
+                'name' => env('APP_NAME', 'AppSafely'). ' Membreship Subscription',
+                // 'price' => $membership->price,
+                'price' => 10,
+                'desc'  => 'Membership subscription for '.env('APP_NAME','AppSafely'),
+                'qty' => 1
+            ]
+        ];
+  
+        $data['invoice_id'] = Auth::user()->name.'_'.date('Ymd');
+        $data['invoice_description'] = "Order #{$data['invoice_id']} Invoice";
+        $data['return_url'] = route('membership.paypal.success');
+        $data['cancel_url'] = route('membership.paypal.cancel');
+        // $data['total'] = $membership->price;
+        $data['total'] = 10;
+  
+        $provider = new ExpressCheckout;
+  
+        $response = $provider->setExpressCheckout($data);
 
-        $item_1 = new Item();
-
-        $item_1->setName('AppSafety Membreship Subscription')
-            ->setCurrency('USD')
-            ->setQuantity(1)
-            // ->setPrice($membership->price);
-            ->setPrice(10);
-
-        $item_list = new ItemList();
-        $item_list->setItems(array($item_1));
-
-        $amount = new Amount();
-        $amount->setCurrency("USD")
-        // $amount->setCurrency($membership->currency_name)
-            // ->setTotal($membership->price);
-            ->setTotal(10);
-
-        $transaction = new Transaction();
-        $transaction->setAmount($amount)
-            ->setItemList($item_list)
-            ->setDescription('AppSafety Membership Subscription');
-
-        $redirect_urls = new RedirectUrls();
-        $redirect_urls->setReturnUrl(URL::route('membership-statusPaypal'))
-            ->setCancelUrl(URL::route('membership-statusPaypal'));
-
-        $payment = new Payment();
-        $payment->setIntent('Sale')
-            ->setPayer($payer)
-            ->setRedirectUrls($redirect_urls)
-            ->setTransactions(array($transaction));            
-        try {
-            $payment->create($this->_api_context);
-        } catch (\PayPal\Exception\PayPalConnectionException $ex) {
-            if (\Config::get('app.debug')) {
-                \Session::put('error','Connection timeout');
-                return Redirect::route('membership.paymentResult');                
-            } else {
-                \Session::put('error','Some error occur, sorry for inconvenient');
-                return Redirect::route('membership.paymentResult');                
-            }
-        }
-
-        foreach($payment->getLinks() as $link) {
-            if($link->getRel() == 'approval_url') {
-                $redirect_url = $link->getHref();
-                break;
-            }
-        }
-        
-        Session::put('paypal_payment_id', $payment->getId());
-
-        if(isset($redirect_url)) {            
-            return Redirect::away($redirect_url);
-        }
-
-        \Session::put('error','Unknown error occurred');
-        return Redirect::route('membership.paymentResult');
+        return redirect($response['paypal_link']);
     }
 
-    public function getPaymentStatus(Request $request)
-    {        
-        $payment_id = Session::get('paypal_payment_id');
+    /**
+     * Responds with a welcome message with instructions
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function cancel()
+    {
+        \Session::put('error','Your payment is canceled');
+        return Redirect::route('membership.paymentResult');
+    }
+  
+    /**
+     * Responds with a welcome message with instructions
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function success(Request $request)
+    {
+        $paypalModule = new ExpressCheckout;
+        $response = $paypalModule->getExpressCheckoutDetails($request->token);
 
+        if (in_array(strtoupper($response['ACK']), ['SUCCESS', 'SUCCESSWITHWARNING'])) {
 
-        Session::forget('paypal_payment_id');
-        if (empty($request->input('PayerID')) || empty($request->input('token'))) {
-            \Session::put('error','Payment failed');
-            return Redirect::route('membership.paymentResult');
-        }
-
-        $payment = Payment::get($payment_id, $this->_api_context);        
-        $execution = new PaymentExecution();
-        $execution->setPayerId($request->input('PayerID'));        
-        $result = $payment->execute($execution, $this->_api_context);
-        
-
-        if ($result->getState() == 'approved') {
-            if($this->saveTransaction($payment_id, $request->membershipID)) {
+            if($this->saveTransaction($response['PAYERID'], $request->membershipID)) {
                 \Session::put('success','Congratulation! Payment Success!');
                  return Redirect::route('membership.paymentResult');
             } else {
-                \Session::put('error','Payment success. But Database error. Please contact support team with this payment id : '. $payment_id);
+                \Session::put('error','Payment success. But Database error. Please contact support team with this payment id : '. $response['PAYERID']);
                  return Redirect::route('membership.paymentResult');
-            }     
-            
+            }  
         }
 
         \Session::put('error','Sorry! Payment failed. Please retry!');

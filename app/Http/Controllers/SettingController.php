@@ -9,6 +9,7 @@ use App\Models\Employee;
 use App\Models\Membership;
 use Auth;
 use Illuminate\Support\Facades\Hash;
+use Validator;
 
 class SettingController extends Controller
 {
@@ -29,10 +30,16 @@ class SettingController extends Controller
      */
     public function index()
     {
-        $page_title = 'Profile';
-        $page_description = 'Profile Page';
+        if(Auth::user()->role > 0) {
+            $page_title = 'Profile';
+            $page_description = 'Profile Page';
 
-        return view('pages.settings.profile', compact('page_title', 'page_description'));
+            return view('pages.settings.profile', compact('page_title', 'page_description'));
+
+        } else {
+            return redirect()->route('change-password');
+        }
+
     }
 
 
@@ -105,9 +112,9 @@ class SettingController extends Controller
      */
     public function employee(Request $req) 
     {
-        $page_title = 'Manage Employee';
-        $page_description = 'Manage Employee Email List';
-        $employees = Auth::user()->employee;
+        $page_title = 'Manage Users';
+        $page_description = 'Add/Remove User';
+        $employees = User::where('company_id', Auth::user()->id)->get();
         return view('pages.settings.manageEmployee', compact('page_title', 'page_description', 'employees'));
 
     }
@@ -119,20 +126,68 @@ class SettingController extends Controller
      */
     public function employeeSave(Request $req) 
     {
-        $employee = new Employee();
-        $employee->user_id = Auth::user()->id;
-        $employee->email  = $req->email;
-        $employee->name  = $req->name;
-        if($employee->save()) {
+        $userCount = Auth::user()->membership->count;
+        $currentCount = User::where('company_id', Auth::user()->id)->count();
+        if($currentCount >= $userCount) {
+            return response()->json([
+            'success' => false,
+            'message' => "Users reached to limit. Please purchase professional membership.",
+          ], 401);
+        }
+        $validator = Validator::make($req->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+        ]);
+        if ($validator->fails()) {
           return response()->json([
+            'success' => false,
+            'message' => $validator->errors(),
+          ], 401);
+        }
+
+
+        $input = $req->all();
+        $password = $this->generateRandomString();
+        $input['password'] = bcrypt($password);
+        $input['company_id'] = Auth::user()->id;
+        $user = User::create($input);
+
+
+        try {
+            // Send Email To User
+            $details = [
+                'type' => 'CREATE_USER',
+                'email' => $user->email,
+                'name'  => $user->name,
+                'password' => $password,
+                'company_name' => Auth::user()->name
+            ];
+            
+            $job = (new \App\Jobs\SendQueueEmail($details))
+                    ->delay(now()->addSeconds(1)); 
+
+            $result = dispatch($job);
+            // echo "Mail send successfully !!";
+
+            return response()->json([
+              'success' => true,
               'status' => 200,
-              'data' => $employee
-          ], 200);
-        } else {
-         return response()->json([
+              'user' => $user
+            ]);
+        } catch (\Swift_TransportException $e) {
+
+            return response()->json([
+              'success' => true,
+              'status' => 201,
+              'user' => $user,
+              'password' => $password 
+            ]);
+        } catch(Exception $e) {
+            return response()->json([
+              'success' => false,
               'status' => 500,
-              'message' => "Database error"
-          ], 500);
+              'message' => "Server Error!"
+            ]);
         }
     }
 
@@ -143,7 +198,7 @@ class SettingController extends Controller
      */
     public function employeeDelete(Request $req) 
     {
-        $employee = Employee::find($req->id);
+        $employee = User::find($req->id);
         if($employee->delete()) {
           return response()->json([
               'status' => 200,
@@ -232,6 +287,14 @@ class SettingController extends Controller
         }
     }
 
-    
+    function generateRandomString($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()+';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
     
 }

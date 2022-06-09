@@ -16,7 +16,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	<!--begin::Head-->
 	<head>
 		<meta charset="utf-8" />
-		<title>SignIn | AppSafety</title>
+		<title>SignIn | AppSafely</title>
 		<meta name="description" content="Login page example" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 		<link rel="canonical" href="https://keenthemes.com/metronic" />
@@ -59,7 +59,7 @@ License: You must have a valid license purchased only from themeforest(the above
 						<!--begin::Login Header-->
 						<div class="d-flex flex-center mb-15">
 							<a href="#">
-								<img src="/media/logos/logo-letter-9.png" class="max-h-100px" alt="" />
+								<img src="/media/logos/android-chrome-512x512.png" class="max-h-100px" alt="" />
 							</a>
 						</div>
 						<!--end::Login Header-->
@@ -117,7 +117,7 @@ License: You must have a valid license purchased only from themeforest(the above
 								</div>
 								<div class="form-group">
 									<button id="kt_login_signup_submit" class="btn btn-pill btn-outline-white font-weight-bold opacity-90 px-15 py-3 m-2">Sign Up</button>
-									<button id="kt_login_signup_cancel" class="btn btn-pill btn-outline-white font-weight-bold opacity-70 px-15 py-3 m-2">Cancel</button>
+									<a href="/login"  class="btn btn-pill btn-outline-white font-weight-bold opacity-70 px-15 py-3 m-2">Cancel</a>
 								</div>
 							</form>
 						</div>
