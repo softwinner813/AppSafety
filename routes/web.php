@@ -89,6 +89,15 @@ Route::group(['prefix' => 'document'], function () {
     });
 
 
+    Route::group(['prefix' => 'induction'], function () {
+        Route::get('/', 'Induction\InductionController@index')->name('document.induction')->middleware('auth');
+        Route::get('/edit', 'Induction\InductionController@edit')->name('document.induction.edit')->middleware('auth');
+        Route::post('/save', 'Induction\InductionController@save')->name('document.induction.save');
+        Route::post('/resend', 'Induction\InductionController@resendEmail')->name('document.induction.resend');
+        Route::get('/sign/{token}', 'Induction\InductionController@sign')->name('document.induction.sign');
+    });
+
+
     Route::get('/', function() {
         return redirect()->route('document',[1]);
     });
