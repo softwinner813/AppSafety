@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="body">
-	<div class="toolbar px-20">
+	<div class="toolbar px-20 pb-2">
 		<div class="tool">
 			<label for="" class="text-dark">Brush size</label>
 			<input type="number" class="form-control text-right" value="1" id="brush-size" max="50">
@@ -109,7 +109,13 @@
 
 					<div class="d-flex flex-column justify-content-center align-item-center">
 						<div class="mt-20">
-							<h1 class="text-center">{{$doc->name}}</h1>
+							<h1 class="text-center">{{$doc->name}} 
+								@if($doc->status == 1)
+								<span class="label label-md label-danger label-pill label-inline mr-2">Signing</span>
+								@elseif($doc->status == 2) 
+								<span class="label label-md label-primary label-pill label-inline mr-2">Completed</span>
+								@endif
+							</h1>
 							<p class="font-size-h5 mb-1 text-center">
 								<i class="far fa-user-circle"></i>
 								From: {{$doc->user->email}} </p>
