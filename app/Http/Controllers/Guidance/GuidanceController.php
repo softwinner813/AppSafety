@@ -259,7 +259,7 @@ class GuidanceController extends Controller
         }
         $dir = getcwd().'/public/template/'.$path;
         if (file_exists($dir)) {
-            $d = dir(getcwd().'/template/'.$path);
+            $d = dir($dir);
             while (($file = $d->read()) !== false){
                 $arr = explode(".",$file);
                 if($arr[count($arr) - 1] == "pdf") {
