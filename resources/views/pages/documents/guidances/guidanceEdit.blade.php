@@ -47,7 +47,7 @@
 					</div>
 					
 
-					<div class="col-md-12 pt-15">
+					<div class="row d-flex justify-content-between  pt-15">
 						<button class="btn btn-icon btn-primary btn-circle mr-2 float-left d-none" id="showTmpBtn" onclick="showTemplates();">
 							<span class="svg-icon"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Layout\Layout-4-blocks.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 							    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">

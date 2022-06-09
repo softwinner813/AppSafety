@@ -51,6 +51,8 @@ class SendQueueEmail implements ShouldQueue
                     });
                 } catch (\Swift_TransportException $e) {
                     return false;
+                } catch (\Swift_RfcComplianceException $e) {
+                    return false;
                 }
                 return true;
                 break;
@@ -66,6 +68,8 @@ class SendQueueEmail implements ShouldQueue
                             ->subject($input['subject']);
                     });
                 } catch (\Swift_TransportException $e) {
+                    return false;
+                } catch (\Swift_RfcComplianceException $e) {
                     return false;
                 }
                 return true;
