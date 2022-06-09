@@ -129,7 +129,7 @@
                             </div>
                         </li>
 
-                        <li class="menu-item menu-item-submenu {{ request()->is('document/*/6') ? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">
+                        <li class="menu-item menu-item-submenu {{ request()->is('document/induction') || request()->is('document/induction/*') ? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">
                             <a href="{!! Route('document.edit',[6]) !!}" class="menu-link menu-toggle">
                                 <span class="menu-text">Induction Forms</span>
                                 <span class="menu-desc"></span>
@@ -137,8 +137,8 @@
                             </a>
                             <div class="menu-submenu menu-submenu-classic " data-hor-direction="">
                                 <ul class="menu-subnav">
-                                    <li class="menu-item {{ request()->is('document/edit/6') ? 'menu-item-here' : '' }}" aria-haspopup="true">
-                                        <a href="{!! Route('document.edit',[6]) !!}" class="menu-link">
+                                    <li class="menu-item {{ request()->is('document/induction/edit') ? 'menu-item-here' : '' }}" aria-haspopup="true">
+                                        <a href="{!! Route('document.induction.edit') !!}" class="menu-link">
                                             <span class="svg-icon menu-icon">
                                                 <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Communication/Safe-chat.svg-->
                                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -153,8 +153,8 @@
                                             <span class="menu-text">Distribute</span>
                                         </a>
                                     </li>
-                                    <li class="menu-item {{ request()->is('document/list/6') ? 'menu-item-here' : '' }}" aria-haspopup="true">
-                                        <a href="{!! Route('document',[6]) !!}" class="menu-link">
+                                    <li class="menu-item {{ request()->is('document/induction') ? 'menu-item-here' : '' }}" aria-haspopup="true">
+                                        <a href="{!! Route('document.induction') !!}" class="menu-link">
                                             <span class="svg-icon menu-icon">
                                                 <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Text/Bullet-list.svg-->
                                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
