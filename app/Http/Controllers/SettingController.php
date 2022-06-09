@@ -57,7 +57,7 @@ class SettingController extends Controller
           $fullpath = null;
           if($image) {
             $photo_name =$req->name.'_logo'.'.'.$image->extension();
-            $path='uploads/logos';
+            $path='public/uploads/logos';
             $fullpath = $path.'/'.$photo_name;
             if (file_exists($fullpath)) {
                 unlink($fullpath);

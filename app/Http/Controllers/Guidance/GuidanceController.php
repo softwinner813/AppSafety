@@ -257,7 +257,7 @@ class GuidanceController extends Controller
                 // code...
                 break;
         }
-        $dir = getcwd().'/template/'.$path;
+        $dir = getcwd().'public/template/'.$path;
         if (file_exists($dir)) {
             $d = dir(getcwd().'/template/'.$path);
             while (($file = $d->read()) !== false){
