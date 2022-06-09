@@ -98,7 +98,7 @@ class GuidanceController extends Controller
         $doc->user_id = Auth::user()->id;
         $doc->file = $fullpath;
         $doc->name = $filename;
-        $doc->type = $this->docType;
+        $doc->type = $this->type;
         $doc->status = 1;
         $doc->to = $req->email;
 
