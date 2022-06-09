@@ -84,6 +84,8 @@ Route::group(['prefix' => 'document'], function () {
         Route::get('/', 'Guidance\GuidanceController@index')->name('document.guidance')->middleware('auth');
         Route::get('/edit', 'Guidance\GuidanceController@edit')->name('document.guidance.edit')->middleware('auth');
         Route::post('/save', 'Guidance\GuidanceController@save')->name('document.guidance.save');
+        Route::post('/resend', 'Guidance\GuidanceController@resendEmail')->name('document.guidance.resend');
+        Route::get('/sign/{token}', 'Guidance\GuidanceController@sign')->name('document.guidance.sign');
     });
 
 

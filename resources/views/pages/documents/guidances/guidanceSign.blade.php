@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="body">
-	<div class="toolbar px-20 bg-gray-500">
+	<div class="toolbar px-20">
 		<div class="tool">
 			<label for="" class="text-dark">Brush size</label>
 			<input type="number" class="form-control text-right" value="1" id="brush-size" max="50">
@@ -32,19 +32,22 @@
 			<button class="color-tool" style="background-color: yellow;"></button>
 		</div>
 		<div class="tool">
-			<button class="tool-button btn btn-outline-info btn-sm active" onclick="enableSelector(event)"><i class="fa fa-hand-paper-o" title="Free Hand" ></i></button>
+			<button class="tool-button btn btn-outline-warning btn-sm active" onclick="enableSelector(event)"><i class="fa fa-hand-paper-o" title="Free Hand" ></i></button>
 		</div>
 		<div class="tool">
-			<button class="tool-button btn btn-outline-info btn-sm" onclick="enablePencil(event)"><i class="fa fa-pencil" title="Pencil" ></i></button>
+			<button class="tool-button btn btn-outline-warning btn-sm" onclick="enablePencil(event)"><i class="fa fa-pencil" title="Pencil" ></i></button>
 		</div>
 		<div class="tool">
-			<button class="tool-button btn btn-outline-info btn-sm" onclick="enableAddText(event)"><i class="fa fa-font" title="Add Text" ></i></button>
+			<button class="tool-button btn btn-outline-warning btn-sm" onclick="enableAddText(event)"><i class="fa fa-font" title="Add Text" ></i></button>
 		</div>
 		<div class="tool">
-			<button class="tool-button btn btn-outline-info btn-sm" onclick="enableAddArrow(event)"><i class="fa fa-long-arrow-right" title="Add Arrow" ></i></button>
+			<button class="tool-button btn btn-outline-warning btn-sm" onclick="enableAddArrow(event)"><i class="fa fa-long-arrow-right" title="Add Arrow" ></i></button>
 		</div>
+<!-- 		<div class="tool">
+			<button class="tool-button btn btn-outline-warning btn-sm"><i class="fa fa-square-o" title="Add rectangle" onclick="enableRectangle(event)"></i></button>
+		</div> -->
 		<div class="tool">
-			<button class="tool-button btn btn-outline-info btn-sm" onclick="addImage(event)"><i class="fa fa-picture-o" title="Add an Image" ></i></button>
+			<button class="tool-button btn btn-outline-warning btn-sm" onclick="addImage(event)"><i class="fa fa-picture-o" title="Add an Image" ></i></button>
 		</div>
 		<div class="tool">
 			<button class="btn btn-danger btn-sm" onclick="deleteSelectedObject(event)"><i class="fa fa-trash"></i></button>
@@ -66,20 +69,7 @@
 			    </div>
 			</div>
 		</div>
-		<div class="tool">
-			<div class="box d-flex">
-				<input type="file" name="loadPDF" id="loadPDF" class="loadPDF inputfile inputfile-1 d-none" accept=".pdf, .PDF"/>
-				<label for="loadPDF" class=" py-1 px-5" style="width: 160px;"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg> <span class="font-size-sm">Load a file&hellip;</span></label>
-			</div>
-		</div>
-		<div class="tool">
-			<button class="btn btn-success btn-sm" onclick="showTemplates()"><i class="far fa-file-pdf"></i> Template</button>
-		</div>
 
-
-		<!-- <div class="tool float-right">
-			<button type="button" class="btn btn-info btn-sm" id="signBtn" data-toggle="modal" data-target="#signModal"><i class="fas fa-upload"></i>&nbsp;Sign</button>
-		</div> -->
 		<div class="tool float-right">
 			<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#uploadModal"><i class="fas fa-upload"></i>&nbsp;Upload</button>
 		</div>
@@ -104,35 +94,30 @@
 					<?php Session::forget('error');?>
 					@endif
 
-					<div id="template_board" class="d-flex flex-column justify-content-center align-item-center">
+					@if ($message = Session::get('success'))
+				  <div class="alert alert-custom alert-notice alert-light-primary mt-20 fade show" role="alert">
+					    <div class="alert-icon"><i class="flaticon-warning"></i></div>
+					    <div class="alert-text">{!! $message !!}</div>
+					    <div class="alert-close">
+					        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					            <span aria-hidden="true"><i class="ki ki-close"></i></span>
+					        </button>
+					    </div>
+					</div>
+					<?php Session::forget('success');?>
+					@endif
+
+					<div class="d-flex flex-column justify-content-center align-item-center">
 						<div class="mt-20">
-							<h1 class="mb-5 text-center">{{$docname}} Templates</h1>
-							<div class="row">
-								@foreach($templates as $key => $template)
-								<div class="col-md-3 mb-5">
-									<div class="card card-custom overlay">
-									    <div class="card-body p-0 bg-secondary">
-									        <div class="overlay-wrapper text-danger py-5 px-2 d-flex flex-column align-items-center justify-content-center">
-									        	<i class="fas fa-file-pdf text-danger" style="font-size: 100px;"></i>
-									        	<h6 class="text-dark ">{{$template}}</h6>
-									        </div>
-									        <div class="overlay-layer">
-									            <a href="#" class="btn font-weight-bold btn-primary btn-shadow" onclick="selectTemplate(`{!! $template !!}`);" ><i class="fas fa-upload"></i> CHOOSE</a>
-									        </div>
-									    </div>
-									</div>
-								</div>
-								@endforeach
-							</div>
+							<h1 class="text-center">{{$doc->name}}</h1>
+							<p class="font-size-h5 mb-1 text-center">
+								<i class="far fa-user-circle"></i>
+								From: {{$doc->user->email}} </p>
+							<p class="font-size-h5 text-center"><i class="far fa-calendar-alt"></i> Date: {{$doc->created_at}} </p>
 						</div>
 					</div>
-					<div id="pdf-container" class="d-flex flex-column justify-content-center align-item-center">
-						
-						<!-- <div class="">
-							<input type="file" name="loadPDF1" id="loadPDF1" class="loadPDF inputfile inputfile-4 d-none" accept=".pdf, .PDF" >
-							<label for="loadPDF1"><figure><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"></path></svg></figure> <span >Choose a PDF file...</span></label>
-						</div> -->
-					</div>
+
+					<div id="pdf-container" class="d-flex flex-column justify-content-center align-item-center"></div>
 				</div>
 			</div>
 	    </div>
@@ -157,9 +142,9 @@
 <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-    	<form action="{!! Route('document.upload') !!}" method="POST" enctype="multipart/form-data">
+    	<form action="{!! Route('document.guidance.save') !!}" method="POST" enctype="multipart/form-data">
     		@csrf
-    		<input type="text" name="docType" value="{!! $type !!}" class="d-none">
+    		<input type="text" name="id" value="{{$doc->id}}">
 	      <div class="modal-header">
 	        <h5 class="modal-title" id="exampleModalLabel">Upload Document</h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -270,6 +255,8 @@
     </div>
   </div>
 </div>
+
+@include('layout.partials.extras._progressModal')
 @endsection
 
 @section('styles')
@@ -283,6 +270,10 @@
 
 {{-- Scripts Section --}}
 @section('scripts')
+<script type="text/javascript">
+	var filepath = `{!! $doc->file !!}`;
+	
+</script>
 <script src="/js/pdfjs/pdf.js"></script>
 <script src="/js/pdfjs/pdf.worker.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.3.0/fabric.min.js"></script>
@@ -294,10 +285,8 @@
 <script src="/js/pages/apps/documents/arrow.fabric.js"></script>
 <script src="/js/pages/apps/documents/pdfannotate.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
-<script src="/js/pages/apps/documents/script.js"></script>
+<script src="/js/pages/apps/documents/guidance/guidanceSign.js"></script>
 <script src="/js/pages/apps/documents/sign.js"></script>
-<script type="text/javascript">
-	var type = `{!! $type !!}`;
-</script>
+
 @endsection
 

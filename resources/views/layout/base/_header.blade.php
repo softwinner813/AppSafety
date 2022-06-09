@@ -18,6 +18,7 @@
                 <div id="kt_header_menu" class="header-menu header-menu-left header-menu-mobile header-menu-layout-default">
                     <!--begin::Header Nav-->
                     <ul class="menu-nav">
+                        @auth
                         <li class="menu-item menu-item-submenu menu-item-rel menu-item-open {{ request()->is('home') ? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">
                             <a href="{!! Route('home') !!}" class="menu-link ">
                                 <span class="menu-text">Home</span>
@@ -215,6 +216,7 @@
                             </div>
                         </li>
                         
+                        @endauth
 
                         <li class="menu-item menu-item-submenu {{ request()->is('policy') ? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">
                             <a href="{!! Route('policy') !!}" class="menu-link ">

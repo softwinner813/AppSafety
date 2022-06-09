@@ -60,6 +60,16 @@ class User extends Authenticatable
    /**
     * Get the track options associated with the user.
     */
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
+
+
+
+   /**
+    * Get the track options associated with the user.
+    */
     public function physicalTrack()
     {
         return $this->belongsTo(PhysicalTrack::class);
