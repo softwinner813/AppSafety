@@ -77,8 +77,8 @@ return [
     'header' => [
         'self' => [
             'display' => true,
-            'width' => 'fluid', // fixed, fluid
-            'theme' => 'light', // light, dark
+            'width' => 'fixed', // fixed, fluid
+            'theme' => 'dark', // light, dark
             'fixed' => [
                 'desktop' => true,
                 'mobile' => true

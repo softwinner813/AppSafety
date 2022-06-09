@@ -86,30 +86,59 @@ class GuidanceController extends Controller
         if(Auth::guest()) {
             $doc = Document::find($req->id);
             $from = $doc->email;
+            $filename = $doc->name;
+            $to = $doc->user->email;
+            $status = 2;
+            try {
+                $file = $req->file('documentFile');
+                if($file) {
+                    $name =$file->getClientOriginalName().date('his').'.'.$file->extension();
+                    $path='uploads/documents/Guidances';
+                    $fullpath = $path.'/'.$filename;
+                    // if (file_exists($fullpath)) {
+                    //     unlink($fullpath);
+                    // }
+                    $file->move($path, $name);
+                } else {
+                    \Session::put('error',"Ooops, Please retry!");
+                    return back();
+                } 
+            } catch (Exception $e) {
+                \Session::put('error',"Ooops, Please retry!");
+                return back();    
+            }
         } else {
+            $doc = new Document();
+            $doc->user_id = Auth::user()->id;
             // if Admin User or Paid User
             $path = 'template/Guidances';
             $fullpath = $path .'/'. $req->filename;
             $filename = $req->filename;
             $from = Auth::user()->name;
+            $status = 1;
+            $to = $req->email;
         }
 
-        $doc = new Document();
-        $doc->user_id = Auth::user()->id;
+        
         $doc->file = $fullpath;
         $doc->name = $filename;
         $doc->type = $this->type;
-        $doc->status = 1;
-        $doc->to = $req->email;
+        $doc->status = $status;
+        $doc->to = $to;
 
         if($doc->save()) {
-            $link = $this->generateLink($doc->id);
-            if($this->sendEmail($req->email, $from, $link)) {
-                return redirect()->route('document.guidance');
-            } else {
-                \Session::put('email',"Can't send email. Please retry!");
+            if( Auth::guest() ) {
+                \Session::put('success',"Document is completed successfully!");
                 return redirect()->back();
-            };
+            } else {
+                $link = $this->generateLink($doc->id);
+                if($this->sendEmail($req->email, $from, $link)) {
+                    return redirect()->route('document.guidance');
+                } else {
+                    \Session::put('error',"Can't send email. Please retry!");
+                    return redirect()->back();
+                };
+            }
         } else {
             \Session::put('error',"Internal Server Error. Please retry!");
             return redirect()->back();
@@ -136,11 +165,73 @@ class GuidanceController extends Controller
         return dispatch($job);
     }
 
+
+    /**
+     * Resend Email
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function resendEmail(Request $req) 
+    {
+        $doc = Document::find($req->id);
+        $link = $this->generateLink($req->id);
+        if($this->sendEmail($doc->to, Auth::user()->name, $link)) {
+            return response()->json([
+              'status' => 200,
+              'result' => true,
+              'data' => $doc
+            ], 200);
+        } else {
+            return response()->json([
+              'status' => 500,
+              'result' => false,
+              'message' => "Can't send email. Please retry!"
+            ], 500);
+
+        }
+    }
+
+
+    /**
+     * Add Signature from none-paid users
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function sign(Request $req) 
+    {
+        // var_dump("FSDF");exit();
+        if(!isset($req->token)) {
+            \Session::put('error',"Invaild Link. Please check your email again.");
+            return redirect()->back();
+        }
+
+        $id = $this->decription($req->token);
+        $doc = Document::find($id);
+
+        if(is_null($doc)) {
+            \Session::put('error',"Invaild Link or Link is expired.");
+            return redirect()->back();
+        }
+
+        if($doc->type != $this->type) {
+            \Session::put('error',"Invaild Link. Please check your email again.");
+            return redirect()->back();
+        }
+
+        $noneSubheader = true;
+        return view('pages.documents.guidances.guidanceSign', compact('noneSubheader', 'doc'));
+
+    }
+
     public function generateLink($id) {
         $encryption = openssl_encrypt($id, $this->ciphering,
             $this->encryption_key, $this->options, $this->encryption_iv);
+        return 'https://'.request()->getHost().'/document/guidance/sign/'.$encryption;
+    }
 
-        return 'https://'.request()->getHost().'/sign/'.$encryption;
+    public function decription($token) {
+        $decryption=openssl_decrypt ($token, $this->ciphering, $this->encryption_key, $this->options, $this->encryption_iv);
+        return $decryption;
     }
 
     public function getFiles($type) {
@@ -174,7 +265,8 @@ class GuidanceController extends Controller
                 // code...
                 break;
         }
-        $dir = getcwd().'/public/template/'.$path;
+        // $dir = getcwd().'/public/template/'.$path;
+        $dir = getcwd().'/template/'.$path;
         if (file_exists($dir)) {
             $d = dir($dir);
             while (($file = $d->read()) !== false){

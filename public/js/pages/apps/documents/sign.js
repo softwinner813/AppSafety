@@ -13,7 +13,7 @@
 	function addSignature(signDatas) {
 		for (var i = 0; i < signDatas.length; i++) {
 		 	var data = signDatas[i];
-		 	console.log(data);
+		 	//console.log(data);
 		 	var child = '<div class="dropdown-item signItem justify-content-between"><img src="' + data + '" height="40"><button type="button" class="btn btn-outline-danger btn-xs sign-del-btn" signdata="' + i +'"><i class="fas fa-trash"></i></button></div>';
 	        $('#sign-dropdown').prepend(child);
 		 }
@@ -59,7 +59,7 @@
 	$('.addSignBtn').click(function(){
 		setTimeout(function(){
             var width = $('#myTabContent1').innerWidth();
-			console.log(width);
+			//console.log(width);
 			$('#drawCanvans').attr('width', width);
 			resizeCanvas();
         }, 500);
@@ -229,7 +229,7 @@
 
 	function renderSignButtons(signDatas){
 		if(signDatas.length > 0) {
-			console.log("Selected",signDatas[0]);
+			//console.log("Selected",signDatas[0]);
 		 	document.getElementById('selected_sign').setAttribute('src', signDatas[0]);
 		 	// $('#selected_sign').attr('src', signDatas[0]);
 		 	$('#addSignBtnTitle').hide();
@@ -245,7 +245,7 @@
 		    signItems[i].addEventListener("click", function(e){
 		    	e.preventDefault();
 		    	var sign = e.currentTarget.querySelector('img').getAttribute('src');
-				console.log("fdsfds", sign);
+				//console.log("fdsfds", sign);
 				document.getElementById('selected_sign').setAttribute('src', sign);
 		    });
 		}

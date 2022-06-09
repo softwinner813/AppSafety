@@ -11,4 +11,12 @@ class Document extends Model
 
   	protected $table = 'documents';
 
+   /**
+    *  Associate User for document.
+    */
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+
 }
