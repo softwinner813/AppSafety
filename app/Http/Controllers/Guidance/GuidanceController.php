@@ -83,22 +83,22 @@ class GuidanceController extends Controller
         $filepath = '';
         $from = '';
         // If None-Paid User
-        if(Auth::guest()) {
-            $doc = Document::find($req->id);
-            $from = $doc->email;
-            $filename = $doc->name;
-            $to = $doc->user->email;
-            $status = 2;
+        if( isset($req->id)) {
+            $doc = Document::find($req->id); 
+            
             try {
                 $file = $req->file('documentFile');
                 if($file) {
                     $name =$file->getClientOriginalName().date('his').'.'.$file->extension();
                     $path='uploads/documents/Guidances';
-                    $fullpath = $path.'/'.$filename;
+                    $fullpath = $path.'/'.$name;
                     // if (file_exists($fullpath)) {
                     //     unlink($fullpath);
                     // }
-                    $file->move($path, $name);
+                    $file->move('public/'.$path, $name);
+                    
+                    $doc->status = 2;
+                    $doc->file = $fullpath;
                 } else {
                     \Session::put('error',"Ooops, Please retry!");
                     return back();
@@ -108,31 +108,25 @@ class GuidanceController extends Controller
                 return back();    
             }
         } else {
+            // if Admin User or Paid User
             $doc = new Document();
             $doc->user_id = Auth::user()->id;
-            // if Admin User or Paid User
             $path = 'template/Guidances';
-            $fullpath = $path .'/'. $req->filename;
-            $filename = $req->filename;
-            $from = Auth::user()->name;
-            $status = 1;
+            $doc->file = $path .'/'. $req->filename;
+            $doc->name = $req->filename;
+            $doc->status = 1;
             $to = $req->email;
         }
 
-        
-        $doc->file = $fullpath;
-        $doc->name = $filename;
         $doc->type = $this->type;
-        $doc->status = $status;
-        $doc->to = $to;
-
+        
         if($doc->save()) {
-            if( Auth::guest() ) {
+            if( isset($req->id) ) {
                 \Session::put('success',"Document is completed successfully!");
                 return redirect()->back();
             } else {
                 $link = $this->generateLink($doc->id);
-                if($this->sendEmail($req->email, $from, $link)) {
+                if($this->sendEmail($req->email, Auth::user()->name, $link)) {
                     return redirect()->route('document.guidance');
                 } else {
                     \Session::put('error',"Can't send email. Please retry!");
@@ -265,8 +259,8 @@ class GuidanceController extends Controller
                 // code...
                 break;
         }
-        // $dir = getcwd().'/public/template/'.$path;
-        $dir = getcwd().'/template/'.$path;
+        $dir = getcwd().'/public/template/'.$path;
+        // $dir = getcwd().'/template/'.$path;
         if (file_exists($dir)) {
             $d = dir($dir);
             while (($file = $d->read()) !== false){
