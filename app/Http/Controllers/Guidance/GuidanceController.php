@@ -98,7 +98,7 @@ class GuidanceController extends Controller
         $doc->user_id = Auth::user()->id;
         $doc->file = $fullpath;
         $doc->name = $filename;
-        $doc->type = $req->docType;
+        $doc->type = $this->docType;
         $doc->status = 1;
         $doc->to = $req->email;
 
@@ -114,66 +114,7 @@ class GuidanceController extends Controller
             \Session::put('error',"Internal Server Error. Please retry!");
             return redirect()->back();
         }
-
-        // $path = 'template/Guidances';
-        // $fullpath = $path .'/'. $req->filename;
-        // $filename = $req->filename;
-
-        // // dd($fullpath);exit();
-        // try {
-        //     if(isset($req->filename)) {
-        //         $filename = $req->filename;
-        //     } else {
-        //         $file = $req->file('documentFile');
-        //         if($file) {
-        //             $filename =$file->getClientOriginalName().date('his').'.'.$file->extension();
-        //             $path='uploads/documents';
-        //             $fullpath = $path.'/'.$filename;
-        //             // if (file_exists($fullpath)) {
-        //             //     unlink($fullpath);
-        //             // }
-        //             $file->move($path,$filename );
-
-                   
-        //         } else {
-        //             \Session::put('error',"Ooops, Please retry!");
-        //             return back();
-        //         } 
-        //     }
-
-
-            
-       
-        // } catch (Exception $e) {
-        //     \Session::put('error',"Ooops, Please retry!");
-        //     return redirect()->back();
-        // }
     }
-
-    /**
-     * Delete Document
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function delete(Request $req) 
-    {
-        $doc = Document::find($req->id);
-        if (file_exists($doc->file)) {
-            unlink($doc->file);
-        }
-        if($doc->delete()) {
-          return response()->json([
-              'status' => 200,
-              'data' => $doc
-          ], 200);
-        } else {
-         return response()->json([
-              'status' => 500,
-              'message' => "Database error"
-          ], 500);
-        }
-    }
-
 
     /**
      * Share document with Employee email
@@ -193,30 +134,6 @@ class GuidanceController extends Controller
                 ->delay(now()->addSeconds(1)); 
 
         return dispatch($job);
-    }
-
-
-    public function testEmail(Request $req) 
-    {
-        // $d = dir(getcwd().'/template/Guidances');
-
-        // echo "Handle: " . $d->handle . "<br>";
-        // echo "Path: " . $d->path . "<br>";
-
-        // while (($file = $d->read()) !== false){
-        //   echo "filename: " . $file . "<br>";
-        // }
-        // $d->close();
-        // $files = $this->getFiles(4);
-        // var_dump($files);
-        // die();
-        // $currentCount = User::where('company_id', Auth::user()->id)->count();
-
-        // // var_dump($currentCount);die();
-
-        $from = "test@test.com";
-        $link = "FSDFSDFSD";
-        return view('emails.docEmail', compact('from', 'link'));
     }
 
     public function generateLink($id) {

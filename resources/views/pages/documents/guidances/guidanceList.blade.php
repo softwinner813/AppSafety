@@ -83,7 +83,7 @@
                                     <td >
                                         @if($doc->status == 1)
                                         <span class="label label-primary label-inline font-weight-lighter text-white text-center"><i class="far fa-envelope text-white font-size-sm"></i>&nbsp; Sent</span>
-                                        @else if($doc->status == 2)
+                                        @elseif($doc->status == 2)
                                         <span class="label label-lg font-weight-bold label-light-success label-inline">Completed</span>
                                         @endif
                                     </td>
