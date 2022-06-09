@@ -79,14 +79,24 @@ Route::group(['prefix' => 'setting', 'middleware' => 'auth'], function () {
 });
 
 // Document
-Route::group(['prefix' => 'document', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'document'], function () {
+    Route::group(['prefix' => 'guidance'], function () {
+        Route::get('/', 'Guidance\GuidanceController@index')->name('document.guidance')->middleware('auth');
+        Route::get('/edit', 'Guidance\GuidanceController@edit')->name('document.guidance.edit')->middleware('auth');
+        Route::post('/save', 'Guidance\GuidanceController@save')->name('document.guidance.save');
+    });
+
+
     Route::get('/', function() {
         return redirect()->route('document',[1]);
     });
+
     Route::get('/list/{type}', 'DocumentController@index')->name('document');
     Route::get('/edit/{type}', 'DocumentController@edit')->name('document.edit');
     Route::post('/save', 'DocumentController@upload')->name('document.upload');
     Route::post('/delete', 'DocumentController@delete')->name('document.delete');
+    Route::post('/resend', 'DocumentController@resendEmail')->name('document.resend');
+
     Route::post('/sendEmail', 'DocumentController@sendEmail')->name('document.sendEmail');
     Route::post('/saveSign', 'DocumentController@saveSign')->name('document.saveSign');
 

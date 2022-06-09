@@ -41,6 +41,7 @@ canvas, .canvas-container {
 }*/
 
 #pdf-container {
+    display: flex;
     margin-top: 60px;
     padding-left: 10px;
     text-align: center;
