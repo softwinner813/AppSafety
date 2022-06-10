@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="body">
+	@if(!is_null($doc))
 	<div class="toolbar px-20 pb-2">
 		<div class="tool">
 			<label for="" class="text-dark">Brush size</label>
@@ -43,9 +44,6 @@
 		<div class="tool">
 			<button class="tool-button btn btn-outline-warning btn-sm" onclick="enableAddArrow(event)"><i class="fa fa-long-arrow-right" title="Add Arrow" ></i></button>
 		</div>
-<!-- 		<div class="tool">
-			<button class="tool-button btn btn-outline-warning btn-sm"><i class="fa fa-square-o" title="Add rectangle" onclick="enableRectangle(event)"></i></button>
-		</div> -->
 		<div class="tool">
 			<button class="tool-button btn btn-outline-warning btn-sm" onclick="addImage(event)"><i class="fa fa-picture-o" title="Add an Image" ></i></button>
 		</div>
@@ -77,6 +75,7 @@
 			<button class="btn btn-primary btn-sm" onclick="savePDF()"><i class="fa fa-save"></i> Save</button>
 		</div>
 	</div>
+	@endif
 	<div  class="d-flex flex-column-fluid body">
 	    <div class="{{ Metronic::printClasses('content-container', false) }}">
 			<div class="row">
@@ -107,6 +106,7 @@
 					<?php Session::forget('success');?>
 					@endif
 
+					@if(!is_null($doc))
 					<div class="d-flex flex-column justify-content-center align-item-center">
 						<div class="mt-20">
 							<h1 class="text-center">{{$doc->name}} 
@@ -124,6 +124,7 @@
 					</div>
 
 					<div id="pdf-container" class="d-flex flex-column justify-content-center align-item-center"></div>
+					@endif
 				</div>
 			</div>
 	    </div>
@@ -148,9 +149,9 @@
 <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-    	<form action="{!! Route('document.guidance.save') !!}" method="POST" enctype="multipart/form-data">
+    	<form action="{!! Route('document.induction.save') !!}" method="POST" enctype="multipart/form-data">
     		@csrf
-    		<input type="text" name="id" value="{{$doc->id}}">
+    		<input type="text" name="id" value="{{$doc ? $doc->id : ''}}">
 	      <div class="modal-header">
 	        <h5 class="modal-title" id="exampleModalLabel">Upload Document</h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -277,7 +278,7 @@
 {{-- Scripts Section --}}
 @section('scripts')
 <script type="text/javascript">
-	var filepath = `{!! $doc->file !!}`;
+	var filepath = `{!! $doc ? $doc->file : '' !!}`;
 	
 </script>
 <script src="/js/pdfjs/pdf.js"></script>
@@ -291,7 +292,7 @@
 <script src="/js/pages/apps/documents/arrow.fabric.js"></script>
 <script src="/js/pages/apps/documents/pdfannotate.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
-<script src="/js/pages/apps/documents/guidance/guidanceSign.js"></script>
+<script src="/js/pages/apps/documents/induction/inductionSign.js"></script>
 <script src="/js/pages/apps/documents/sign.js"></script>
 
 @endsection

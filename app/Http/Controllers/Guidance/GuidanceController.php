@@ -193,27 +193,28 @@ class GuidanceController extends Controller
      */
     public function sign(Request $req) 
     {
-        // var_dump("FSDF");exit();
+       $noneSubheader = true;
         if(!isset($req->token)) {
             \Session::put('error',"Invaild Link. Please check your email again.");
-            return redirect()->back();
+            return view('pages.documents.guidances.guidanceSign', compact('noneSubheader', 'doc'));
         }
 
         $id = $this->decription($req->token);
+
         $doc = Document::find($id);
 
         if(is_null($doc)) {
             \Session::put('error',"Invaild Link or Link is expired.");
-            return redirect()->back();
+            return view('pages.documents.guidances.guidanceSign', compact('noneSubheader', 'doc'));
         }
 
         if($doc->type != $this->type) {
             \Session::put('error',"Invaild Link. Please check your email again.");
-            return redirect()->back();
+            return view('pages.documents.guidances.guidanceSign', compact('noneSubheader', 'doc'));
         }
 
-        $noneSubheader = true;
         return view('pages.documents.guidances.guidanceSign', compact('noneSubheader', 'doc'));
+        
 
     }
 
