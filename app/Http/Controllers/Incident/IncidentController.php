@@ -129,7 +129,7 @@ class IncidentController extends Controller
                     $link = $this->generateLink($doc->id, $docHistory->id);
 
                     if($this->sendEmail($to, $req->from, $link)) {
-                        return redirect()->route('document.indicents.incidentList');
+                        return redirect()->route('document.incidents.incidentList');
                     } else {
                         \Session::put('error',"Can't send email. Please retry!");
                         return redirect()->back();
@@ -272,7 +272,9 @@ class IncidentController extends Controller
         } 
 
         if($docHistory->user_type < 2 && !Auth::guest()) {
+            Session::flush();
             Auth::logout();
+            return back();
         }
 
         if($doc->type != $this->type) {
