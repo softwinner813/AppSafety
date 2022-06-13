@@ -109,17 +109,11 @@
 					@if(!is_null($doc))
 					<div class="d-flex flex-column justify-content-center align-item-center">
 						<div class="mt-20">
-							<h1 class="text-center">{{$doc->name}} 
-								@if($doc->status == 1)
-								<span class="label label-md label-danger label-pill label-inline mr-2">Signing</span>
-								@elseif($doc->status == 2) 
-								<span class="label label-md label-primary label-pill label-inline mr-2">Completed</span>
-								@endif
-							</h1>
+							<h1 class="text-center">{{$doc->name}} </h1>
 							<p class="font-size-h5 mb-1 text-center">
 								<i class="far fa-user-circle"></i>
-								From: {{$doc->user->email}} </p>
-							<p class="font-size-h5 text-center"><i class="far fa-calendar-alt"></i> Date: {{$doc->created_at}} </p>
+								From: {{$docHistory->from}} </p>
+							<p class="font-size-h5 text-center"><i class="far fa-calendar-alt"></i> Date: {{$docHistory->created_at}} </p>
 						</div>
 					</div>
 
@@ -138,6 +132,7 @@
     	<form action="{!! Route('document.incident.save') !!}" method="POST" enctype="multipart/form-data">
     		@csrf
     		<input type="text" name="id" value="{{$doc ? $doc->id : ''}}"  style="display: none;">
+    		<input type="text" name="from" value="{{$docHistory->to}}"  style="display: none;">
 	      <div class="modal-header">
 	        <h5 class="modal-title" id="exampleModalLabel">Upload Document</h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -159,7 +154,78 @@
 						<input type="file" name="documentFile" id="documentFile" class="inputfile inputfile-4 " accept=".pdf, .PDF" style="width:0px; height: 0px;">
 						<label for="documentFile"><figure><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"></path></svg></figure> <span id="uploadFileTxt">Choose a PDF file...</span></label>
 					</div>
+
+
+		      <div class="form-group">
+						<div class="radio-inline">
+							@if(!Auth::guest())
+								@if(Auth::user()->role == 1)
+									<label class="radio radio-lg">
+									<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
+									<span></span>To Company Users</label>
+									<label class="radio radio-lg">
+									<input type="radio" name="userType" value="2" onchange="changeUserType(this);">
+									<span></span>To Employee</label>
+									<label class="radio radio-lg">
+								@else 
+									<label class="radio radio-lg">
+									<input type="radio" checked="checked" name="userType" value="3" onchange="changeUserType(this);">
+									<span></span>To Company Admin</label>
+									<label class="radio radio-lg">
+									<input type="radio" name="userType" value="2" onchange="changeUserType(this);">
+									<span></span>To Employee</label>
+									<label class="radio radio-lg">
+								@endif
+							@else
+									<label class="radio radio-lg">
+									<input type="radio" checked="checked" name="userType" value="3" onchange="changeUserType(this);">
+									<span></span>To Company Admin</label>
+									<label class="radio radio-lg">
+									<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
+									<span></span>To Comapny User</label>
+									<label class="radio radio-lg">
+							@endif
+						</div>
+					</div>
+
+
+					<div class="form-group" id="nonePaidEmail" style="display: none;">
+						<label>Email To
+						<span class="text-danger">*</span></label>
+						<input type="email" class="form-control" placeholder="Enter email" name="nonePaidEmail">
+						<!-- <span class="form-text text-muted">We'll never share your email with anyone else.</span> -->
+					</div>
+
+					<div class="form-group" id="adminEmail" style="display: none;">
+						<label>Email To
+						<span class="text-danger">*</span></label>
+						<input type="email" class="form-control" placeholder="Enter email" name="adminEmail"  value="{{$doc->user->email}}">
+						<!-- <span class="form-text text-muted">We'll never share your email with anyone else.</span> -->
+					</div>
+					<div class="form-group" id="paidEmail"  style="display: none;">
+						<div class="dropdown bootstrap-select form-control" >
+							<label for="email">Email To </label>
+							<span class="text-danger">*</span></label>
+							<select class="form-control selectpicker" name="paidEmail" data-size="7" data-live-search="true" tabindex="null" required="true">
+								@foreach($users as $key => $user)
+								<option value="{{$user->email}}">{{$user->email}}
+									@if($user->role == 1)
+									&nbsp;<span class="label label-primary label-inline font-weight-lighter text-white text-center">({{$user->name}})</span>
+									@endif
+								</option>
+								@endforeach
+							</select>
+						</div>
+					</div>
+
+					<!-- <div class="form-group">
+						<label class="checkbox checkbox-lg">
+							<input type="checkbox" name="isComplated">
+							<span></span>&nbsp;&nbsp;is Complated?
+						</label>
+					</div> -->
 	      </div>
+
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
 	        <button type="submit" class="btn btn-primary"><i class="fas fa-upload"></i>&nbsp;UPLOAD</button>
@@ -278,7 +344,7 @@
 <script src="/js/pages/apps/documents/arrow.fabric.js"></script>
 <script src="/js/pages/apps/documents/pdfannotate.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
-<script src="/js/pages/apps/documents/indicent/indicentSign.js"></script>
+<script src="/js/pages/apps/documents/incident/incidentSign.js"></script>
 <script src="/js/pages/apps/documents/sign.js"></script>
 
 @endsection

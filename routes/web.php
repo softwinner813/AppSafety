@@ -97,11 +97,11 @@ Route::group(['prefix' => 'document'], function () {
         Route::get('/sign/{token}', 'Induction\InductionController@sign')->name('document.induction.sign');
     });
 
-    Route::group(['prefix' => 'incident', 'middleware' => 'auth'], function () {
-        Route::get('/', 'Incident\IncidentController@index')->name('document.incident');
-        Route::get('/edit', 'Incident\IncidentController@edit')->name('document.incident.edit');
+    Route::group(['prefix' => 'incident'], function () {
+        Route::get('/', 'Incident\IncidentController@index')->name('document.incident')->middleware('auth');
+        Route::get('/edit', 'Incident\IncidentController@edit')->name('document.incident.edit')->middleware('auth');
         Route::post('/save', 'Incident\IncidentController@save')->name('document.incident.save');
-        Route::post('/resend', 'Incident\IncidentController@resendEmail')->name('document.incident.resend');
+        Route::post('/resend', 'Incident\IncidentController@resendEmail')->name('document.incident.resend')->middleware('auth');
         Route::get('/sign/{token}', 'Incident\IncidentController@sign')->name('document.incident.sign');
     });
 
