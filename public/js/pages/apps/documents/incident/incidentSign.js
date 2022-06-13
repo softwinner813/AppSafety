@@ -96,7 +96,7 @@ function deleteSelectedObject(event) {
 }
 
 function savePDF() {
-    filename = "Induction" + '-' + `${new Date().getTime()}.pdf`;
+    filename = "Incidents" + '-' + `${new Date().getTime()}.pdf`;
     if(pdf != undefined) {
         $('#staticBackdrop').modal('show');
         setTimeout(function(){

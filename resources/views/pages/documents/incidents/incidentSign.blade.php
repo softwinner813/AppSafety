@@ -206,7 +206,7 @@
 						<div class="dropdown bootstrap-select form-control" >
 							<label for="email">Email To </label>
 							<span class="text-danger">*</span></label>
-							<select class="form-control selectpicker" name="paidEmail" data-size="7" data-live-search="true" tabindex="null" required="true">
+							<select class="form-control selectpicker" name="paidEmail" data-size="7" data-live-search="true" tabindex="null">
 								@foreach($users as $key => $user)
 								<option value="{{$user->email}}">{{$user->email}}
 									@if($user->role == 1)

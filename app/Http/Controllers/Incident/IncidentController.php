@@ -112,6 +112,10 @@ class IncidentController extends Controller
             if($doc->save()) {
                  // Save Document History
                 $to = $req->userType == 1 ?  $req->paidEmail : (($req->userType == 2) ? $req->nonePaidEmail : $req->adminEmail);
+                if(empty($to)) {
+                    \Session::put('error',"Please provide email address to receive this document!");
+                    return redirect()->back();
+                }
                 $docHistory =  new DocHistory();
                 $docHistory->document_id = $doc->id;
                 $docHistory->from = $req->from;
@@ -157,6 +161,10 @@ class IncidentController extends Controller
 
                 // Save Document History
                 $to = $req->userType == 1 ?  $req->paidEmail : $req->nonePaidEmail;
+                if(empty($to)) {
+                    \Session::put('error',"Please provide email address to receive this document!");
+                    return redirect()->back();
+                }
                 $docHistory =  new DocHistory();
                 $docHistory->document_id = $doc->id;
                 $docHistory->from = Auth::user()->email;

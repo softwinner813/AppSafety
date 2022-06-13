@@ -182,13 +182,13 @@
 			<div class="form-group" id="nonePaidEmail" style="display: none;">
 				<label>Email To
 				<span class="text-danger">*</span></label>
-				<input type="email" class="form-control" placeholder="Enter email" name="nonePaidEmail" >
+				<input type="email" class="form-control" placeholder="Enter email" name="nonePaidEmail">
 				<!-- <span class="form-text text-muted">We'll never share your email with anyone else.</span> -->
 			</div>
 			<div class="dropdown bootstrap-select form-control" id="paidEmail">
 				<label for="email">Email To </label>
 				<span class="text-danger">*</span></label>
-				<select class="form-control selectpicker" name="paidEmail" data-size="7" data-live-search="true" tabindex="null" required="true">
+				<select class="form-control selectpicker" name="paidEmail" data-size="7" data-live-search="true" tabindex="null">
 					@foreach($users as $key => $user)
 					<option value="{{$user->email}}">{{$user->email}}
 						@if($user->role == 1)
