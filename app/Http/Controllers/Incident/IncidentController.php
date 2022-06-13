@@ -176,7 +176,6 @@ class IncidentController extends Controller
                     // Send Email with document link
                     $link = $this->generateLink($doc->id, $docHistory->id);
 
-                    dd($link);die();
                     if($this->sendEmail($to, Auth::user()->name, $link)) {
                         return redirect()->route('document.indicents.incidentList');
                     } else {
