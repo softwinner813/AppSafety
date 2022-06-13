@@ -151,7 +151,7 @@
     <div class="modal-content">
     	<form action="{!! Route('document.guidance.save') !!}" method="POST" enctype="multipart/form-data">
     		@csrf
-    		<input type="text" name="id" value="{{$doc ? $doc->id : ''}}">
+    		<input type="text" name="id" value="{{$doc ? $doc->id : ''}}" style="display: none;">
 	      <div class="modal-header">
 	        <h5 class="modal-title" id="exampleModalLabel">Upload Document</h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
