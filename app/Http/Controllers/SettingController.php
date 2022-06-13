@@ -57,12 +57,14 @@ class SettingController extends Controller
           $fullpath = null;
           if($image) {
             $photo_name =$req->name.'_logo'.'.'.$image->extension();
-            $path='public/uploads/logos';
+            $path='uploads/logos';
             $fullpath = $path.'/'.$photo_name;
-            if (file_exists($fullpath)) {
+            // if (file_exists($fullpath)) {
+            if (file_exists('public/'.$fullpath)) {
                 unlink($fullpath);
             }
-            $image->move($path,$photo_name );
+            $image->move('public/'.$path,$photo_name );
+            // $image->move($path,$photo_name );
           }
           
           $user = User::find(Auth::user()->id);
