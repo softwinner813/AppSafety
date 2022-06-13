@@ -136,8 +136,6 @@ class GuidanceController extends Controller
                
             } else {
                 $link = $this->generateLink($doc->id);
-                dd($link);exit();
-
                 if($this->sendEmail($req->email, Auth::user()->name, $link)) {
                     return redirect()->route('document.guidance');
                 } else {
