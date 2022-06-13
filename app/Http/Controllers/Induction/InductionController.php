@@ -122,8 +122,14 @@ class InductionController extends Controller
         
         if($doc->save()) {
             if( isset($req->id) ) {
-                \Session::put('success',"Document is completed successfully!");
-                return redirect()->back();
+                $link = $this->generateLink($doc->id);
+                if($this->sendEmail($doc->user->email, $doc->to, $link)) {
+                    \Session::put('success',"Document is completed successfully!");
+                    return redirect()->back();
+                } else {
+                    \Session::put('error',"Can't send email. Please retry!");
+                    return redirect()->back();
+                };
             } else {
                 $link = $this->generateLink($doc->id);
                 if($this->sendEmail($req->email, Auth::user()->name, $link)) {
