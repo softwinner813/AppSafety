@@ -75,7 +75,8 @@ class RegisterController extends Controller
             'address' => $data['address'],
             'phonenumber' => $data['phonenumber'],
             'password' => Hash::make($data['password']),
-            'free_end_date' =>$stop_date->format('Y-m-d')
+            'free_end_date' =>$stop_date->format('Y-m-d'),
+            'role' => 1,
         ]);
     }
 }
