@@ -169,7 +169,7 @@
 									<label class="radio radio-lg">
 								@else 
 									<label class="radio radio-lg">
-									<input type="radio" checked="checked" name="userType" value="3" onchange="changeUserType(this);">
+									<input type="radio"  name="userType" value="3" onchange="changeUserType(this);">
 									<span></span>To Company Admin</label>
 									<label class="radio radio-lg">
 									<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
@@ -178,10 +178,10 @@
 								@endif
 							@else
 									<label class="radio radio-lg">
-									<input type="radio" checked="checked" name="userType" value="3" onchange="changeUserType(this);">
+									<input type="radio"  name="userType" value="3" onchange="changeUserType(this);">
 									<span></span>To Company Admin</label>
 									<label class="radio radio-lg">
-									<input type="radio" name="userType" value="2" onchange="changeUserType(this);">
+									<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
 									<span></span>To Comapny User</label>
 									<label class="radio radio-lg">
 							@endif
