@@ -92,10 +92,13 @@ class GuidanceController extends Controller
                     $name =$file->getClientOriginalName().date('his').'.'.$file->extension();
                     $path='uploads/documents/Guidances';
                     $fullpath = $path.'/'.$name;
+                    
                     // if (file_exists($fullpath)) {
                     //     unlink($fullpath);
                     // }
+
                     $file->move('public/'.$path, $name);
+                    // $file->move($path, $name);
                     
                     $doc->status = 2;
                     $doc->file = $fullpath;
@@ -115,7 +118,7 @@ class GuidanceController extends Controller
             $doc->file = $path .'/'. $req->filename;
             $doc->name = $req->filename;
             $doc->status = 1;
-            $to = $req->email;
+            $doc->to = $req->email;
         }
 
         $doc->type = $this->type;
@@ -133,6 +136,8 @@ class GuidanceController extends Controller
                
             } else {
                 $link = $this->generateLink($doc->id);
+                dd($link);exit();
+
                 if($this->sendEmail($req->email, Auth::user()->name, $link)) {
                     return redirect()->route('document.guidance');
                 } else {

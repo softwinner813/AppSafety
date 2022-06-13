@@ -95,6 +95,7 @@ class InductionController extends Controller
                     // if (file_exists($fullpath)) {
                     //     unlink($fullpath);
                     // }
+                    
                     $file->move('public/'.$path, $name);
                     
                     $doc->status = 2;
@@ -115,7 +116,7 @@ class InductionController extends Controller
             $doc->file = $path .'/'. $req->filename;
             $doc->name = $req->filename;
             $doc->status = 1;
-            $to = $req->email;
+            $doc->to = $req->email;
         }
 
         $doc->type = $this->type;

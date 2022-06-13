@@ -71,6 +71,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($documents as $key => $doc) 
+                                {{ $doc->to }}
                                 <tr>
                                     <td class="col-md-2">{{ $key + 1 }}</td>
                                     <td>
@@ -78,7 +79,7 @@
                                             {{  $doc->name }}    
                                         </a>
                                     </td>
-                                    <td>{{ $doc->to}}</td>
+                                    <td>{{ $doc->to }}</td>
                                     <td>{{ $doc->created_at }}</td>
                                     <td >
                                         @if($doc->status == 1)
