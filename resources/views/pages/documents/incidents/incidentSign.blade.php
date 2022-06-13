@@ -161,10 +161,10 @@
 							@if(!Auth::guest())
 								@if(Auth::user()->role == 1)
 									<label class="radio radio-lg">
-									<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
+									<input type="radio" name="userType" value="2" onchange="changeUserType(this);">
 									<span></span>To Company Users</label>
 									<label class="radio radio-lg">
-									<input type="radio" name="userType" value="2" onchange="changeUserType(this);">
+									<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
 									<span></span>To Employee</label>
 									<label class="radio radio-lg">
 								@else 
@@ -172,7 +172,7 @@
 									<input type="radio" checked="checked" name="userType" value="3" onchange="changeUserType(this);">
 									<span></span>To Company Admin</label>
 									<label class="radio radio-lg">
-									<input type="radio" name="userType" value="2" onchange="changeUserType(this);">
+									<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
 									<span></span>To Employee</label>
 									<label class="radio radio-lg">
 								@endif
@@ -181,7 +181,7 @@
 									<input type="radio" checked="checked" name="userType" value="3" onchange="changeUserType(this);">
 									<span></span>To Company Admin</label>
 									<label class="radio radio-lg">
-									<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
+									<input type="radio" name="userType" value="2" onchange="changeUserType(this);">
 									<span></span>To Comapny User</label>
 									<label class="radio radio-lg">
 							@endif

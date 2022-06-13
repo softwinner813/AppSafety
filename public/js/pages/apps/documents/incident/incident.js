@@ -161,11 +161,11 @@ function changeUserType(myRadio) {
     currentValue = myRadio.value;
     console.log("fdsfsdfsd",currentValue);
     if(currentValue == 1) {
-        $('#nonePaidEmail').hide();
-        $('#paidEmail').show();
-    } else if(currentValue == 2) {
         $('#paidEmail').hide();
         $('#nonePaidEmail').show();
+    } else if(currentValue == 2) {
+        $('#nonePaidEmail').hide();
+        $('#paidEmail').show();
     }
 }
 

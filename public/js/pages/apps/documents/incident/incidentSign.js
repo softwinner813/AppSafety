@@ -126,13 +126,13 @@ function changeUserType(myRadio) {
     currentValue = myRadio.value;
     console.log("fdsfsdfsd",currentValue);
     if(currentValue == 1) {
-        $('#nonePaidEmail').hide();
-        $('#adminEmail').hide();
-        $('#paidEmail').show();
-    } else if(currentValue == 2) {
         $('#paidEmail').hide();
         $('#adminEmail').hide();
         $('#nonePaidEmail').show();
+    } else if(currentValue == 2) {
+        $('#nonePaidEmail').hide();
+        $('#adminEmail').hide();
+        $('#paidEmail').show();
     } else if(currentValue == 3) {
         $('#nonePaidEmail').hide();
         $('#paidEmail').hide();
