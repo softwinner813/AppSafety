@@ -199,7 +199,7 @@ class PermitController extends Controller
                     $link = $this->generateLink($doc->id, $docHistory->id);
 
                     if($this->sendEmail($to, Auth::user()->name, $link)) {
-                        return redirect()->route('document.indicents.permitList');
+                        return redirect()->route('document.permit');
                     } else {
                         \Session::put('error',"Can't send email. Please retry!");
                         return redirect()->back();

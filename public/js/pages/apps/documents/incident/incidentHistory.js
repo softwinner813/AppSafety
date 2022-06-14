@@ -243,7 +243,7 @@ function resendDoc(id) {
 	$('#progressModal').modal('show');
 	$.ajax({
 	    type: "POST",
-		    url: '/document/induction/resend',
+		    url: '/document/incident/resend',
 		    data: {id: id},
 		    success: function(data) {
 		        // Ajax call completed successfully
