@@ -31,7 +31,7 @@
                 </a>
             </div>
             <div class="col-xl-4">
-                <a href="{!! Route('document.edit',[4]) !!}">
+                <a href="{!! Route('document.guidance.edit') !!}">
                     <!--begin::Tiles Widget 11-->
                     <div class="card card-custom bg-primary gutter-b" style="height: 150px">
                         <div class="card-body">
@@ -58,7 +58,7 @@
                 </a>
             </div>
             <div class="col-xl-4">
-                <a href="{!! Route('document.edit',[5]) !!}">
+                <a href="{!! Route('document.incident.edit') !!}">
                     <!--begin::Tiles Widget 11-->
                     <div class="card card-custom bg-primary gutter-b" style="height: 150px">
                         <div class="card-body">
@@ -85,7 +85,7 @@
                 </a>
             </div>
             <div class="col-xl-4">
-                <a href="{!! Route('document.edit',[6]) !!}">
+                <a href="{!! Route('document.induction.edit') !!}">
                     <!--begin::Tiles Widget 11-->
                     <div class="card card-custom bg-primary gutter-b" style="height: 150px">
                         <div class="card-body">
@@ -112,7 +112,7 @@
             </div>
 
             <div class="col-xl-4">
-                <a href="{!! Route('document.edit',[3]) !!}">
+                <a href="{!! Route('document.permit.edit') !!}">
                     <!--begin::Tiles Widget 11-->
                     <div class="card card-custom bg-primary gutter-b" style="height: 150px">
                         <div class="card-body">
@@ -140,7 +140,7 @@
             </div>
             <div class="col-xl-4">
                 <!--begin::Tiles Widget 11-->
-                <a href="/policy">
+                <a href="{!! Route('policy') !!}">
                     <div class="card card-custom bg-primary gutter-b" style="height: 150px">
                         <div class="card-body">
                             <span class="svg-icon svg-icon-3x svg-icon-white ml-n2">
