@@ -350,14 +350,14 @@ class PermitController extends Controller
                 break;
 
             case 4:
-                $path = "Permits";
+                $path = "Guidances";
                 break;
 
             case 5:
-                $path = "Permits";
+                $path = "Incidents";
                 break;
             case 6:
-                $path = "Permits";
+                $path = "Inductions";
                 break;
             default:
                 // code...

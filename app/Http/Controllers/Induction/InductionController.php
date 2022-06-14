@@ -254,7 +254,7 @@ class InductionController extends Controller
                 break;
 
             case 4:
-                $path = "Inductions";
+                $path = "Guidances";
                 break;
 
             case 5:

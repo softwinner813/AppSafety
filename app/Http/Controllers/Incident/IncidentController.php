@@ -350,14 +350,14 @@ class IncidentController extends Controller
                 break;
 
             case 4:
-                $path = "Incidents";
+                $path = "Guidances";
                 break;
 
             case 5:
                 $path = "Incidents";
                 break;
             case 6:
-                $path = "Incidents";
+                $path = "Inductions";
                 break;
             default:
                 // code...
