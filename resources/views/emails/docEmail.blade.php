@@ -94,7 +94,7 @@
 	                                        style="color: #6b6b6b; line-height: 140%; text-align: left; word-wrap: break-word;">
 	                                        <p
 	                                            style="font-size: 14px; line-height: 140%; text-align: center;">
-	                                            <a rel="noopener" href="fsdafdsafdas"
+	                                            <a rel="noopener" href="{{$link}}"
 	                                                target="_blank">{{$link}}
 	                                            </a></p>
 	                                    </div>
