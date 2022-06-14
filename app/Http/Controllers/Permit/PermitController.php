@@ -146,7 +146,12 @@ class PermitController extends Controller
                     $link = $this->generateLink($doc->id, $docHistory->id);
 
                     if($this->sendEmail($to, $req->from, $link)) {
-                        return redirect()->route('documents.permits.permitList');
+                        if(Auth::guest()) {
+                            \Session::put('success',"Document sent successfully!");
+                            return redirect()->back();
+                        } else {
+                            return redirect()->route('document.permit');
+                        }
                     } else {
                         \Session::put('error',"Can't send email. Please retry!");
                         return redirect()->back();

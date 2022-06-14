@@ -146,7 +146,12 @@ class IncidentController extends Controller
                     $link = $this->generateLink($doc->id, $docHistory->id);
 
                     if($this->sendEmail($to, $req->from, $link)) {
-                        return redirect()->route('documents.incidents.incidentList');
+                        if(Auth::guest()) {
+                            \Session::put('success',"Document sent successfully!");
+                            return redirect()->back();
+                        } else {
+                            return redirect()->route('document.incident');
+                        }
                     } else {
                         \Session::put('error',"Can't send email. Please retry!");
                         return redirect()->back();
