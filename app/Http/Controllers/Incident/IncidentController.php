@@ -170,7 +170,7 @@ class IncidentController extends Controller
             }        
         } else { // Init Upload document
             // if Admin User or Paid User
-            $to = $req->userType == 1 ?  $req->paidEmail : $req->nonePaidEmail;
+            $to = $req->userType == 1 ?  $req->paidEmail : (($req->userType == 2) ? $req->nonePaidEmail : $req->adminEmail);
 
             // Save Document
             $doc = new Document();

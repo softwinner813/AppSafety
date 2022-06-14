@@ -79,6 +79,15 @@ class User extends Authenticatable
    /**
     * Get the track options associated with the user.
     */
+    public function company()
+    {
+        return $this->belongsTo(User::class, 'company_id');
+    }
+
+
+   /**
+    * Get the track options associated with the user.
+    */
     public function SpiritualTrack()
     {
         return $this->hasOne(SpiritualTrack::class);
