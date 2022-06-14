@@ -128,7 +128,7 @@ class PermitController extends Controller
             $doc->file = $fullpath;
             if($doc->save()) {
                  // Save Document History
-                $to = $req->userType == 1 ?  $req->paidEmail : (($req->userType == 2) ? $req->nonePaidEmail : $req->adminEmail);
+                $to = $req->userType == 1 ?  $req->nonePaidEmail : (($req->userType == 2) ? $req->paidEmail : $req->adminEmail);
                 if(empty($to)) {
                     \Session::put('error',"Please provide email address to receive this document!");
                     return redirect()->back();
@@ -170,12 +170,12 @@ class PermitController extends Controller
             }        
         } else { // Init Upload document
             // if Admin User or Paid User
-            $to = $req->userType == 1 ?  $req->paidEmail : (($req->userType == 2) ? $req->nonePaidEmail : $req->adminEmail);
+            $to = $req->userType == 1 ?  $req->nonePaidEmail : (($req->userType == 2) ? $req->paidEmail : $req->adminEmail);
 
             // Save Document
             $doc = new Document();
             $doc->user_id = Auth::user()->id;
-            $doc->name = $req->filename;
+            $doc->name = (isset($req->filename) && !is_null($req->filename)) ? $req->filename : $file->getClientOriginalName() ;
             $doc->status = 1;
             $doc->type = $this->type;
             $doc->file = $fullpath;
