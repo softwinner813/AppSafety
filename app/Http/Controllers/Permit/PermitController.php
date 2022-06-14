@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Incident;
+namespace App\Http\Controllers\Permit;
 
 
 use Illuminate\Http\Request;
@@ -18,7 +18,7 @@ use App\Models\Signature;
 use App\Models\DocHistory;
 
 use Auth;
-class IncidentController extends Controller
+class PermitController extends Controller
 {
 
     // Store the cipher method
@@ -34,7 +34,7 @@ class IncidentController extends Controller
     protected $encryption_key = "GeeksforGeeks";
 
 
-    protected $type = 5;
+    protected $type = 3;
     /**
      * Create a new controller instance.
      *
@@ -45,7 +45,7 @@ class IncidentController extends Controller
         // $this->middleware('auth');
     }
 
-    /************************** Incident **********************/
+    /************************** Permit **********************/
 
 
     /**
@@ -55,10 +55,10 @@ class IncidentController extends Controller
      */
     public function index(Request $req)
     {
-        $page_title = 'Incident';
-        $page_description = 'Incident Share History';
+        $page_title = 'Permit';
+        $page_description = 'Permit Share History';
         $documents = Document::where('user_id', Auth::user()->id)->where('type', $this->type)->get();
-        return view('pages.documents.incidents.incidentList', compact('page_title', 'page_description', 'documents'));
+        return view('pages.documents.permits.permitList', compact('page_title', 'page_description', 'documents'));
     }
 
     /**
@@ -70,10 +70,10 @@ class IncidentController extends Controller
     {
         $noneSubheader = true;
         $type = $this->type;
-        $docname = 'Incident';
+        $docname = 'Permit';
         $templates = $this->getFiles($type);
         $users = User::where('company_id', Auth::user()->id)->get();
-        return view('pages.documents.incidents.incidentEdit', compact('noneSubheader', 'type', 'templates', 'docname', 'users'));
+        return view('pages.documents.permits.permitEdit', compact('noneSubheader', 'type', 'templates', 'docname', 'users'));
     }
 
 
@@ -84,12 +84,12 @@ class IncidentController extends Controller
      */
     public function history(Request $req) 
     {
-        $page_title = 'Incident History';
-        $page_description = 'Incident Share History';
+        $page_title = 'Permit History';
+        $page_description = 'Permit Share History';
         $id = $req->docid;
         $doc = Document::find($id);
         $histories = DocHistory::where('document_id', $id)->orderBy('created_at')->get();
-        return view('pages.documents.incidents.incidentHistory', compact('page_title', 'page_description', 'doc', 'histories'));
+        return view('pages.documents.permits.permitHistory', compact('page_title', 'page_description', 'doc', 'histories'));
     }
 
 
@@ -105,7 +105,7 @@ class IncidentController extends Controller
             $file = $req->file('documentFile');
             if($file) {
                 $name =$file->getClientOriginalName().date('his').'.'.$file->extension();
-                $path='uploads/documents/Incidents';
+                $path='uploads/documents/Permits';
                 $fullpath = $path.'/'.$name;
                 // if (file_exists($fullpath)) {
                 //     unlink($fullpath);
@@ -146,7 +146,7 @@ class IncidentController extends Controller
                     $link = $this->generateLink($doc->id, $docHistory->id);
 
                     if($this->sendEmail($to, $req->from, $link)) {
-                        return redirect()->route('documents.incidents.incidentList');
+                        return redirect()->route('documents.permits.permitList');
                     } else {
                         \Session::put('error',"Can't send email. Please retry!");
                         return redirect()->back();
@@ -194,7 +194,7 @@ class IncidentController extends Controller
                     $link = $this->generateLink($doc->id, $docHistory->id);
 
                     if($this->sendEmail($to, Auth::user()->name, $link)) {
-                        return redirect()->route('document.indicents.incidentList');
+                        return redirect()->route('document.indicents.permitList');
                     } else {
                         \Session::put('error',"Can't send email. Please retry!");
                         return redirect()->back();
@@ -272,7 +272,7 @@ class IncidentController extends Controller
         $noneSubheader = true;
         if(!isset($req->token)) {
             \Session::put('error',"Invaild Link. Please check your email again.");
-            return view('pages.documents.incidents.incidentSign', compact('noneSubheader', 'doc'));
+            return view('pages.documents.permits.permitSign', compact('noneSubheader', 'doc'));
         }
 
         $link = $this->decription($req->token);
@@ -294,7 +294,7 @@ class IncidentController extends Controller
 
         if($doc->type != $this->type) {
             \Session::put('error',"Invaild Link. Please check your email again.");
-            return view('pages.documents.incidents.incidentSign', compact('noneSubheader', 'doc'));
+            return view('pages.documents.permits.permitSign', compact('noneSubheader', 'doc'));
         }
 
         if(!Auth::guest()) {
@@ -308,10 +308,10 @@ class IncidentController extends Controller
         }
         if(is_null($doc) || is_null($docHistory)) {
             \Session::put('error',"Invaild Link or Link is expired.");
-            return view('pages.documents.incidents.incidentSign', compact('noneSubheader', 'doc'));
+            return view('pages.documents.permits.permitSign', compact('noneSubheader', 'doc'));
         }
 
-        return view('pages.documents.incidents.incidentSign', compact('noneSubheader', 'doc', 'docHistory', 'users'));
+        return view('pages.documents.permits.permitSign', compact('noneSubheader', 'doc', 'docHistory', 'users'));
         
 
     }
@@ -319,7 +319,7 @@ class IncidentController extends Controller
     public function generateLink($docid, $hisid) {
         $encryption = openssl_encrypt($docid.'.'.$hisid, $this->ciphering,
             $this->encryption_key, $this->options, $this->encryption_iv);
-        return 'https://'.request()->getHost().'/document/incident/sign/'.$encryption;
+        return 'https://'.request()->getHost().'/document/permit/sign/'.$encryption;
     }
 
     public function decription($token) {
@@ -345,14 +345,14 @@ class IncidentController extends Controller
                 break;
 
             case 4:
-                $path = "Incidents";
+                $path = "Permits";
                 break;
 
             case 5:
-                $path = "Incidents";
+                $path = "Permits";
                 break;
             case 6:
-                $path = "Incidents";
+                $path = "Permits";
                 break;
             default:
                 // code...

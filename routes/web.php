@@ -103,6 +103,16 @@ Route::group(['prefix' => 'document'], function () {
         Route::post('/save', 'Incident\IncidentController@save')->name('document.incident.save');
         Route::post('/resend', 'Incident\IncidentController@resendEmail')->name('document.incident.resend')->middleware('auth');
         Route::get('/sign/{token}', 'Incident\IncidentController@sign')->name('document.incident.sign');
+        Route::get('/history/{docid}', 'Incident\IncidentController@history')->name('document.incident.history');
+    });
+
+    Route::group(['prefix' => 'permit'], function () {
+        Route::get('/', 'Permit\PermitController@index')->name('document.permit')->middleware('auth');
+        Route::get('/edit', 'Permit\PermitController@edit')->name('document.permit.edit')->middleware('auth');
+        Route::post('/save', 'Permit\PermitController@save')->name('document.permit.save');
+        Route::post('/resend', 'Permit\PermitController@resendEmail')->name('document.permit.resend')->middleware('auth');
+        Route::get('/sign/{token}', 'Permit\PermitController@sign')->name('document.permit.sign');
+        Route::get('/history/{docid}', 'Permit\PermitController@history')->name('document.permit.history');
     });
 
 

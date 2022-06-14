@@ -13,8 +13,8 @@
                 <div class="card card-custom">
                     <div class="card-header flex-wrap border-0 pt-6 pb-0">
                         <div class="card-title">
-                            <h3 class="card-label">Documents List
-                            <span class="d-block text-muted pt-2 font-size-sm">You can add or remove document to share with your employees</span></h3>
+                            <h3 class="card-label">{{$doc->name}}
+                            <span class="d-block text-muted pt-2 font-size-sm">{{date('d/m/Y h:i:s', strtotime($doc->created_at))}} created by {{$doc->user->email}}</span></h3>
                         </div>
                         <div class="card-toolbar">
                             <!--begin::Button-->
@@ -62,34 +62,22 @@
                             <thead>
                                 <tr>
                                     <th title="Field #1">#No</th>
-                                    <th class="col-md-6 text-center" title="Field #2">Document Name</th>
+                                    <th class="col-md-6 text-center" title="Field #2">From</th>
                                     <th class="col-md-6 text-center" title="Field #2">To</th>
                                     <th class="col-md-6 text-center" title="Field #2">Created</th>
-                                    <th title="Field #3">Status</th>
                                     <th title="Field #4">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($documents as $key => $doc) 
+                                @foreach ($histories as $key => $history) 
                                 <tr>
                                     <td class="col-md-2">{{ $key + 1 }}</td>
-                                    <td>
-                                        <a href="/{{$doc->file}}" target="_blank" >
-                                            {{  $doc->name }}    
-                                        </a>
-                                    </td>
-                                    <td>{{ $doc->to}}</td>
-                                    <td>{{ $doc->created_at }}</td>
-                                    <td >
-                                        @if($doc->isComplated)
-                                        <span class="label label-primary label-inline font-weight-lighter text-white text-center">Completed</span>
-                                        @else
-                                        <span class="label label-danger label-inline font-weight-lighter text-white text-center"><i class="far fa-edit text-white font-size-sm"></i>&nbsp; Progress</span>
-                                        @endif
-                                    </td>
+                                    <td>{{ $history->from}}</td>
+                                    <td>{{ $history->to}}</td>
+                                    <td>{{ $history->created_at }}</td>
                                     <td class="col-md-2">
-                                        <a href="{!! Route('document.incident.history', [$doc->id]) !!}" title="History" class="btn btn-light-primary btn-sm"><i class="fas fa-history"></i></a>
-                                        <button title="Delete" class="btn btn-light-danger btn-sm" onclick="deleteDoc(`{{$doc->id}}`)"><i class="fa fa-trash"></i></button>
+                                        <button title="Resend" class="btn btn-light-primary btn-sm" onclick="resendDoc(`{{$history->id}}`)"><i class="fab fa-telegram-plane"></i></button>
+                                        <button title="Delete" class="btn btn-light-danger btn-sm" onclick="deleteDoc(`{{$history->id}}`)"><i class="fa fa-trash"></i></button>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -112,7 +100,7 @@
 
 {{-- Scripts Section --}}
 @section('scripts')
-<script src="/js/pages/apps/documents/incident/incidentTable.js"></script>
+<script src="/js/pages/apps/documents/incident/incidentHistory.js"></script>
 
 <!--end::Page Scripts-->
 @endsection
