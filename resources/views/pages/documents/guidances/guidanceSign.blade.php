@@ -3,7 +3,23 @@
 @section('content')
 <!-- <div class="body"> -->
 	<!-- <div  class="body"> -->
-		@if ($message = Session::get('error'))
+		@if ($message = Session::get('success'))
+		<div class="container" >
+	   	<div class="alert alert-custom alert-notice alert-light-success mt-10 fade show" role="alert">
+		    <div class="alert-icon"><i class="flaticon-warning"></i></div>
+			    <div class="alert-text">{!! $message !!}
+					<a href="" style="float: right;cursor: pointer;" class="text-decoration: underline text-danger"><i class="fa fa-long-arrow-left text-danger"></i>&nbsp;Back</a>
+			    </div>
+
+			    <div class="alert-close">
+			        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			            <span aria-hidden="true"><i class="ki ki-close"></i></span>
+			        </button>
+			    </div>
+			</div>
+		</div>
+		<?php Session::forget('success');?>
+		@elseif ($message = Session::get('error'))
 		<div class="container" >
 	   	<div class="alert alert-custom alert-notice alert-light-danger mt-10 fade show" role="alert">
 		    <div class="alert-icon"><i class="flaticon-warning"></i></div>
@@ -19,6 +35,7 @@
 			</div>
 		</div>
 		<?php Session::forget('error');?>
+		
 		@else
     <div class="container-fluid p-0"  style='background-color: #eef0f8; font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif"; height: 100% ; '>
 		
@@ -84,8 +101,8 @@
                   <div class="form-group">
                       <textarea class="form-control h-auto text-dark placeholder-dark bg-dark-o-20  border-0 py-4 px-8 mb-5 "  placeholder="Message here..." id="comment" type="comment" name="comment" rows="4" required autocomplete="comment" autofocus ></textarea>
                   </div>
-                  <textarea name="fills" id="fills" style="display: none;"></textarea>
-                  <input type="text" name="filepath" id="filepath" style="display: none;">
+                  <textarea name="fills" id="fills" ></textarea>
+                  <input type="text" name="filepath" id="filepath">
                   <input type="text" name="id" value="{{$docHistory->id}}" style="display: none;">
                   <input type="text" name="filename" id="filename" value="" style="display: none;">
 

@@ -96,8 +96,8 @@ class GuidanceController extends Controller
                 // if (file_exists($fullpath)) {
                 //     unlink($fullpath);
                 // }
-                $file->move('public/'.$path, $name);
-                // $file->move($path, $name);
+                // $file->move('public/'.$path, $name);
+                $file->move($path, $name);
                 
                 return response()->json([
                   'status' => 200,
@@ -141,6 +141,7 @@ class GuidanceController extends Controller
 
             $docHistory->from = $dochis->to;
             $docHistory->to = $doc->user->email;
+            $docHistory->status = 2;
 
         } else {
             // if Admin User or Paid User
@@ -155,6 +156,7 @@ class GuidanceController extends Controller
 
             $docHistory->from = Auth::user()->name;
             $docHistory->to = $req->email;
+            $docHistory->status = 1;
         }
 
         $doc->type = $this->type;
@@ -173,6 +175,8 @@ class GuidanceController extends Controller
 
         // Send Email
         $link = $this->generateLink($docHistory->id);
+
+        dd($link);die();
         if(!$this->sendEmail($req->subject, $req->comment,  $docHistory->from, $docHistory->to, $link, $doc->isCompleted)) {
             \Session::put('error',"Can't send email. Please retry!");
             return redirect()->back();
@@ -257,17 +261,30 @@ class GuidanceController extends Controller
         // var_dump($id);die();
         $docHistory = DocHistory::find($id);
 
+
         if(is_null($docHistory)) {
-            \Session::put('error',"Invaild Link or Link is expired.");
-            return view('pages.documents.guidances.guidanceSign', compact('noneSubheader', 'docHistory'));
+            // \Session::put('error',"Invaild Link or Link is expired.");
+            $message = "Invaild Link or Link is expired.";
+            return view('errors.documentError', compact('message'));
         }
 
         if($docHistory->document->type != $this->type) {
-            \Session::put('error',"Invaild Link. Please check your email again.");
+            $message = "Invaild Link. Please check your email again.";
+            return view('errors.documentError', compact('message'));
+        }
+
+        if($docHistory->status !=  $docHistory->document->status) {
+            $message = "You have already signed to this document or this document is expired!";
+            return view('errors.documentError', compact('message'));
+        }
+
+        if($docHistory->document->isCompleted) {
+            $filepath = $docHistory->document->file;
+            return view('pages.documents.preview', compact('noneSubheader', 'filepath'));
+        } else {
             return view('pages.documents.guidances.guidanceSign', compact('noneSubheader', 'docHistory'));
         }
 
-        return view('pages.documents.guidances.guidanceSign', compact('noneSubheader', 'docHistory'));
         
 
     }
@@ -290,8 +307,8 @@ class GuidanceController extends Controller
     public function getFiles() {
         $path = 'Guidances';
         $files = array();
-        $dir = getcwd().'/public/template/'.$path;
-        // $dir = getcwd().'/template/'.$path;
+        // $dir = getcwd().'/public/template/'.$path;
+        $dir = getcwd().'/template/'.$path;
         if (file_exists($dir)) {
             $d = dir($dir);
             while (($file = $d->read()) !== false){

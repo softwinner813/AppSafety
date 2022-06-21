@@ -21,7 +21,7 @@ function loadDocument(path, callback) {
         return callback();
       },
       scale: 1.5,
-      pageImageCompression: "MEDIUM", // FAST, MEDIUM, SLOW(Helps to control the new PDF file size)
+      pageImageCompression: "SLOW", // FAST, MEDIUM, SLOW(Helps to control the new PDF file size)
     });
 
 }
@@ -168,6 +168,7 @@ var KTHandleDocument = function() {
                 console.log("====================> Loaded successfully");
 
                 let jsonFills = JSON.parse(jsonObjects);
+                console.log("DATA--------->", jsonFills);
                 pdf.loadFromJSON(jsonFills);
 
                 // Get Fills Positions
@@ -195,8 +196,6 @@ var KTHandleDocument = function() {
             }
 
             if(posIndex < objectPos.length) {
-                // $(this).css('top', objectPos[posIndex]);
-                // window.scroll(objectPos[posIndex], objectPos[posIndex]);
                 setObjActive(objectPos[posIndex].page, objectPos[posIndex].object);
                 $('#pdf-wrapper').animate({
                     scrollTop: objectPos[posIndex].position
@@ -273,16 +272,9 @@ var KTHandleDocument = function() {
                        if(data.result) {
                             filepath = data.file;
                             $('#filepath').val(filepath);
-                            // loadDocument('/' + filepath);
+                            loadDocument('/' + filepath);
                             showModal('#progressModal', 'hide');
                             
-                            // Show Finish Button
-                            // toggleNextFinish(false);
-
-                            // Show Message
-                            // toastr.info("Your signature saved successfully!", "SUCCESS");
-
-
                             // Show Email Dialog
                             $('#sendEmailModal').modal('show');
 
@@ -314,7 +306,14 @@ var KTHandleDocument = function() {
                     getFillForm(function(json) {
                         var jsonData = JSON.parse(json);
                         $('#fills').val(JSON.stringify(jsonData));
+
+                        // Hide Email Modal
+                        showModal('#sendEmailModal', 'hide');
+
+                        // Show Progress Modal
+                        showModal('#progressModal', 'show');
                         
+                        // Submit Data
                         $('#kt_add_email_form').submit();
 
                     });

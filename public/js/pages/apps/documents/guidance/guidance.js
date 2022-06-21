@@ -143,6 +143,7 @@ var KTHandleDocument = function() {
         console.log(path);
         loadDocument(path);
 
+        
         // Show Next Button
         toggleNextFinish(true);
     }
@@ -150,7 +151,7 @@ var KTHandleDocument = function() {
     var _handleDocument = function() {
 
         var validation;
-        var filepath;
+        // var filepath;
         // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
         validation = FormValidation.formValidation(
             KTUtil.getById('kt_add_email_form'),
@@ -247,6 +248,14 @@ var KTHandleDocument = function() {
                         var jsonData = JSON.parse(json);
                         $('#fills').val(JSON.stringify(jsonData));
                         
+
+                        // Hide Email Modal
+                        showModal('#sendEmailModal', 'hide');
+
+                        // Show Progress Modal
+                        showModal('#progressModal', 'show');
+                        
+                        // Submit Data
                         $('#kt_add_email_form').submit();
 
                     });
