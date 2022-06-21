@@ -149,7 +149,7 @@
 <script src="/js/pdfjs/pdf.js"></script>
 <script src="/js/pdfjs/pdf.worker.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.3.0/fabric.min.js"></script>
-<script src="http://rawgit.com/bramstein/fontfaceobserver/master/fontfaceobserver.js"></script>
+<script src="https://rawgit.com/bramstein/fontfaceobserver/master/fontfaceobserver.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.2.0/jspdf.umd.min.js"></script>
 <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>

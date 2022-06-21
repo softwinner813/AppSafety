@@ -140,7 +140,7 @@ class GuidanceController extends Controller
             $doc->isCompleted = 1;
 
             $docHistory->from = $dochis->to;
-            $docHistory->to = $dochis->from;
+            $docHistory->to = $doc->user->email;
 
         } else {
             // if Admin User or Paid User
@@ -173,8 +173,7 @@ class GuidanceController extends Controller
 
         // Send Email
         $link = $this->generateLink($docHistory->id);
-        dd($link);exit();
-        if(!$this->sendEmail($req->subject, $req->message,  $docHistory->from, $docHistory->to, $link)) {
+        if(!$this->sendEmail($req->subject, $req->comment,  $docHistory->from, $docHistory->to, $link, $doc->isCompleted)) {
             \Session::put('error',"Can't send email. Please retry!");
             return redirect()->back();
         } 
@@ -192,15 +191,16 @@ class GuidanceController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function sendEmail($subject, $message,  $from, $to, $link) 
+    public function sendEmail($subject, $msg,  $from, $to, $link,  $isCompleted) 
     {
         $details = [
             'type' => 'SHARE_DOCUMENT',
             'subject' => $subject,
-            'message' => $message,
+            'msg' => $msg,
             'to' => $to,
             'from' =>  $from,
-            'link' => $link
+            'link' => $link,
+            'isCompleted' => $isCompleted
         ];
         
         $job = (new \App\Jobs\SendQueueEmail($details))

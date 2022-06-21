@@ -177,6 +177,8 @@ var KTHandleDocument = function() {
                 } else {
                     $('.btn-caret-right').show();
                 }
+                
+                
             }, 100);
             // Show Next Button
             toggleNextFinish(true);
