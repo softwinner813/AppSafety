@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Guidance;
+namespace App\Http\Controllers\Documents\Guidance;
 
 
 use Illuminate\Http\Request;
@@ -53,10 +53,16 @@ class GuidanceController extends Controller
      */
     public function index(Request $req)
     {
-        $page_title = 'Guidance';
-        $page_description = 'Guidance Share History';
-        $documents = Document::where('user_id', Auth::user()->id)->where('type', $this->type)->get();
-        return view('pages.documents.guidances.guidanceList', compact('page_title', 'page_description', 'documents'));
+        $noneSubheader = true;
+        $type = $this->type;
+        $docname = 'Guidance';
+        $templates = $this->getFiles($type);
+        return view('pages.documents.guidances.guidanceTemplates', compact('noneSubheader', 'type', 'templates', 'docname'));
+    
+        // $page_title = 'Guidance';
+        // $page_description = 'Guidance Share History';
+        // $documents = Document::where('user_id', Auth::user()->id)->where('type', $this->type)->get();
+        // return view('pages.documents.guidances.guidanceList', compact('page_title', 'page_description', 'documents'));
     }
 
     /**
@@ -66,15 +72,55 @@ class GuidanceController extends Controller
      */
     public function edit(Request $req)
     {
+        $filename = $req->docName;
         $noneSubheader = true;
         $type = $this->type;
-        $docname = 'Guidance';
-        $templates = $this->getFiles($type);
-        return view('pages.documents.guidances.guidanceEdit', compact('noneSubheader', 'type', 'templates', 'docname'));
+        return view('pages.documents.guidances.guidanceEdit', compact('noneSubheader', 'type', 'filename'));
     }
+
 
     /**
      * Upload Document
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function upload(Request $req)
+    {
+        try {
+            $file = $req->file('document');
+            if($file) {
+                $name =$req->filename.'.'.$file->extension();
+                $path='uploads/documents/Guidances';
+                $fullpath = $path.'/'.$name;
+                // if (file_exists($fullpath)) {
+                //     unlink($fullpath);
+                // }
+                // $file->move('public/'.$path, $name);
+                $file->move($path, $name);
+                
+                return response()->json([
+                  'status' => 200,
+                  'result' => true,
+                  'file' => $fullpath
+                ], 200);
+            } else {
+                return response()->json([
+                  'status' => 500,
+                  'result' => false,
+                  'message' => "Server error"
+                ], 500);
+            } 
+        } catch (Exception $e) {
+            return response()->json([
+              'status' => 500,
+              'result' => false,
+              'message' => "Server error"
+            ], 500);  
+        }
+    }
+
+    /**
+     * Save Document
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -114,8 +160,9 @@ class GuidanceController extends Controller
             // if Admin User or Paid User
             $doc = new Document();
             $doc->user_id = Auth::user()->id;
-            $path = 'template/Guidances';
-            $doc->file = $path .'/'. $req->filename;
+            // $path = 'template/Guidances';
+            // $doc->file = $path .'/'. $req->filename;
+            $doc->file = $req->filepath;
             $doc->name = $req->filename;
             $doc->status = 1;
             $doc->to = $req->email;
@@ -239,39 +286,11 @@ class GuidanceController extends Controller
         return $decryption;
     }
 
-    public function getFiles($type) {
-        $path = 'Policies';
+    public function getFiles() {
+        $path = 'Guidances';
         $files = array();
-
-        switch ($type) {
-            case 1:
-                $path = "RA";
-                break;
-
-            case 2:
-                $path = "AUDIT";
-                break;
-
-            case 3:
-                $path = "Permits";
-                break;
-
-            case 4:
-                $path = "Guidances";
-                break;
-
-            case 5:
-                $path = "Incidents";
-                break;
-            case 6:
-                $path = "Inductions";
-                break;
-            default:
-                // code...
-                break;
-        }
-        $dir = getcwd().'/public/template/'.$path;
-        // $dir = getcwd().'/template/'.$path;
+        # $dir = getcwd().'/public/template/'.$path;
+        $dir = getcwd().'/template/'.$path;
         if (file_exists($dir)) {
             $d = dir($dir);
             while (($file = $d->read()) !== false){
@@ -281,6 +300,7 @@ class GuidanceController extends Controller
                 }
             }
             $d->close();
+            sort($files);
             return $files;
         } else {
             return array();

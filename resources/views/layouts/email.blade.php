@@ -119,7 +119,7 @@
 </head>
 
 <body class="clean-body u_body"
-    style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #ecf0f1;color: #000000">
+    style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #1e4ca1;color: #000000">
     <!--[if IE]><div class="ie-container"><![endif]-->
     <!--[if mso]><div class="mso-container"><![endif]-->
     <?php 
@@ -145,7 +145,7 @@
                                 <!--[if (mso)|(IE)]><td align="center" width="600" style="background-color: #3598db;width: 600px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;" valign="top"><![endif]-->
                                 <div class="u-col u-col-100"
                                     style="max-width: 320px;min-width: 600px;display: table-cell;vertical-align: top;">
-                                    <div style="background-color: #3598db;width: 100% !important;">
+                                    <div style="background-color: #1e4ca1;width: 100% !important;">
                                         <!--[if (!mso)&(!IE)]><!-->
                                         <div
                                             style="padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;">

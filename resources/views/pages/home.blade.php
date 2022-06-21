@@ -5,7 +5,7 @@
     <div class="{{ Metronic::printClasses('content-container', false) }}">
         <div class="row">
             <div class="col-xl-4">
-               <a href="{!! Route('document.edit',[2]) !!}">
+               <a href="">
                     <!--begin::Tiles Widget 11-->
                     <div class="card card-custom bg-primary gutter-b" style="height: 150px">
                         <div class="card-body">
@@ -24,7 +24,7 @@
                                 <!--end::Svg Icon-->
                             </span>
                             <div class="text-inverse-primary font-weight-bolder font-size-h2 mt-3">Audits</div>
-                            <a href="{!! Route('document.edit',[2]) !!}" class="text-inverse-primary font-weight-bold font-size-lg mt-1">Audits</a>
+                            <a href="" class="text-inverse-primary font-weight-bold font-size-lg mt-1">Audits</a>
                         </div>
                     </div>
                     <!--end::Tiles Widget 11-->
@@ -50,7 +50,7 @@
                                 <!--end::Svg Icon-->
                             </span>
                             <div class="text-inverse-primary font-weight-bolder font-size-h2 mt-3">Guidances</div>
-                            <a href="{!! Route('document.edit',[4]) !!}" class="text-inverse-primary font-weight-bold font-size-lg mt-1">Guidances</a>
+                            <a href="" class="text-inverse-primary font-weight-bold font-size-lg mt-1">Guidances</a>
                         </div>
                     </div>
                     <!--end::Tiles Widget 11-->
@@ -77,7 +77,7 @@
                                 <!--end::Svg Icon-->
                             </span>
                             <div class="text-inverse-primary font-weight-bolder font-size-h2 mt-3">Incident Forms</div>
-                            <a href="{!! Route('document.edit',[5]) !!}" class="text-inverse-primary font-weight-bold font-size-lg mt-1">Incident Forms</a>
+                            <a href="" class="text-inverse-primary font-weight-bold font-size-lg mt-1">Incident Forms</a>
                         </div>
                     </div>
                     <!--end::Tiles Widget 11-->
@@ -104,7 +104,7 @@
                                 <!--end::Svg Icon-->
                             </span>
                             <div class="text-inverse-primary font-weight-bolder font-size-h2 mt-3">Induction Forms</div>
-                            <a href="{!! Route('document.edit',[6]) !!}" class="text-inverse-primary font-weight-bold font-size-lg mt-1">Induction Forms</a>
+                            <a href="" class="text-inverse-primary font-weight-bold font-size-lg mt-1">Induction Forms</a>
                         </div>
                     </div>
                     <!--end::Tiles Widget 11-->
@@ -131,7 +131,7 @@
                                 <!--end::Svg Icon-->
                             </span>
                             <div class="text-inverse-primary font-weight-bolder font-size-h2 mt-3">Permits</div>
-                            <a href="{!! Route('document.edit',[3]) !!}" class="text-inverse-primary font-weight-bold font-size-lg mt-1">Permits</a>
+                            <a href="" class="text-inverse-primary font-weight-bold font-size-lg mt-1">Permits</a>
                         </div>
                     </div>
                     <!--end::Tiles Widget 11-->

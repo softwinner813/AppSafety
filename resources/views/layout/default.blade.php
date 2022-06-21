@@ -34,7 +34,7 @@
         @yield('styles')
     </head>
 
-    <body id="kt_body" style="background-image: url(/media/bg/bg-10.jpg)" class="quick-panel-right demo-panel-right offcanvas-right header-fixed subheader-enabled page-loading">
+    <body id="kt_body" style="background-image: url(/media/bg/bg-10.jpg); overflow: hidden;" class="quick-panel-right demo-panel-right offcanvas-right header-fixed subheader-enabled page-loading" >
         <input type="hidden" value="{{csrf_token()}}" id="csrf_token">
 
         @if (config('layout.page-loader.type') != '')

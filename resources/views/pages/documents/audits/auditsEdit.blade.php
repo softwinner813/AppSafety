@@ -6,9 +6,19 @@
         <div class="{{ Metronic::printClasses('content-container', false) }}">
             <div class="row">
                 <div class="col-md-12">
-                    <div id="tempBtn"  class="mt-5" style="z-index: 1000;">
-                        <button class="btn btn-primary" onclick="showTemplates();"><i class="far fa-file-alt"></i> Choose Template</button>
-                    </div>
+                    <button id="tempBtn" style="z-index: 1000; position: absolute;bottom: 10px; left: 10px; display: none;" class="btn btn-icon btn-primary btn-circle btn-lg font-weight-bold font-size-h3 px-5 py-5" onclick="showTemplates();">
+                        <span class="svg-icon menu-icon">
+                            <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24"></rect>
+                                    <rect fill="#000000" x="4" y="4" width="7" height="7" rx="1.5"></rect>
+                                    <path d="M5.5,13 L9.5,13 C10.3284271,13 11,13.6715729 11,14.5 L11,18.5 C11,19.3284271 10.3284271,20 9.5,20 L5.5,20 C4.67157288,20 4,19.3284271 4,18.5 L4,14.5 C4,13.6715729 4.67157288,13 5.5,13 Z M14.5,4 L18.5,4 C19.3284271,4 20,4.67157288 20,5.5 L20,9.5 C20,10.3284271 19.3284271,11 18.5,11 L14.5,11 C13.6715729,11 13,10.3284271 13,9.5 L13,5.5 C13,4.67157288 13.6715729,4 14.5,4 Z M14.5,13 L18.5,13 C19.3284271,13 20,13.6715729 20,14.5 L20,18.5 C20,19.3284271 19.3284271,20 18.5,20 L14.5,20 C13.6715729,20 13,19.3284271 13,18.5 L13,14.5 C13,13.6715729 13.6715729,13 14.5,13 Z" fill="#000000" opacity="0.3"></path>
+                                </g>
+                            </svg>
+                            <!--end::Svg Icon-->
+                        </span>
+                    </button>
                     @if ($message = Session::get('error'))
                     <div class="alert alert-custom alert-notice alert-light-danger mt-20 fade show" role="alert">
                         <div class="alert-icon"><i class="flaticon-warning"></i></div>
@@ -99,7 +109,7 @@
                     </div>
 
                     <div id="form_board" class="mt-5">
-                        <iframe id="form_frame" src="https://docs.google.com/forms/d/e/1FAIpQLSfCgBTu1c3HTkk1mS58Bj0fFgtFnKU3j_oQA2gxDkKq2qybpg/viewform?usp=sf_link/viewform?embedded=true" width="100%" height="800" style="overflow-y: auto;" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+                        <iframe id="form_frame" src="https://docs.google.com/forms/d/e/1FAIpQLSfCgBTu1c3HTkk1mS58Bj0fFgtFnKU3j_oQA2gxDkKq2qybpg/viewform?usp=sf_link/viewform?embedded=true" width="100%" height="100%" style="overflow-y: auto;" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
                     </div>
                 </div>
             </div>

@@ -5,6 +5,14 @@ var KTApp = function() {
     /** @type {object} colors State colors **/
     var settings = {};
 
+    var initHeight = function() {
+        // let height = window.screen.height;
+        let height = window.innerHeight;
+        let headerH = $('#kt_header').outerHeight();
+        let footerH = $('#kt_footer').outerHeight();
+        $('#kt_content').outerHeight( height - headerH - footerH);
+    }
+
     var initTooltip = function(el) {
         var theme = el.data('theme') ? 'tooltip-' + el.data('theme') : '';
         var width = el.data('width') == 'auto' ? 'tooltop-auto-width' : '';
@@ -170,6 +178,7 @@ var KTApp = function() {
         },
 
         initComponents: function() {
+            initHeight();
             initScroll();
             initTooltips();
             initPopovers();

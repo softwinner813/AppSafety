@@ -1,4 +1,4 @@
 .env
 .env.backup
 /vendor/
-/public/upload/
+/public/uploads/

@@ -80,21 +80,28 @@ Route::group(['prefix' => 'setting', 'middleware' => 'auth'], function () {
 
 // Document
 Route::group(['prefix' => 'document'], function () {
+
+    Route::group(['prefix' => 'audit'], function () {
+        Route::get('/', 'Documents\Audit\AuditController@index')->name('document.audit')->middleware('auth');
+    });
+
+
     Route::group(['prefix' => 'guidance'], function () {
-        Route::get('/', 'Guidance\GuidanceController@index')->name('document.guidance')->middleware('auth');
-        Route::get('/edit', 'Guidance\GuidanceController@edit')->name('document.guidance.edit')->middleware('auth');
-        Route::post('/save', 'Guidance\GuidanceController@save')->name('document.guidance.save');
-        Route::post('/resend', 'Guidance\GuidanceController@resendEmail')->name('document.guidance.resend');
-        Route::get('/sign/{token}', 'Guidance\GuidanceController@sign')->name('document.guidance.sign');
+        Route::get('/', 'Documents\Guidance\GuidanceController@index')->name('document.guidance')->middleware('auth');
+        Route::post('/edit', 'Documents\Guidance\GuidanceController@edit')->name('document.guidance.edit')->middleware('auth');
+        Route::post('/upload', 'Documents\Guidance\GuidanceController@upload')->name('document.guidance.upload');
+        Route::post('/save', 'Documents\Guidance\GuidanceController@save')->name('document.guidance.save');
+        Route::post('/resend', 'Documents\Guidance\GuidanceController@resendEmail')->name('document.guidance.resend');
+        Route::get('/sign/{token}', 'Documents\Guidance\GuidanceController@sign')->name('document.guidance.sign');
     });
 
 
     Route::group(['prefix' => 'induction'], function () {
-        Route::get('/', 'Induction\InductionController@index')->name('document.induction')->middleware('auth');
-        Route::get('/edit', 'Induction\InductionController@edit')->name('document.induction.edit')->middleware('auth');
-        Route::post('/save', 'Induction\InductionController@save')->name('document.induction.save');
-        Route::post('/resend', 'Induction\InductionController@resendEmail')->name('document.induction.resend');
-        Route::get('/sign/{token}', 'Induction\InductionController@sign')->name('document.induction.sign');
+        Route::get('/', 'Documents\Induction\InductionController@index')->name('document.induction')->middleware('auth');
+        Route::get('/edit', 'Documents\Induction\InductionController@edit')->name('document.induction.edit')->middleware('auth');
+        Route::post('/save', 'Documents\Induction\InductionController@save')->name('document.induction.save');
+        Route::post('/resend', 'Documents\Induction\InductionController@resendEmail')->name('document.induction.resend');
+        Route::get('/sign/{token}', 'Documents\Induction\InductionController@sign')->name('document.induction.sign');
     });
 
     Route::group(['prefix' => 'incident'], function () {
@@ -118,19 +125,22 @@ Route::group(['prefix' => 'document'], function () {
 
 
     Route::get('/', function() {
-        return redirect()->route('document',[1]);
+        return redirect()->route('document.audit');
     });
 
-    Route::get('/list/{type}', 'DocumentController@index')->name('document');
-    Route::get('/edit/{type}', 'DocumentController@edit')->name('document.edit');
-    Route::post('/save', 'DocumentController@upload')->name('document.upload');
-    Route::post('/delete', 'DocumentController@delete')->name('document.delete');
-    Route::post('/resend', 'DocumentController@resendEmail')->name('document.resend');
+    // Route::get('/list/{type}', 'DocumentController@index')->name('document');
+    // Route::get('/edit/{type}', 'DocumentController@edit')->name('document.edit');
+    // Route::post('/save', 'DocumentController@upload')->name('document.upload');
+    // Route::post('/delete', 'DocumentController@delete')->name('document.delete');
+    // Route::post('/resend', 'DocumentController@resendEmail')->name('document.resend');
 
-    Route::post('/sendEmail', 'DocumentController@sendEmail')->name('document.sendEmail');
-    Route::post('/saveSign', 'DocumentController@saveSign')->name('document.saveSign');
-
+    // Route::post('/sendEmail', 'DocumentController@sendEmail')->name('document.sendEmail');
+    // Route::post('/saveSign', 'DocumentController@saveSign')->name('document.saveSign');
+    
+    Route::get('/test', 'DocumentController@test')->name('document.test');
+// 
     Route::get('/testEmail', 'DocumentController@testEmail')->name('document.testEmail');
+
 
 });
 

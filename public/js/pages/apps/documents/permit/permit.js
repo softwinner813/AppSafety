@@ -135,9 +135,22 @@ function savePDF() {
     if(pdf != undefined) {
         $('#progressModal').modal('show');
         setTimeout(function(){
-            pdf.savePdf(filename, function(){
+            pdf.savePdf(filename, function(blob){
                 $('#progressModal').modal('hide');
-                $('#uploadModal').modal('show');
+                // $('#uploadModal').modal('show');
+                console.log(blob);
+                var fd = new FormData();
+                fd.append('fname', 'test.wav');
+                fd.append('data', blob);
+                $.ajax({
+                    type: 'POST',
+                    url: '/document/test',
+                    data: fd,
+                    processData: false,
+                    contentType: false
+                }).done(function(data) {
+                       console.log(data);
+                });
             }); // save with given file name
         }, 500);
     }

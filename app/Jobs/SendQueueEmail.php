@@ -58,13 +58,13 @@ class SendQueueEmail implements ShouldQueue
                 break;
 
             case 'SHARE_DOCUMENT':
-                $input['subject'] = "New Document from AppSafely";
-                $input['email'] = $this->details['email'];
+                $input['subject'] = $this->details['subject'];
+                $input['to'] = $this->details['to'];
                 $input['name'] = 'AppSafely';
                 // $input['name'] = $this->details['name'];
                 try {
                     \Mail::send('emails.docEmail', $this->details, function($message) use($input){
-                        $message->to($input['email'], $input['name'])
+                        $message->to($input['to'], $input['name'])
                             ->subject($input['subject']);
                     });
                 } catch (\Swift_TransportException $e) {

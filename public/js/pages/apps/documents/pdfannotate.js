@@ -12,8 +12,11 @@ var PDFAnnotate = function(container_id, url, options = {}) {
 	this.color = '#212121';
 	this.borderColor = '#000000';
 	this.borderSize = 1;
-	this.font_size = 16;
+	this.font_size = 24;
+	this.font_style = 'normal';
 	this.active_canvas = 0;
+	this.text = "";
+	this.isSign = false;
 	this.container_id = container_id;
 	this.url = url;
 	this.pageImageCompression = options.pageImageCompression
@@ -59,8 +62,13 @@ var PDFAnnotate = function(container_id, url, options = {}) {
 	this.initFabric = function () {
 		var inst = this;
 		let canvases = $('#' + inst.container_id + ' canvas')
+		fabric.Object.prototype.transparentCorners = false;
+	  	fabric.Object.prototype.cornerColor = 'red';
+		fabric.Object.prototype.cornerStyle = 'circle';
+		fabric.Object.prototype.borderColor = 'red';
 	    canvases.each(function (index, el) {
 	        var background = el.toDataURL("image/png");
+
 	        var fabricObj = new fabric.Canvas(el.id, {
 	            freeDrawingBrush: {
 	                width: 1,
@@ -94,18 +102,42 @@ var PDFAnnotate = function(container_id, url, options = {}) {
 	this.fabricClickHandler = function(event, fabricObj) {
 		var inst = this;
 	    if (inst.active_tool == 2) {
-	        var text = new fabric.IText('Sample text', {
+	        var text = new fabric.IText(inst.text, {
 	            left: event.clientX - fabricObj.upperCanvasEl.getBoundingClientRect().left,
 	            top: event.clientY - fabricObj.upperCanvasEl.getBoundingClientRect().top,
-	            fontFamily: 'Inconsolata',
 	            fill: inst.color,
 	            fontSize: inst.font_size,
-	            fontStyle: 'italic',
-	            selectable: true
+	            fontStyle: inst.font_style
+	            // selectable: true,
 	        });
-	        fabricObj.add(text);
+
+        	fabricObj.add(text).setActiveObject(text);
+
+        	// If Signature,  Change Font
+	        if(inst.isSign) {
+		        loadFont(fabricObj, 'Pacifico', function(){
+		        	if(text.text == '') {
+		        		// If Font Init Setting, Delete empty Text
+		        		fabricObj.remove(text);
+		        	}
+		        });
+	        }
 	        inst.active_tool = 0;
 	    }
+	}
+
+	loadFont = function(canvas, font, callback) {
+		var myfont = new FontFaceObserver(font);
+		myfont.load()
+		.then(function() {
+		  // when font is loaded, use it.
+		  canvas.getActiveObject().set("fontFamily", font);
+		  canvas.requestRenderAll();
+		  return callback();
+		}).catch(function(e) {
+		  console.log(e)
+		  alert('font loading failed ' + font);
+		});
 	}
 }
 
@@ -113,6 +145,24 @@ var PDFAnnotate = function(container_id, url, options = {}) {
 // PDFAnnotate.prototype.loadFile = function(domID) {
 
 // }
+
+// Active Object
+PDFAnnotate.prototype.activeObject =  function(page, object) {
+	var inst = this;
+	if (inst.fabricObjects.length > 0) {
+	    $.each(inst.fabricObjects, function (index, fabricObj) {
+	    	if(index == page) {
+	    		fabricObj.getObjects().forEach(function(o, i) {
+					if(i == object) {
+						fabricObj.setActiveObject(o);
+			    		fabricObj.requestRenderAll();
+					}
+			          
+			    })
+	    	}
+	    });
+	}
+}
 
 PDFAnnotate.prototype.enableSelector = function () {
 	var inst = this;
@@ -134,14 +184,19 @@ PDFAnnotate.prototype.enablePencil = function () {
 	}
 }
 
-PDFAnnotate.prototype.enableAddText = function () {
+PDFAnnotate.prototype.enableAddText = function (text, isSign = false) {
 	var inst = this;
+	inst.isSign = isSign;
+	inst.font_style = isSign ? "italic" : 'normal';
+	inst.text = text;
 	inst.active_tool = 2;
 	if (inst.fabricObjects.length > 0) {
 	    $.each(inst.fabricObjects, function (index, fabricObj) {
 	        fabricObj.isDrawingMode = false;
 	    });
 	}
+
+
 }
 
 PDFAnnotate.prototype.enableRectangle = function () {
@@ -231,7 +286,7 @@ PDFAnnotate.prototype.deleteSelectedObject = function () {
 	}
 }
 
-PDFAnnotate.prototype.savePdf = function (fileName, callback) {
+PDFAnnotate.prototype.savePdf = function (fileName) {
 	var inst = this;
 	var doc = new jspdf.jsPDF();
 	if (typeof fileName === 'undefined') {
@@ -259,8 +314,39 @@ PDFAnnotate.prototype.savePdf = function (fileName, callback) {
 		);
 		if (index === inst.fabricObjects.length - 1) {
 			doc.save(fileName);
-			return callback();
+		}
+	})
+}
 
+
+
+
+PDFAnnotate.prototype.getBlob = function (callback) {
+	var inst = this;
+	var doc = new jspdf.jsPDF();
+
+	inst.fabricObjects.forEach(function (fabricObj, index) {
+		if (index != 0) {
+			doc.addPage();
+			doc.setPage(index + 1);
+		}
+		doc.addImage(
+			fabricObj.toDataURL({
+				format: 'png'
+			}), 
+			inst.pageImageCompression == "NONE" ? "PNG" : "JPEG", 
+			0, 
+			0,
+			doc.internal.pageSize.getWidth(), 
+			doc.internal.pageSize.getHeight(),
+			`page-${index + 1}`, 
+			["FAST", "MEDIUM", "SLOW"].indexOf(inst.pageImageCompression) >= 0
+			? inst.pageImageCompression
+			: undefined
+		);
+		if (index === inst.fabricObjects.length - 1) {
+	 	    var data = doc.output('blob');
+			return callback(data);
 		}
 	})
 }

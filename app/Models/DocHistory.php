@@ -14,8 +14,8 @@ class DocHistory extends Model
    /**
     *  Associate User for document.
     */
-    public function user() {
-        return $this->belongsTo(User::class);
+    public function document() {
+        return $this->belongsTo(Document::class);
     }
 
 

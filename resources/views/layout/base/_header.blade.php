@@ -1,5 +1,5 @@
 {{-- Header --}}
-<div id="kt_header" class="header header-fixed">
+<div id="kt_header" class="header header-fixed" style="position: absolute;top: 0px;left: 0px; width: 100%;">
 
     <div class="container d-flex align-items-stretch justify-content-between">
         <!--begin::Left-->
@@ -25,22 +25,16 @@
                                 <i class="menu-arrow"></i>
                             </a>
                         </li>
-
-                        <!-- <li class="menu-item menu-item-submenu menu-item-rel {{ request()->is('document/edit/1') ? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">
-                            <a href="{!! Route('document.edit',[1]) !!}" class="menu-link ">
-                                <span class="menu-text">Risk Assessment</span>
-                                <span class="menu-desc"></span>
-                                <i class="menu-arrow"></i>
-                            </a>
-                        </li> -->
-                        <li class="menu-item menu-item-submenu menu-item-rel {{ request()->is('document/edit/2') ? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">
-                            <a href="{!! Route('document.edit',[2]) !!}" class="menu-link">
+                        
+                        <li class="menu-item menu-item-submenu menu-item-rel {{ request()->is('document/audit') ? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">
+                            <a href="{!! Route('document.audit') !!}" class="menu-link">
                                 <span class="menu-text">Audits</span>
                                 <span class="menu-desc"></span>
                                 <i class="menu-arrow"></i>
                             </a>
                             
                         </li>
+
                         <li class="menu-item menu-item-submenu {{ request()->is('document/guidance') || request()->is('document/guidance/*') ? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">
                             <a href="javascript;" class="menu-link menu-toggle">
                                 <span class="menu-text">Guidances</span>
