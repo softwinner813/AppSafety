@@ -4,7 +4,7 @@ var isSignActive = false;
 
 
 // Load Document
-function loadDocument(path) {
+function loadDocument(path , callback) {
     
 
     pdf = new PDFAnnotate("pdf-container", path, {
@@ -23,6 +23,7 @@ function loadDocument(path) {
         pdf.enableAddText('', true);
         $('canvas').trigger('click');
 
+        return callback();
 
       },
       scale: 1.5,
@@ -141,11 +142,17 @@ var KTHandleDocument = function() {
     var _initLoad = function() {
         var path = '/template/Guidances/' + filename; 
         console.log(path);
-        loadDocument(path);
 
-        
-        // Show Next Button
-        toggleNextFinish(true);
+        showModal('#progressModal', 'show')
+
+        loadDocument(path, function() {
+            showModal('#progressModal', 'hide')
+            
+            // Show Next Button
+            toggleNextFinish(true);
+
+        });
+
     }
 
     var _handleDocument = function() {
@@ -210,14 +217,15 @@ var KTHandleDocument = function() {
                        if(data.result) {
                             filepath = data.file;
                             $('#filepath').val(filepath);
-                            loadDocument('/' + filepath);
-                            showModal('#progressModal', 'hide');
+                            loadDocument('/' + filepath, function() {
+                                showModal('#progressModal', 'hide');
 
-                            // Show Finish Button
-                            toggleNextFinish(false);
-
-                            // Show Message
-                            toastr.info("Your signature saved successfully!", "SUCCESS");
+                                // Show Message
+                                toastr.info("Your signature saved successfully!", "SUCCESS");
+                                
+                                // Show Finish Button
+                                toggleNextFinish(false);
+                            });
 
                        }
                 }).fail(function(xhr, status, error) {
