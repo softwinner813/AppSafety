@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Document;
+use App\Models\DocHistory;
 use App\Models\Signature;
 use Auth;
 class DocumentController extends Controller
@@ -13,7 +14,7 @@ class DocumentController extends Controller
 
 
 
-    protected    $RA = 1;
+    protected $RA = 1;
     protected $AUDIT = 2;
     protected $PERMIT = 3;
     protected $GUIDANCE = 4;
@@ -46,53 +47,230 @@ class DocumentController extends Controller
 
 
     /**
-     * Show the application dashboard.
+     * Inbox Page
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(Request $req)
+    public function inbox(Request $req)
+    {
+        // var_dump("expression");die();
+        $type = $req->type;
+        $noneSubheader = true;
+        $headers = $this->getHeader($type);
+        $documents = DocHistory::select('doc_histories.*')->join('documents', 'documents.id', '=', 'doc_histories.document_id')
+                    ->where('doc_histories.to', Auth::user()->email)
+                    ->where('documents.type', $req->type)
+                    ->where('doc_histories.isDel', 0);
+
+        if(isset($req->q)) {
+            $documents->where('doc_histories.subject', 'like', '%'.$req->searh.'%');
+        }
+        $documents = $documents->paginate(5);
+        // $documents = DocHistory::where('to', Auth::user()->email)->get();
+        return view('pages.documents.manageBox.inbox')->with(array(
+            'page_title' => $headers['page_title'],
+            'page_description' => $headers['page_description'],
+            'type' => $type,
+            'documents' => $documents
+        ));
+    }
+
+    /**
+     * Sent Page
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function sent(Request $req)
     {
         $type = $req->type;
-        $page_title  = '';
-        $page_page_description = '';
         $noneSubheader = true;
+        $headers = $this->getHeader($type);
+        $documents = DocHistory::select('doc_histories.*')->join('documents', 'documents.id', '=', 'doc_histories.document_id')
+                    ->where('doc_histories.from', Auth::user()->email)
+                    ->where('documents.type', $req->type)
+                    ->where('doc_histories.isDel', 0);
 
+        if(isset($req->q)) {
+            $documents->where('doc_histories.subject', 'like', '%'.$req->searh.'%');
+        }
+        $documents = $documents->paginate(5);
+        // $documents = DocHistory::where('to', Auth::user()->email)->get();
+        return view('pages.documents.manageBox.sent')->with(array(
+            'page_title' => $headers['page_title'],
+            'page_description' => $headers['page_description'],
+            'type' => $type,
+            'documents' => $documents
+        ));
+    }
+
+    /**
+     * Deleted Page
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function deleted(Request $req)
+    {
+        $type = $req->type;
+        $noneSubheader = true;
+        $headers = $this->getHeader($type);
+        $documents = DocHistory::select('doc_histories.*')->join('documents', 'documents.id', '=', 'doc_histories.document_id')
+                    ->where('doc_histories.from', Auth::user()->email)
+                    ->orWhere('doc_histories.to', Auth::user()->email)
+                    ->where('documents.type', $req->type)
+                    ->where('doc_histories.isDel', 1);
+
+        if(isset($req->q)) {
+            $documents->where('doc_histories.subject', 'like', '%'.$req->searh.'%');
+        }
+        $documents = $documents->paginate(5);
+        // $documents = DocHistory::where('to', Auth::user()->email)->get();
+        return view('pages.documents.manageBox.deleted')->with(array(
+            'page_title' => $headers['page_title'],
+            'page_description' => $headers['page_description'],
+            'type' => $type,
+            'documents' => $documents
+        ));
+    }
+
+    /**
+     * Create New Document
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function new(Request $req)
+    {
+        $type = $req->type;
         switch ($type) {
             case $this->RA:
-                // code...
-                $page_title = 'Risk Assessment';
-                $page_description = 'Risk Assessment';
                 break;
             case $this->AUDIT:
-                // code...
-                $page_title = 'AUDIT';
-                $page_description = 'AUDIT';
-                return view('pages.documents.auditsEdit', compact('page_title', 'page_description', 'noneSubheader', 'type'));
                 break;
             case $this->PERMIT:
-                $page_title = 'Permit';
-                $page_description = 'Permits';
                 break;
             case $this->GUIDANCE:
-                $page_title = 'Guidance';
-                $page_description = 'Guidance';
+                return redirect()->route('document.guidance');
                 break;
             case $this->INCIDENT:
-                $page_title = 'Incident Forms';
-                $page_description = 'Incident Forms';
                 break;
             case $this->INDUCTION:
-                $page_title = 'Induction Forms';
-                $page_description = 'Induction Forms';
                 break;
             
             default:
                 // code...
                 break;
         }
-        $documents = Document::where('user_id', Auth::user()->id)->where('type', $type)->get();
-        return view('pages.documents.myDocuments', compact('page_title', 'page_description', 'documents', 'type'));
     }
+
+    /**
+     * Go to Sign Page
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function sign(Request $req)
+    {
+        $link = $this->generateLink($req->id);
+        return redirect($link);
+    }
+
+
+    /**
+     * Delete to delete box
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function moveDel(Request $req)
+    {
+        $doc = DocHistory::find($req->id);
+        $doc->isDel = 1;
+        if($doc->save()) {
+            \Session::put('success',"Deleted Successfully!");
+            return back();
+        } else {
+            \Session::put('error',"Ooops, Please retry!");
+            return back();
+        }
+    }
+
+    /**
+     * Preview Document
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function preview(Request $req)
+    {
+        $noneSubheader = true;
+        $filepath = DocHistory::find($req->id)->document->file;
+        return view('pages.documents.preview', compact('noneSubheader', 'filepath'));
+    }
+
+
+    /**
+     * Download Document
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function download(Request $req)
+    {
+        $doc = DocHistory::find($req->id)->document;
+        $headers = ['Content-Type: application/pdf'];
+
+        return \Response::download(public_path().'/'.$doc->file, $doc->name, $headers);
+    }
+
+    /**
+     * Restore Document
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function restore(Request $req)
+    {
+        $doc = DocHistory::find($req->id);
+        $doc->isDel = 0;
+        if($doc->save()) {
+            \Session::put('success',"Restored Successfully!");
+            return back();
+        } else {
+            \Session::put('error',"Ooops, Please retry!");
+            return back();
+        }
+    }
+
+    /**
+     * Delete forever Document
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function delete(Request $req)
+    {
+        $res = DocHistory::find($req->id)->delete();
+        if($res) {
+            \Session::put('success',"Deleted Successfully!");
+            return back();
+        } else {
+            \Session::put('error',"Ooops, Please retry!");
+            return back();
+        }
+    }
+
+
+///////////////////////////////////////////  DETAIL  /////////////////////////////////////////////////////////
+
+    /**
+     * Detail page 
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function detail(Request $req)
+    {
+        $page_title = "Document Detail";
+        $page_description = "Document Detail & Sign History";
+        $doc = DocHistory::find($req->id);
+        if($doc->document->user_id == Auth::user()->id) {
+            $histories = $doc->document->history;
+        } else {
+            $histories = null;
+        }
+        return  view('pages.documents.manageBox.detail', compact('page_title', 'page_description', 'doc'));
+        
+    }
+
+
 
     /**
      * Show the Edit Pdf Page dashboard.
@@ -212,30 +390,43 @@ class DocumentController extends Controller
         }
     }
 
-    /**
-     * Delete Document
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function delete(Request $req) 
-    {
-        $doc = Document::find($req->id);
-        // if (file_exists($doc->file)) {
-        //     unlink($doc->file);
-        // }
-        if($doc->delete()) {
-          return response()->json([
-              'status' => 200,
-              'data' => $doc
-          ], 200);
-        } else {
-         return response()->json([
-              'status' => 500,
-              'message' => "Database error"
-          ], 500);
-        }
-    }
+    public function getHeader($type) {
 
+        switch ($type) {
+            case $this->RA:
+                // code...
+                $page_title = 'Risk Assessment';
+                $page_description = 'Risk Assessment';
+                break;
+            case $this->AUDIT:
+                // code...
+                $page_title = 'AUDIT';
+                $page_description = 'AUDIT';
+                break;
+            case $this->PERMIT:
+                $page_title = 'Permit';
+                $page_description = 'Permits';
+                break;
+            case $this->GUIDANCE:
+                $page_title = 'Guidance';
+                $page_description = 'Guidance';
+                break;
+            case $this->INCIDENT:
+                $page_title = 'Incident Forms';
+                $page_description = 'Incident Forms';
+                break;
+            case $this->INDUCTION:
+                $page_title = 'Induction Forms';
+                $page_description = 'Induction Forms';
+                break;
+            
+            default:
+                // code...
+                break;
+        }
+
+        return array('page_title' =>  $page_title, 'page_description' => $page_description );
+    }
 
     /**
      * Resend Email
@@ -313,60 +504,47 @@ class DocumentController extends Controller
 
         $from = "test@test.com";
         $link = "FSDFSDFSD";
-        return view('emails.docEmail', compact('from', 'link'));
+        $isCompleted = true;
+        $subject  = 'SSSSSSSSSS';
+        $msg = 'MessageSSSSS';
+        return view('emails.docEmail', compact('from', 'link', 'isCompleted', 'subject', 'msg' ));
     }
 
     public function generateLink($id) {
         $encryption = openssl_encrypt($id, $this->ciphering,
             $this->encryption_key, $this->options, $this->encryption_iv);
-
-        return 'https://'.request()->getHost().'/sign/'.$encryption;
+        $encryption = openssl_encrypt($encryption, $this->ciphering,
+            $this->encryption_key, $this->options, $this->encryption_iv);
+        $encryption = openssl_encrypt($encryption, $this->ciphering,
+            $this->encryption_key, $this->options, $this->encryption_iv);
+        return 'https://'.request()->getHost().'/document/guidance/sign/'.$encryption;
     }
 
-    public function getFiles($type) {
-        $path = 'Policies';
-        $files = array();
+    public function test(Request $req)
+    {
+        $file = $req->file('data');
 
-        switch ($type) {
-            case 1:
-                $path = "RA";
-                break;
-
-            case 2:
-                $path = "AUDIT";
-                break;
-
-            case 3:
-                $path = "Permits";
-                break;
-
-            case 4:
-                $path = "Guidances";
-                break;
-
-            case 5:
-                $path = "Incidents";
-                break;
-            case 6:
-                $path = "Inductions";
-                break;
-            default:
-                // code...
-                break;
-        }
-        $dir = getcwd().'/template/'.$path;
-        if (file_exists($dir)) {
-            $d = dir(getcwd().'/template/'.$path);
-            while (($file = $d->read()) !== false){
-                $arr = explode(".",$file);
-                if($arr[count($arr) - 1] == "pdf") {
-                    array_push($files, $file);
-                }
-            }
-            $d->close();
-            return $files;
+        if($file) {
+            $filename =$file->getClientOriginalName().date('his').'.'.$file->extension();
+            $path='uploads/documents';
+            $fullpath = $path.'/'.$filename;
+            // if (file_exists($fullpath)) {
+            //     unlink($fullpath);
+            // }
+            $file->move($path,$filename );
+            return response()->json([
+              'status' => 200,
+              'result' => true,
+            ], 200);
         } else {
-            return array();
+            return response()->json([
+              'status' => 500,
+              'result' => false,
+              'message' => "Can't send email. Please retry!"
+            ], 500);
+
         }
     }
+
+    
 }

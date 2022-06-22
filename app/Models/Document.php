@@ -18,5 +18,13 @@ class Document extends Model
         return $this->belongsTo(User::class);
     }
 
+   /**
+    *  Associate User for document.
+    */
+    public function history() {
+        return $this->hasMany(DocHistory::class);
+    }
+
+
 
 }

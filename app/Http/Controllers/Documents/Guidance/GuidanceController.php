@@ -96,8 +96,8 @@ class GuidanceController extends Controller
                 // if (file_exists($fullpath)) {
                 //     unlink($fullpath);
                 // }
-                // $file->move('public/'.$path, $name);
-                $file->move($path, $name);
+                $file->move('public/'.$path, $name);
+                // $file->move($path, $name);
                 
                 return response()->json([
                   'status' => 200,
@@ -154,7 +154,7 @@ class GuidanceController extends Controller
             $doc->status = 1;
             $doc->to = $req->email;
 
-            $docHistory->from = Auth::user()->name;
+            $docHistory->from = Auth::user()->email;
             $docHistory->to = $req->email;
             $docHistory->status = 1;
         }
@@ -167,6 +167,9 @@ class GuidanceController extends Controller
 
         $docHistory->document_id = $doc->id;
         $docHistory->fill_forms = $req->fills;
+        $docHistory->subject = $req->subject;
+        $docHistory->message = $req->comment;
+
 
         if(!$docHistory->save()) {
             \Session::put('error',"Internal Server Error. Please retry!");
@@ -307,8 +310,8 @@ class GuidanceController extends Controller
     public function getFiles() {
         $path = 'Guidances';
         $files = array();
-        // $dir = getcwd().'/public/template/'.$path;
-        $dir = getcwd().'/template/'.$path;
+        $dir = getcwd().'/public/template/'.$path;
+        // $dir = getcwd().'/template/'.$path;
         if (file_exists($dir)) {
             $d = dir($dir);
             while (($file = $d->read()) !== false){

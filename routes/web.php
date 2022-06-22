@@ -123,6 +123,32 @@ Route::group(['prefix' => 'document'], function () {
     });
 
 
+    Route::group(['prefix' => 'box', 'middleware' => 'auth'], function () {
+        // Inbox
+        Route::get('/inbox/{type}', 'DocumentController@inbox')->name('document.box.inbox');
+        Route::post('/inbox/search/{type}', 'DocumentController@inbox')->name('document.box.inbox.search');
+
+        Route::get('/new/{type}', 'DocumentController@new')->name('document.box.new');
+        Route::get('/sign/{id}', 'DocumentController@sign')->name('document.box.sign');
+        Route::get('/moveDel/{id}', 'DocumentController@moveDel')->name('document.box.moveDel');
+        Route::get('/preview/{id}', 'DocumentController@preview')->name('document.box.preview');
+        Route::get('/download/{id}', 'DocumentController@download')->name('document.box.download');
+        Route::get('/restore/{id}', 'DocumentController@restore')->name('document.box.restore');
+        Route::get('/delete/{id}', 'DocumentController@delete')->name('document.box.delete');
+
+        // Detail Page
+        Route::get('/detail/{id}', 'DocumentController@detail')->name('document.box.detail');
+
+        // Sent Box
+        Route::get('/sent/{type}', 'DocumentController@sent')->name('document.box.sent');
+        Route::post('/sent/search/{type}', 'DocumentController@sent')->name('document.box.sent.search');
+
+        // Deleted Box
+        Route::get('/deleted/{type}', 'DocumentController@deleted')->name('document.box.deleted');
+        Route::post('/deleted/search/{type}', 'DocumentController@deleted')->name('document.box.deleted.search');
+
+    });
+
 
     Route::get('/', function() {
         return redirect()->route('document.audit');

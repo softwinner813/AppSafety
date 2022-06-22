@@ -1,0 +1,37 @@
+.box-table tbody tr{
+	/*border-left: 3px solid #0152cd;*/
+}
+.box-table tbody tr td:first-child{
+	padding-left: 0px!important;
+	padding-bottom: 0px !important;
+	padding-top: 2px!important;
+}
+
+/*.box-table tbody tr td{
+	margin-bottom: 4px;
+}*/
+.box-table .left-border {
+	border-left: 3px solid #0152cd;
+
+}
+
+.box-table td {
+     padding: 0rem !important; 
+}
+
+.success-bar {
+	border-radius: 5px;
+	border-left: 3px solid green;
+}
+.primary-bar {
+	border-radius: 5px;
+	border-left: 3px solid #0b64d8;
+}
+.warning-bar {
+	border-radius: 5px;
+	border-left: 3px solid yellow;
+}
+.danger-bar {
+	border-radius: 5px;
+	border-left: 3px solid red;
+}
