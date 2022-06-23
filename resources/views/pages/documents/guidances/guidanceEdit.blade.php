@@ -147,8 +147,10 @@
 {{-- Scripts Section --}}
 @section('scripts')
 <script src="/js/pdfjs/pdf.js"></script>
+
 <script src="/js/pdfjs/pdf.worker.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.3.0/fabric.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.5.0/fabric.min.js"></script> -->
+<script src="https://unpkg.com/fabric@5.2.1/dist/fabric.min.js"></script>
 <script src="https://rawgit.com/bramstein/fontfaceobserver/master/fontfaceobserver.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.2.0/jspdf.umd.min.js"></script>
 <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>

@@ -26,7 +26,7 @@ function loadDocument(path , callback) {
         return callback();
 
       },
-      scale: 1.5,
+      scale: 2,
       pageImageCompression: "SLOW", // FAST, MEDIUM, SLOW(Helps to control the new PDF file size)
     });
 
@@ -222,7 +222,7 @@ var KTHandleDocument = function() {
 
                                 // Show Message
                                 toastr.info("Your signature saved successfully!", "SUCCESS");
-                                
+
                                 // Show Finish Button
                                 toggleNextFinish(false);
                             });

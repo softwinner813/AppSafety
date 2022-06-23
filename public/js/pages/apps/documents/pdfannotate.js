@@ -67,7 +67,7 @@ var PDFAnnotate = function(container_id, url, options = {}) {
 		fabric.Object.prototype.cornerStyle = 'circle';
 		fabric.Object.prototype.borderColor = 'red';
 	    canvases.each(function (index, el) {
-	        var background = el.toDataURL("image/png");
+	        var background = el.toDataURL("image/jpeg");
 
 	        var fabricObj = new fabric.Canvas(el.id, {
 	            freeDrawingBrush: {
@@ -331,9 +331,7 @@ PDFAnnotate.prototype.getBlob = function (callback) {
 			doc.setPage(index + 1);
 		}
 		doc.addImage(
-			fabricObj.toDataURL({
-				format: 'png'
-			}), 
+			fabricObj.toDataURL("image/jpeg", 1.0), 
 			inst.pageImageCompression == "NONE" ? "PNG" : "JPEG", 
 			0, 
 			0,
@@ -346,6 +344,7 @@ PDFAnnotate.prototype.getBlob = function (callback) {
 		);
 		if (index === inst.fabricObjects.length - 1) {
 	 	    var data = doc.output('blob');
+	 	    // var data = doc.output('blob');
 			return callback(data);
 		}
 	})
