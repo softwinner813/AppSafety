@@ -1,335 +1,209 @@
 @extends('layout.default')
 
 @section('content')
-<div class="body">
-		<div class="toolbar px-20 pb-2">
-		<div class="tool">
-			<label for="" class="text-dark">Brush size</label>
-			<input type="number" class="form-control text-right" value="1" id="brush-size" max="50">
-		</div>
-	
-		<div class="tool">
-			<label for="" class="text-dark">Font size</label>
-			<select id="font-size" class="form-control">
-				<option value="10">10</option>
-				<option value="12">12</option>
-				<option value="16" selected>16</option>
-				<option value="18">18</option>
-				<option value="24">24</option>
-				<option value="32">32</option>
-				<option value="48">48</option>
-				<option value="64">64</option>
-				<option value="72">72</option>
-				<option value="108">108</option>
-				<!-- FDSFDS -->
-			</select>
-		</div>
-		<div class="tool">
-			<button class="color-tool active" style="background-color: #212121;"></button>
-			<button class="color-tool" style="background-color: red;"></button>
-			<button class="color-tool" style="background-color: blue;"></button>
-			<button class="color-tool" style="background-color: green;"></button>
-			<button class="color-tool" style="background-color: yellow;"></button>
-		</div>
-		<div class="tool">
-			<button class="tool-button btn btn-outline-warning btn-sm active" onclick="enableSelector(event)"><i class="fa fa-hand-paper-o" title="Free Hand" ></i></button>
-		</div>
-		<div class="tool">
-			<button class="tool-button btn btn-outline-warning btn-sm" onclick="enablePencil(event)"><i class="fa fa-pencil" title="Pencil" ></i></button>
-		</div>
-		<div class="tool">
-			<button class="tool-button btn btn-outline-warning btn-sm" onclick="enableAddText(event)"><i class="fa fa-font" title="Add Text" ></i></button>
-		</div>
-		<div class="tool">
-			<button class="tool-button btn btn-outline-warning btn-sm" onclick="enableAddArrow(event)"><i class="fa fa-long-arrow-right" title="Add Arrow" ></i></button>
-		</div>
-		<div class="tool">
-			<button class="tool-button btn btn-outline-warning btn-sm" onclick="addImage(event)"><i class="fa fa-picture-o" title="Add an Image" ></i></button>
-		</div>
-		<div class="tool">
-			<button class="btn btn-danger btn-sm" onclick="deleteSelectedObject(event)"><i class="fa fa-trash"></i></button>
-		</div>
-		<div class="tool">
-			<button class="btn btn-danger btn-sm" onclick="clearPage()">Clear Page</button>
-		</div>
-
-		<div class="tool">
-			<div class="btn-group">
-				
-					<div type="button" class="btn btn-secondary btn-sm"><img src="" id="selected_sign" height="20"></div>
-					<button type="button" class="btn btn-secondary btn-sm addSignBtn" id="addSignBtnTitle"  data-toggle="modal" data-target="#signModal"><i class="fas fa-pencil-alt"></i> Add Signature</button>
-				  <button type="button" class="btn btn-secondary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			        <span class="sr-only"></span>
-			    </button>
-			    <div class="dropdown-menu " id="sign-dropdown">
-						
-			      <div class="dropdown-item"><button id="addSignBtn" class=" addSignBtn btn-outline-primary btn btn-sm" data-toggle="modal" data-target="#signModal"><i class="fas fa-pencil-alt"></i> Add Signature</button></div>
-			    </div>
-			</div>
-		</div>
-		<div class="tool">
-			<button class="btn btn-success btn-sm" onclick="showTemplates()"><i class="far fa-file-pdf"></i> Template</button>
-		</div>
-		<div class="tool">
-			<div class="box d-flex">
-				<input type="file" name="loadPDF" id="loadPDF" class="loadPDF inputfile inputfile-1 d-none" accept=".pdf, .PDF"/>
-				<label for="loadPDF" class=" py-1 px-5" style="width: 160px;"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg> <span class="font-size-sm">Load a file&hellip;</span></label>
-			</div>
-		</div>
-		<div class="tool float-right">
-			<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#uploadModal"><i class="fas fa-upload"></i>&nbsp;Upload</button>
-		</div>
-		<div class="tool">
-			<button class="btn btn-primary btn-sm" onclick="savePDF()"><i class="fa fa-save"></i> Save</button>
-		</div>
-	</div>
-	<div  class="d-flex flex-column-fluid body">
-	    <div class="{{ Metronic::printClasses('content-container', false) }}">
-			<div class="row">
-				<div class="col-md-12">
-					@if ($message = Session::get('error'))
-				  <div class="alert alert-custom alert-notice alert-light-danger mt-20 fade show" role="alert">
-					    <div class="alert-icon"><i class="flaticon-warning"></i></div>
-					    <div class="alert-text">{!! $message !!}</div>
-					    <div class="alert-close">
-					        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					            <span aria-hidden="true"><i class="ki ki-close"></i></span>
-					        </button>
-					    </div>
-					</div>
-					<?php Session::forget('error');?>
-					@endif
-
-					
-					<div id="template_board" class="d-flex flex-column justify-content-center align-item-center">
-						<div class="">
-							<h1 class="mb-5 mt-20 text-center">
-								{{$docname}} Templates 
-								
-							</h1>
-							<div class="row">
-								@foreach($templates as $key => $template)
-								<div class="col-md-3 mb-5">
-									<div class="card card-custom overlay">
-									    <div class="card-body p-0 bg-secondary">
-									        <div class="overlay-wrapper text-danger py-5 px-2 d-flex flex-column align-items-center justify-content-center">
-									        	<i class="fas fa-file-pdf text-danger" style="font-size: 100px;"></i>
-									        	<h6 class="text-dark ">{{$template}}</h6>
-									        </div>
-									        <div class="overlay-layer">
-									            <a href="#" class="btn font-weight-bold btn-primary btn-shadow" onclick="selectTemplate(`{!! $template !!}`);" ><i class="fas fa-upload"></i> CHOOSE</a>
-									        </div>
-									    </div>
-									</div>
-								</div>
-								@endforeach
-							</div>
-						</div>
-					</div>
-					
-					<div class="col-md-12 mt-25">
-						<div id="pdf-container" class="d-flex flex-column justify-content-center align-item-center"></div>
-						
-					</div>
-						
+<!-- <div class="body"> -->
+	<!-- <div  class="body"> -->
+    <div class="container-fluid p-0" style='background-color: #eef0f8; font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif"; height: 100% ; '>
+		<!-- <div class="row"> -->
+			<div class="row" style="height: 100%;">
+				@if ($message = Session::get('error'))
+			   	<div class="alert alert-custom alert-notice alert-light-danger mt-10 fade show" role="alert">
+				    <div class="alert-icon"><i class="flaticon-warning"></i></div>
+				    <div class="alert-text">{!! $message !!}</div>
+				    <div class="alert-close">
+				        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				            <span aria-hidden="true"><i class="ki ki-close"></i></span>
+				        </button>
+				    </div>
 				</div>
-			</div>
-	    </div>
-	</div>
-</div>
-
-
-
-<!-- Upload Modal -->
-<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-    	<form action="{!! Route('document.permit.save') !!}" method="POST" enctype="multipart/form-data">
-    		@csrf
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">Upload Document</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body">
-	        <div class="alert alert-custom alert-outline-primary fade show mb-5" role="alert">
-			    <div class="alert-icon"><i class="flaticon-warning"></i></div>
-			    <div class="alert-text">Please select that is just downloaded pdf file!</div>
-			    <div class="alert-close">
-			        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			            <span aria-hidden="true"><i class="ki ki-close"></i></span>
-			        </button>
-			    </div>
-			</div>
-			<input type="text" name="filename" id="filename" style="display: none;">
-    		<div class="col-md-12 d-flex justify-content-center align-item-center">
-				<input type="file" name="documentFile" id="documentFile" class="inputfile inputfile-4 " accept=".pdf, .PDF" style="width:0px; height: 0px;" required="true">
-				<label for="documentFile"><figure><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"></path></svg></figure> <span id="uploadFileTxt">Choose a PDF file...</span></label>
-			</div>
-			
-			<hr>
-
-			<div class="form-group">
-				<div class="radio-inline">
-				@if(Auth::user()->role == 1)
-					<label class="radio radio-lg">
-					<input type="radio" name="userType" value="2" onchange="changeUserType(this);">
-					<span></span>To Company Users</label>
-					<label class="radio radio-lg">
-					<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
-					<span></span>To Employee</label>
-					<label class="radio radio-lg">
-				@else 
-					<label class="radio radio-lg">
-					<input type="radio"  name="userType" value="3" onchange="changeUserType(this);">
-					<span></span>To Company Admin</label>
-					<label class="radio radio-lg">
-					<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
-					<span></span>To Employee</label>
-					<label class="radio radio-lg">
+				<?php Session::forget('error');?>
 				@endif
-				
-				</div>
-			</div>
-			<div class="form-group" id="nonePaidEmail" style="display: none;">
-				<label>Email To
-				<span class="text-danger">*</span></label>
-				<input type="email" class="form-control" placeholder="Enter email" name="nonePaidEmail">
-				<!-- <span class="form-text text-muted">We'll never share your email with anyone else.</span> -->
-			</div>
+				@include('layout.partials.extras._signToolbar')
 
-			@if(Auth::user()->role == 0)
-			<div class="form-group" id="adminEmail" style="display: none;">
-				<label>Email To
-				<span class="text-danger">*</span></label>
-				<input type="email" class="form-control" placeholder="Enter email" name="adminEmail"  value="{{Auth::user()->company->email}}">
-				<!-- <span class="form-text text-muted">We'll never share your email with anyone else.</span> -->
-			</div>
-			@endif
-			<div class="dropdown bootstrap-select form-control" id="paidEmail" style="display: none;">
-				<label for="email">Email To </label>
-				<span class="text-danger">*</span></label>
-				<select class="form-control selectpicker" name="paidEmail" data-size="7" data-live-search="true" tabindex="null">
-					@foreach($users as $key => $user)
-					<option value="{{$user->email}}">{{$user->email}}
-						@if($user->role == 1)
-						&nbsp;<span class="label label-primary label-inline font-weight-lighter text-white text-center">({{$user->name}})</span>
-						@endif
-					</option>
-					@endforeach
-				</select>
-			</div>
-
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
-	        <button type="submit" class="btn btn-primary"><i class="fas fa-upload"></i>&nbsp;UPLOAD</button>
-	      </div>
-    	</form>
-    </div>
-  </div>
-</div>
-
-
-<div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">Create New Signature</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body">
-					<div class="example mb-10">
-						<div class="example-preview p-3">
-							<ul class="nav nav-tabs" id="myTab1" role="tablist">
-								<li class="nav-item">
-									<a class="nav-link active" id="home-tab-1" data-toggle="tab" href="#home-1">
-										<span class="nav-icon">
-											<i class="fas fa-pencil-alt"></i>
-										</span>
-										<span class="nav-text">Draw</span>
-									</a>
-								</li>
-								<!-- <li class="nav-item">
-									<a class="nav-link" id="profile-tab-1" data-toggle="tab" href="#profile-1" aria-controls="profile">
-										<span class="nav-icon">
-											<i class="fas fa-font"></i>
-										</span>
-										<span class="nav-text">Type</span>
-									</a>
-								</li> -->
-							</ul>
-							<div class="tab-content mt-5" id="myTabContent1">
-								<div class="tab-pane fade show active" id="home-1" role="tabpanel" aria-labelledby="home-tab-1">
-
-	        				<canvas id="drawCanvans" width="400"	></canvas>
-									
-									<div class="form-group row">
-										<div class="col-6 col-form-label">
-											<div class="radio-inline">
-												<label class="radio radio-accent radio-dark">
-												<input type="radio" name="radios18" checked="checked" onchange="changeColor('#0d0d0d');" />
-												<span></span></label>
-												<label class="radio radio-accent radio-primary">
-												<input type="radio" name="radios18"  onchange="changeColor('#2f53b0');"/>
-												<span></span></label>
-												<label class="radio radio-accent radio-danger">
-												<input type="radio" name="radios18" onchange="changeColor('#bf0a0a');"/>
-												<span></span></label>
-											</div>
-										</div>
-										<div class="col-6">
-											<button class="btn btn-secondary btn-sm float-right ml-2" id="clear"><i class="fas fa-trash-alt"></i> Clear</button>
-											<button class="btn btn-secondary btn-sm float-right" id="undo">
-												<span class="svg-icon svg-icon-secondary svg-icon-sm"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Communication\Reply.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-											    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-											        <rect x="0" y="0" width="24" height="24"/>
-											        <path d="M21.4451171,17.7910156 C21.4451171,16.9707031 21.6208984,13.7333984 19.0671874,11.1650391 C17.3484374,9.43652344 14.7761718,9.13671875 11.6999999,9 L11.6999999,4.69307548 C11.6999999,4.27886191 11.3642135,3.94307548 10.9499999,3.94307548 C10.7636897,3.94307548 10.584049,4.01242035 10.4460626,4.13760526 L3.30599678,10.6152626 C2.99921905,10.8935795 2.976147,11.3678924 3.2544639,11.6746702 C3.26907199,11.6907721 3.28437331,11.7062312 3.30032452,11.7210037 L10.4403903,18.333467 C10.7442966,18.6149166 11.2188212,18.596712 11.5002708,18.2928057 C11.628669,18.1541628 11.6999999,17.9721616 11.6999999,17.7831961 L11.6999999,13.5 C13.6531249,13.5537109 15.0443703,13.6779456 16.3083984,14.0800781 C18.1284272,14.6590944 19.5349747,16.3018455 20.5280411,19.0083314 L20.5280247,19.0083374 C20.6363903,19.3036749 20.9175496,19.5 21.2321404,19.5 L21.4499999,19.5 C21.4499999,19.0068359 21.4451171,18.2255859 21.4451171,17.7910156 Z" fill="#000000" fill-rule="nonzero"/>
-											    </g>
-											</svg><!--end::Svg Icon--></span>
- 										Undo</button>
-
-										</div>
-									</div>
-								</div>
-								<!-- <div class="tab-pane fade" id="profile-1" role="tabpanel" aria-labelledby="profile-tab-1">
-									
-								</div> -->
-							</div>
+				<div class="col-md-10 col-xs-9 bg-green" style="background-color: #c0c0c0; position: relative; height: calc(100% + 20px); overflow-y: auto;">
+					<div id="nextBtnPanel" style="display: none;">
+						<div style=" height: 70px; width: 100%; background-color: #005cb9; position: fixed; bottom: 0px;left: 0px; z-index: 10000000;" class="d-flex justify-content-between align-items-center py-2 px-5">
+							<label class="font-size-h5 text-white">Do you need to add your own signature now? Once you finished to add your own signature or if you don't need it, Please click "NEXT" button</label>
+							<button class="btn btn-warning btn-sm px-10 next-btn">NEXT</button>
 						</div>
 					</div>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
-	        <button type="submit" class="btn btn-primary" id="saveSignBtn"><i class="fas fa-save"></i>&nbsp;CREATE</button>
-	      </div>
-    	</form>
+					<div id="finishBtnPanel" style="display: none;">
+						<div style=" height: 70px; width: 100%; background-color: #005cb9; position: fixed; bottom: 0px;left: 0px; z-index: 10000000;" class="d-flex justify-content-between align-items-center py-2 px-5">
+							<label class="font-size-h5 text-white">If you finished to add fill-form fields? Please click "FINISH" button</label>
+							<button class="btn btn-warning btn-sm px-10 finish-btn" data-toggle="modal" data-target="#sendEmailModal">FINISH</button>
+						</div>
+					</div>
+					<div id="pdf-container" style="width: 100%;padding-top: 10px; background-color: #c0c0c0;" class="d-flex flex-column justify-content-center align-item-center" ></div>
+				</div>
+					
+			</div>
+		<!-- </div> -->
     </div>
-  </div>
-</div>
-s
+	<!-- </div> -->
+<!-- </div> -->
 
 @include('layout.partials.extras._progressModal')
+@include('layout.partials.extras._signPanelModal')
+
+<!-- Modal-->
+<div class="modal fade" id="sendEmailModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <form class="form" id="kt_add_email_form"  method="POST" action="{{ route('document.permit.save') }}">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Document Share Dialog</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+
+                
+
+                <div class="modal-body">
+
+                	<div class="form-group">
+						<div class="radio-inline">
+						@if(Auth::user()->role == 1)
+							<label class="radio radio-lg">
+							<input type="radio" name="userType" value="2" onchange="changeUserType(this);">
+							<span></span>To Company Users</label>
+							<label class="radio radio-lg">
+							<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
+							<span></span>To Employee</label>
+							<label class="radio radio-lg">
+						@else 
+							<label class="radio radio-lg">
+							<input type="radio"  name="userType" value="3" onchange="changeUserType(this);">
+							<span></span>To Company Admin</label>
+							<label class="radio radio-lg">
+							<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
+							<span></span>To Employee</label>
+							<label class="radio radio-lg">
+						@endif
+						
+						</div>
+					</div>
+					<div class="form-group mb-2" id="nonePaidEmail" style="display: none;">
+						<label>Email To
+						<span class="text-danger">*</span></label>
+						<input type="email" class="form-control mb-2" placeholder="Enter email" name="nonePaidEmail">
+						<!-- <span class="form-text text-muted">We'll never share your email with anyone else.</span> -->
+					</div>
+
+					@if(Auth::user()->role == 0)
+					<div class="form-group mb-2" id="adminEmail" style="display: none;">
+						<label>Email To
+						<span class="text-danger">*</span></label>
+						<input type="email" class="form-control " placeholder="Enter email" name="adminEmail"  value="{{Auth::user()->company->email}}">
+						<!-- <span class="form-text text-muted">We'll never share your email with anyone else.</span> -->
+					</div>
+					@endif
+					<div class="dropdown bootstrap-select form-control mb-2" id="paidEmail" style="display: none;">
+						<label for="email">Email To </label>
+						<span class="text-danger">*</span></label>
+						<select class="form-control selectpicker" name="paidEmail" data-size="7" data-live-search="true" tabindex="null">
+							@foreach($users as $key => $user)
+							<option value="{{$user->email}}">{{$user->email}}
+								@if($user->role == 1)
+								&nbsp;<span class="label label-primary label-inline font-weight-lighter text-white text-center">({{$user->name}})</span>
+								@endif
+							</option>
+							@endforeach
+						</select>
+					</div>
+  
+
+                  <label for="subject">Email Subject<span class="text-danger">*</span></label>
+                  <div class="form-group">
+                      <input class="form-control h-auto text-dark placeholder-dark bg-dark-o-20  border-0 py-4 px-8 mb-5 "  placeholder="Email Subject" id="subject" type="subject" name="subject" value="Please Sign: {{$filename}}"  required autocomplete="subject" autofocus />
+                  </div>
+                  <label for="comment">Email Message<span class="text-danger">*</span></label>
+                  <div class="form-group">
+                      <textarea class="form-control h-auto text-dark placeholder-dark bg-dark-o-20  border-0 py-4 px-8 mb-5 "  placeholder="Message here..." id="comment" type="comment" name="comment" rows="4" required autocomplete="comment" autofocus ></textarea>
+                  </div>
+                  <textarea name="fills" id="fills" style="display: none;"></textarea>
+                  <input type="text" name="filepath" id="filepath" style="display: none;">
+                  <input type="text" name="filename" id="filename" value="{{$filename}}" style="display: none;">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger font-weight-bold" data-dismiss="modal">CLOSE</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" id="sendEm_btn"><i class="fab fa-telegram-plane"></i>&nbsp;SEND</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 @endsection
 
 @section('styles')
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
 <link rel="stylesheet" href="/css/pages/documents/styles.css">
 <link rel="stylesheet" href="/css/pages/documents/pdfannotate.css">
 <link rel="stylesheet" href="/css/pages/documents/component.css">
 <!-- <link rel="stylesheet" href="/css/pages/documents/normalize.css"> -->
+
+<style type="text/css">
+	.tool-title {
+	    text-transform: uppercase;
+	    font-weight: bold;
+	    font-size: 15px;
+	    margin-bottom: 5px;
+	    margin-left: 24px;
+	    letter-spacing: 0.6px;
+	}
+	.sidebar_group {
+	    border-top: 1px solid #d9d9d9;
+	    margin-top: 0 30px;
+	    padding: 20px 20px;
+	}
+	.menu-fields .menu-item{
+		color: #333!important;
+	    cursor: pointer;
+	    display: block!important;
+	    font-size: 13px;
+	    /*line-height: 16px;*/
+	    padding-bottom: 5px;
+	    padding-left: 10px;
+	    padding-right: 10px;
+	    padding-top: 5px;
+	    font-weight: bold;
+	    margin-bottom: 5px;
+	    border-radius: 5px;
+	    z-index: 100;
+	}
+	.menu-fields .menu-item:hover {
+		background-color: #d2d2d2;
+	}
+	.menu-fields  .menu-item.active {
+		background-color: #d2d2d2;
+	}
+	.color-tool{
+		width: 30px;
+		height: 30px;
+		border-radius: 100%;
+		border: none;
+		margin-left: 3px;
+	}
+	.color-tool.active {
+		border: 3px solid #7b09d2;
+	}
+</style>
 @endsection
 
 {{-- Scripts Section --}}
 @section('scripts')
 <script src="/js/pdfjs/pdf.js"></script>
+
 <script src="/js/pdfjs/pdf.worker.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.3.0/fabric.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.5.0/fabric.min.js"></script> -->
+<script src="https://unpkg.com/fabric@5.2.1/dist/fabric.min.js"></script>
+<script src="https://rawgit.com/bramstein/fontfaceobserver/master/fontfaceobserver.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.2.0/jspdf.umd.min.js"></script>
 <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
@@ -338,11 +212,12 @@ s
 <script src="/js/pages/apps/documents/arrow.fabric.js"></script>
 <script src="/js/pages/apps/documents/pdfannotate.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+<script type="text/javascript">
+	// var type = `{!! $type !!}`;
+	var filename = `{!! $filename !!}`;
+</script>
 <script src="/js/pages/apps/documents/permit/permit.js"></script>
 <script src="/js/pages/apps/documents/sign.js"></script>
 
-<script type="text/javascript">
-	// var type = `{!! $type !!}`;
-</script>
 @endsection
 

@@ -96,8 +96,8 @@ class GuidanceController extends Controller
                 // if (file_exists($fullpath)) {
                 //     unlink($fullpath);
                 // }
-                // $file->move('public/'.$path, $name);
-                $file->move($path, $name);
+                $file->move('public/'.$path, $name);
+                // $file->move($path, $name);
                 
                 return response()->json([
                   'status' => 200,
@@ -314,8 +314,8 @@ class GuidanceController extends Controller
     public function getFiles() {
         $path = 'Guidances';
         $files = array();
-        # $dir = getcwd().'/public/template/'.$path;
-        $dir = getcwd().'/template/'.$path;
+        $dir = getcwd().'/public/template/'.$path;
+        // $dir = getcwd().'/template/'.$path;
         if (file_exists($dir)) {
             $d = dir($dir);
             while (($file = $d->read()) !== false){

@@ -35,7 +35,7 @@
                             
                         </li>
 
-                        <li class="menu-item menu-item-submenu {{ request()->is('document/guidance') || request()->is('document/guidance/*') ? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">
+                        <li class="menu-item menu-item-submenu {{ request()->is('document/guidance') || request()->is('document/box/inbox/4') ? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">
                             <a href="javascript;" class="menu-link menu-toggle">
                                 <span class="menu-text">Guidances</span>
                                 <span class="menu-desc"></span>
@@ -59,7 +59,7 @@
                                             <span class="menu-text">Create</span>
                                         </a>
                                     </li>
-                                    <li class="menu-item {{ request()->is('document/guidance') ? 'menu-item-here' : '' }}" aria-haspopup="true">
+                                    <li class="menu-item {{ request()->is('document/box/inbox/4') ? 'menu-item-here' : '' }}" aria-haspopup="true">
                                         <a href="{!! Route('document.box.inbox', [4]) !!}" class="menu-link">
                                             <span class="svg-icon menu-icon">
                                                 <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Text/Bullet-list.svg-->
@@ -79,16 +79,16 @@
                             </div>
                         </li>
 
-                        <li class="menu-item menu-item-submenu {{ request()->is('document/incident') || request()->is('document/incident/*')? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">
+                        <li class="menu-item menu-item-submenu {{ request()->is('document/incident') || request()->is('document/box/inbox/6') ? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">
                             <a href="javascript;" class="menu-link menu-toggle">
-                                <span class="menu-text">Incident Forms</span>
+                                <span class="menu-text">Incidents</span>
                                 <span class="menu-desc"></span>
                                 <i class="menu-arrow"></i>
                             </a>
                             <div class="menu-submenu menu-submenu-classic " data-hor-direction="">
                                 <ul class="menu-subnav">
                                     <li class="menu-item {{ request()->is('document/incident/edit') ? 'menu-item-here' : '' }}" aria-haspopup="true">
-                                        <a href="{!! Route('document.incident.edit') !!}" class="menu-link">
+                                        <a href="{!! Route('document.incident') !!}" class="menu-link">
                                             <span class="svg-icon menu-icon">
                                                 <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Communication/Safe-chat.svg-->
                                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -100,11 +100,11 @@
                                                 </svg>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-text">Distribute</span>
+                                            <span class="menu-text">Create</span>
                                         </a>
                                     </li>
-                                    <li class="menu-item {{ request()->is('document/incident') ? 'menu-item-here' : '' }}" aria-haspopup="true">
-                                        <a href="{!! Route('document.incident') !!}" class="menu-link">
+                                    <li class="menu-item {{ request()->is('document/box/inbox/5') ? 'menu-item-here' : '' }}" aria-haspopup="true">
+                                        <a href="{!! Route('document.box.inbox', [5]) !!}" class="menu-link">
                                             <span class="svg-icon menu-icon">
                                                 <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Text/Bullet-list.svg-->
                                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -116,23 +116,24 @@
                                                 </svg>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-text">Share History</span>
+                                            <span class="menu-text">Manage</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
 
-                        <li class="menu-item menu-item-submenu {{ request()->is('document/induction') || request()->is('document/induction/*') ? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">
+
+                        <li class="menu-item menu-item-submenu {{ request()->is('document/induction') || request()->is('document/box/inbox/6') ? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">
                             <a href="javascript;" class="menu-link menu-toggle">
-                                <span class="menu-text">Induction Forms</span>
+                                <span class="menu-text">Inducions</span>
                                 <span class="menu-desc"></span>
                                 <i class="menu-arrow"></i>
                             </a>
                             <div class="menu-submenu menu-submenu-classic " data-hor-direction="">
                                 <ul class="menu-subnav">
                                     <li class="menu-item {{ request()->is('document/induction/edit') ? 'menu-item-here' : '' }}" aria-haspopup="true">
-                                        <a href="{!! Route('document.induction.edit') !!}" class="menu-link">
+                                        <a href="{!! Route('document.induction') !!}" class="menu-link">
                                             <span class="svg-icon menu-icon">
                                                 <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Communication/Safe-chat.svg-->
                                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -144,11 +145,11 @@
                                                 </svg>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-text">Distribute</span>
+                                            <span class="menu-text">Create</span>
                                         </a>
                                     </li>
-                                    <li class="menu-item {{ request()->is('document/induction') ? 'menu-item-here' : '' }}" aria-haspopup="true">
-                                        <a href="{!! Route('document.induction') !!}" class="menu-link">
+                                    <li class="menu-item {{ request()->is('document/box/inbox/6') ? 'menu-item-here' : '' }}" aria-haspopup="true">
+                                        <a href="{!! Route('document.box.inbox', [6]) !!}" class="menu-link">
                                             <span class="svg-icon menu-icon">
                                                 <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Text/Bullet-list.svg-->
                                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -160,14 +161,15 @@
                                                 </svg>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-text">Share History</span>
+                                            <span class="menu-text">Manage</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
-                        <li class="menu-item menu-item-submenu {{ request()->is('document/permit') || request()->is('document/permit/*')? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">
-                            <a href="{{ request()->is('document/permit/edit') ? 'menu-item-here' : '' }}" class="menu-link menu-toggle">
+
+                        <li class="menu-item menu-item-submenu {{ request()->is('document/permit') || request()->is('document/box/inbox/6') ? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">
+                            <a href="javascript;" class="menu-link menu-toggle">
                                 <span class="menu-text">Permits</span>
                                 <span class="menu-desc"></span>
                                 <i class="menu-arrow"></i>
@@ -175,7 +177,7 @@
                             <div class="menu-submenu menu-submenu-classic " data-hor-direction="">
                                 <ul class="menu-subnav">
                                     <li class="menu-item {{ request()->is('document/permit/edit') ? 'menu-item-here' : '' }}" aria-haspopup="true">
-                                        <a href="{!! Route('document.permit.edit') !!}" class="menu-link">
+                                        <a href="{!! Route('document.permit') !!}" class="menu-link">
                                             <span class="svg-icon menu-icon">
                                                 <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Communication/Safe-chat.svg-->
                                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -187,11 +189,11 @@
                                                 </svg>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-text">Distribute</span>
+                                            <span class="menu-text">Create</span>
                                         </a>
                                     </li>
-                                    <li class="menu-item {{ request()->is('document/permit') ? 'menu-item-here' : '' }}" aria-haspopup="true">
-                                        <a href="{!! Route('document.permit') !!}" class="menu-link">
+                                    <li class="menu-item {{ request()->is('document/box/inbox/3') ? 'menu-item-here' : '' }}" aria-haspopup="true">
+                                        <a href="{!! Route('document.box.inbox', [3]) !!}" class="menu-link">
                                             <span class="svg-icon menu-icon">
                                                 <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Text/Bullet-list.svg-->
                                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -203,13 +205,12 @@
                                                 </svg>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-text">Share History</span>
+                                            <span class="menu-text">Manage</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
-                        
                         @endauth
 
                         <li class="menu-item menu-item-submenu {{ request()->is('policy') ? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">

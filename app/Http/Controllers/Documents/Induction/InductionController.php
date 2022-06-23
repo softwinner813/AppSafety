@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Induction;
+namespace App\Http\Controllers\Documents\Induction;
 
 
 use Illuminate\Http\Request;
@@ -14,6 +14,7 @@ use Input;
 
 use App\Models\User;
 use App\Models\Document;
+use App\Models\DocHistory;
 use App\Models\Signature;
 use Auth;
 class InductionController extends Controller
@@ -53,10 +54,16 @@ class InductionController extends Controller
      */
     public function index(Request $req)
     {
-        $page_title = 'Induction';
-        $page_description = 'Induction Share History';
-        $documents = Document::where('user_id', Auth::user()->id)->where('type', $this->type)->get();
-        return view('pages.documents.inductions.inductionList', compact('page_title', 'page_description', 'documents'));
+        $noneSubheader = true;
+        $type = $this->type;
+        $docname = 'Induction';
+        $templates = $this->getFiles($type);
+        return view('pages.documents.inductions.inductionTemplates', compact('noneSubheader', 'type', 'templates', 'docname'));
+    
+        // $page_title = 'Induction';
+        // $page_description = 'Induction Share History';
+        // $documents = Document::where('user_id', Auth::user()->id)->where('type', $this->type)->get();
+        // return view('pages.documents.inductions.inductionList', compact('page_title', 'page_description', 'documents'));
     }
 
     /**
@@ -66,15 +73,55 @@ class InductionController extends Controller
      */
     public function edit(Request $req)
     {
+        $filename = $req->docName;
         $noneSubheader = true;
         $type = $this->type;
-        $docname = 'Induction';
-        $templates = $this->getFiles($type);
-        return view('pages.documents.inductions.inductionEdit', compact('noneSubheader', 'type', 'templates', 'docname'));
+        return view('pages.documents.inductions.inductionEdit', compact('noneSubheader', 'type', 'filename'));
     }
+
 
     /**
      * Upload Document
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function upload(Request $req)
+    {
+        try {
+            $file = $req->file('document');
+            if($file) {
+                $name =$req->filename.'.'.$file->extension();
+                $path='uploads/documents/Inductions';
+                $fullpath = $path.'/'.$name;
+                // if (file_exists($fullpath)) {
+                //     unlink($fullpath);
+                // }
+                $file->move('public/'.$path, $name);
+                // $file->move($path, $name);
+                
+                return response()->json([
+                  'status' => 200,
+                  'result' => true,
+                  'file' => $fullpath
+                ], 200);
+            } else {
+                return response()->json([
+                  'status' => 500,
+                  'result' => false,
+                  'message' => "Server error"
+                ], 500);
+            } 
+        } catch (Exception $e) {
+            return response()->json([
+              'status' => 500,
+              'result' => false,
+              'message' => "Server error"
+            ], 500);  
+        }
+    }
+
+    /**
+     * Save Document
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -82,67 +129,67 @@ class InductionController extends Controller
     {
         $filepath = '';
         $from = '';
+
+        $docHistory = new DocHistory();
         // If None-Paid User
         if( isset($req->id)) {
-            $doc = Document::find($req->id); 
-            
-            try {
-                $file = $req->file('documentFile');
-                if($file) {
-                    $name =$file->getClientOriginalName().date('his').'.'.$file->extension();
-                    $path='uploads/documents/Inductions';
-                    $fullpath = $path.'/'.$name;
-                    // if (file_exists($fullpath)) {
-                    //     unlink($fullpath);
-                    // }
-                    
-                    $file->move('public/'.$path, $name);
-                    
-                    $doc->status = 2;
-                    $doc->file = $fullpath;
-                } else {
-                    \Session::put('error',"Ooops, Please retry!");
-                    return back();
-                } 
-            } catch (Exception $e) {
-                \Session::put('error',"Ooops, Please retry!");
-                return back();    
-            }
+            $dochis = DocHistory::find($req->id); 
+            $doc = $dochis->document;
+            $doc->status = 2;
+            $doc->file = $req->filepath;
+            $doc->isCompleted = 1;
+
+            $docHistory->from = $dochis->to;
+            $docHistory->to = $doc->user->email;
+            $docHistory->status = 2;
+
         } else {
             // if Admin User or Paid User
             $doc = new Document();
             $doc->user_id = Auth::user()->id;
-            $path = 'template/Inductions';
-            $doc->file = $path .'/'. $req->filename;
+            // $path = 'template/Inductions';
+            // $doc->file = $path .'/'. $req->filename;
+            $doc->file = $req->filepath;
             $doc->name = $req->filename;
             $doc->status = 1;
             $doc->to = $req->email;
+
+            $docHistory->from = Auth::user()->email;
+            $docHistory->to = $req->email;
+            $docHistory->status = 1;
         }
 
         $doc->type = $this->type;
-        
-        if($doc->save()) {
-            if( isset($req->id) ) {
-                $link = $this->generateLink($doc->id);
-                if($this->sendEmail($doc->user->email, $doc->to, $link)) {
-                    \Session::put('success',"Document is completed successfully!");
-                    return redirect()->back();
-                } else {
-                    \Session::put('error',"Can't send email. Please retry!");
-                    return redirect()->back();
-                };
-            } else {
-                $link = $this->generateLink($doc->id);
-                if($this->sendEmail($req->email, Auth::user()->name, $link)) {
-                    return redirect()->route('document.induction');
-                } else {
-                    \Session::put('error',"Can't send email. Please retry!");
-                    return redirect()->back();
-                };
-            }
-        } else {
+        if(!$doc->save()) { 
             \Session::put('error',"Internal Server Error. Please retry!");
             return redirect()->back();
+        }
+
+        $docHistory->document_id = $doc->id;
+        $docHistory->fill_forms = $req->fills;
+        $docHistory->subject = $req->subject;
+        $docHistory->message = $req->comment;
+
+
+        if(!$docHistory->save()) {
+            \Session::put('error',"Internal Server Error. Please retry!");
+            return redirect()->back();
+        }
+
+        // Send Email
+        $link = $this->generateLink($docHistory->id);
+
+        // dd($link);die();
+        if(!$this->sendEmail($req->subject, $req->comment,  $docHistory->from, $docHistory->to, $link, $doc->isCompleted)) {
+            \Session::put('error',"Can't send email. Please retry!");
+            return redirect()->back();
+        } 
+
+        if($req->id) {
+            \Session::put('success',"Document is completed successfully!");
+            return redirect()->back();
+        } else{
+            return redirect()->route('document.box.sent', [$this->type]);
         }
     }
 
@@ -151,13 +198,16 @@ class InductionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function sendEmail($email, $from, $link) 
+    public function sendEmail($subject, $msg,  $from, $to, $link,  $isCompleted) 
     {
         $details = [
             'type' => 'SHARE_DOCUMENT',
-            'email' => $email,
+            'subject' => $subject,
+            'msg' => $msg,
+            'to' => $to,
             'from' =>  $from,
-            'link' => $link
+            'link' => $link,
+            'isCompleted' => $isCompleted
         ];
         
         $job = (new \App\Jobs\SendQueueEmail($details))
@@ -200,33 +250,57 @@ class InductionController extends Controller
      */
     public function sign(Request $req) 
     {
-        $noneSubheader = true;
+       $noneSubheader = true;
         if(!isset($req->token)) {
             \Session::put('error',"Invaild Link. Please check your email again.");
             return view('pages.documents.inductions.inductionSign', compact('noneSubheader', 'doc'));
         }
 
         $id = $this->decription($req->token);
+        $id = $this->decription($id);
+        $id = $this->decription($id);
 
-        $doc = Document::find($id);
 
-        if(is_null($doc)) {
-            \Session::put('error',"Invaild Link or Link is expired.");
-            return view('pages.documents.inductions.inductionSign', compact('noneSubheader', 'doc'));
+        $docHistory = DocHistory::find($id);
+
+
+        if(is_null($docHistory)) {
+            // \Session::put('error',"Invaild Link or Link is expired.");
+            $message = "Invaild Link or Link is expired.";
+            return view('errors.documentError', compact('message'));
         }
 
-        if($doc->type != $this->type) {
-            \Session::put('error',"Invaild Link. Please check your email again.");
-            return view('pages.documents.inductions.inductionSign', compact('noneSubheader', 'doc'));
+        if($docHistory->document->type != $this->type) {
+            $message = "Invaild Link. Please check your email again.";
+            return view('errors.documentError', compact('message'));
         }
 
-        return view('pages.documents.inductions.inductionSign', compact('noneSubheader', 'doc'));
+        if(\Session::get('success') || \Session::get('error')) {
+        }
+        else {
+            if($docHistory->status !=  $docHistory->document->status) {
+                $message = "You have already signed to this document or this document is expired!";
+                return view('errors.documentError', compact('message'));
+            }
+        }
+
+        if($docHistory->document->isCompleted) {
+            $filepath = $docHistory->document->file;
+            return view('pages.documents.preview', compact('noneSubheader', 'filepath'));
+        } else {
+            return view('pages.documents.inductions.inductionSign', compact('noneSubheader', 'docHistory'));
+        }
+
         
 
     }
 
     public function generateLink($id) {
         $encryption = openssl_encrypt($id, $this->ciphering,
+            $this->encryption_key, $this->options, $this->encryption_iv);
+        $encryption = openssl_encrypt($encryption, $this->ciphering,
+            $this->encryption_key, $this->options, $this->encryption_iv);
+        $encryption = openssl_encrypt($encryption, $this->ciphering,
             $this->encryption_key, $this->options, $this->encryption_iv);
         return 'https://'.request()->getHost().'/document/induction/sign/'.$encryption;
     }
@@ -236,39 +310,11 @@ class InductionController extends Controller
         return $decryption;
     }
 
-    public function getFiles($type) {
-        $path = 'Policies';
+    public function getFiles() {
+        $path = 'Inductions';
         $files = array();
-
-        switch ($type) {
-            case 1:
-                $path = "RA";
-                break;
-
-            case 2:
-                $path = "AUDIT";
-                break;
-
-            case 3:
-                $path = "Permits";
-                break;
-
-            case 4:
-                $path = "Guidances";
-                break;
-
-            case 5:
-                $path = "Incidents";
-                break;
-            case 6:
-                $path = "Inductions";
-                break;
-            default:
-                // code...
-                break;
-        }
         $dir = getcwd().'/public/template/'.$path;
-        // $dir = getcwd().'/template/'.$path;
+        # $dir = getcwd().'/template/'.$path;
         if (file_exists($dir)) {
             $d = dir($dir);
             while (($file = $d->read()) !== false){
@@ -278,6 +324,7 @@ class InductionController extends Controller
                 }
             }
             $d->close();
+            sort($files);
             return $files;
         } else {
             return array();

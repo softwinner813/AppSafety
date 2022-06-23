@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Permit;
+namespace App\Http\Controllers\Documents\Permit;
 
 
 use Illuminate\Http\Request;
@@ -14,9 +14,8 @@ use Input;
 
 use App\Models\User;
 use App\Models\Document;
-use App\Models\Signature;
 use App\Models\DocHistory;
-
+use App\Models\Signature;
 use Auth;
 class PermitController extends Controller
 {
@@ -55,10 +54,16 @@ class PermitController extends Controller
      */
     public function index(Request $req)
     {
-        $page_title = 'Permit';
-        $page_description = 'Permit Share History';
-        $documents = Document::where('user_id', Auth::user()->id)->where('type', $this->type)->get();
-        return view('pages.documents.permits.permitList', compact('page_title', 'page_description', 'documents'));
+        $noneSubheader = true;
+        $type = $this->type;
+        $docname = 'Permit';
+        $templates = $this->getFiles($type);
+        return view('pages.documents.permits.permitTemplates', compact('noneSubheader', 'type', 'templates', 'docname'));
+    
+        // $page_title = 'Permit';
+        // $page_description = 'Permit Share History';
+        // $documents = Document::where('user_id', Auth::user()->id)->where('type', $this->type)->get();
+        // return view('pages.documents.permits.permitList', compact('page_title', 'page_description', 'documents'));
     }
 
     /**
@@ -68,28 +73,11 @@ class PermitController extends Controller
      */
     public function edit(Request $req)
     {
+        $filename = $req->docName;
         $noneSubheader = true;
         $type = $this->type;
-        $docname = 'Permit';
-        $templates = $this->getFiles($type);
         $users = User::where('company_id', Auth::user()->id)->get();
-        return view('pages.documents.permits.permitEdit', compact('noneSubheader', 'type', 'templates', 'docname', 'users'));
-    }
-
-
-    /**
-     * Document Signature History
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function history(Request $req) 
-    {
-        $page_title = 'Permit History';
-        $page_description = 'Permit Share History';
-        $id = $req->docid;
-        $doc = Document::find($id);
-        $histories = DocHistory::where('document_id', $id)->orderBy('created_at')->get();
-        return view('pages.documents.permits.permitHistory', compact('page_title', 'page_description', 'doc', 'histories'));
+        return view('pages.documents.permits.permitEdit', compact('noneSubheader', 'type', 'filename', 'users'));
     }
 
 
@@ -98,13 +86,12 @@ class PermitController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function save(Request $req)
+    public function upload(Request $req)
     {
-
         try {
-            $file = $req->file('documentFile');
+            $file = $req->file('document');
             if($file) {
-                $name =$file->getClientOriginalName().date('his').'.'.$file->extension();
+                $name =$req->filename.'.'.$file->extension();
                 $path='uploads/documents/Permits';
                 $fullpath = $path.'/'.$name;
                 // if (file_exists($fullpath)) {
@@ -113,111 +100,99 @@ class PermitController extends Controller
                 $file->move('public/'.$path, $name);
                 // $file->move($path, $name);
                 
+                return response()->json([
+                  'status' => 200,
+                  'result' => true,
+                  'file' => $fullpath
+                ], 200);
             } else {
-                \Session::put('error',"Ooops, Please retry!");
-                return back();
+                return response()->json([
+                  'status' => 500,
+                  'result' => false,
+                  'message' => "Server error"
+                ], 500);
             } 
         } catch (Exception $e) {
-            \Session::put('error',"Ooops, Please retry!");
-            return back();    
+            return response()->json([
+              'status' => 500,
+              'result' => false,
+              'message' => "Server error"
+            ], 500);  
         }
+    }
 
-        // While document progress
+    /**
+     * Save Document
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function save(Request $req)
+    {
+        $filepath = '';
+        $from = '';
+        $to = $req->userType == 1 ?  $req->nonePaidEmail : (($req->userType == 2) ? $req->paidEmail : $req->adminEmail);
+
+        $docHistory = new DocHistory();
+        // If None-Paid User
         if( isset($req->id)) {
-            $doc = Document::find($req->id); 
-            $doc->file = $fullpath;
-            if($doc->save()) {
-                 // Save Document History
-                $to = $req->userType == 1 ?  $req->nonePaidEmail : (($req->userType == 2) ? $req->paidEmail : $req->adminEmail);
-                if(empty($to)) {
-                    \Session::put('error',"Please provide email address to receive this document!");
-                    return redirect()->back();
-                }
-                $docHistory =  new DocHistory();
-                $docHistory->document_id = $doc->id;
-                $docHistory->from = $req->from;
-                $docHistory->to = $to;
-                $docHistory->user_type = $req->userType;
+            $dochis = DocHistory::find($req->id); 
+            $doc = $dochis->document;
+            $doc->status = 2;
+            $doc->file = $req->filepath;
+            // $doc->isCompleted = 1;
 
-                // dd($docHistory);exit();
-                if($docHistory->save()) {
+            $docHistory->from = $dochis->to;
+            $docHistory->status = 2;
 
-                    // Send Email with document link
-                    $link = $this->generateLink($doc->id, $docHistory->id);
-
-                    if($this->sendEmail($to, $req->from, $link)) {
-                        if(Auth::guest()) {
-                            \Session::put('success',"Document sent successfully!");
-                            return redirect()->back();
-                        } else {
-                            return redirect()->route('document.permit');
-                        }
-                    } else {
-                        \Session::put('error',"Can't send email. Please retry!");
-                        return redirect()->back();
-                    };
-
-                } else {
-                    \Session::put('error',"Internal Server Error. Please retry!");
-                    return redirect()->back();
-                }
-
-
-                
-            } else {
-                \Session::put('error',"Internal Server Error. Please retry!");
-                return redirect()->back();
-            }        
-        } else { // Init Upload document
+        } else {
             // if Admin User or Paid User
-            $to = $req->userType == 1 ?  $req->nonePaidEmail : (($req->userType == 2) ? $req->paidEmail : $req->adminEmail);
-
-            // Save Document
             $doc = new Document();
             $doc->user_id = Auth::user()->id;
-            $doc->name = (isset($req->filename) && !is_null($req->filename)) ? $req->filename : $file->getClientOriginalName() ;
+            $doc->file = $req->filepath;
+            $doc->name = $req->filename;
             $doc->status = 1;
-            $doc->type = $this->type;
-            $doc->file = $fullpath;
             $doc->to = $to;
-            if($doc->save()) {
 
-                // Save Document History
-                if(empty($to)) {
-                    \Session::put('error',"Please provide email address to receive this document!");
-                    return redirect()->back();
-                }
-                $docHistory =  new DocHistory();
-                $docHistory->document_id = $doc->id;
-                $docHistory->from = Auth::user()->email;
-                $docHistory->to = $to;
-                $docHistory->user_type = $req->userType;
-                // dd($docHistory);exit();
-                if($docHistory->save()) {
-
-                    // Send Email with document link
-                    $link = $this->generateLink($doc->id, $docHistory->id);
-
-                    if($this->sendEmail($to, Auth::user()->name, $link)) {
-                        return redirect()->route('document.permit');
-                    } else {
-                        \Session::put('error',"Can't send email. Please retry!");
-                        return redirect()->back();
-                    };
-
-                } else {
-                    \Session::put('error',"Internal Server Error. Please retry!");
-                    return redirect()->back();
-                }
-
-
-                
-            } else {
-                \Session::put('error',"Internal Server Error. Please retry!");
-                return redirect()->back();
-            }
+            $docHistory->from = Auth::user()->email;
+            $docHistory->status = 1;
         }
-                
+
+        $doc->type = $this->type;
+        if(!$doc->save()) { 
+            \Session::put('error',"Internal Server Error. Please retry!");
+            return redirect()->back();
+        }
+
+        $docHistory->document_id = $doc->id;
+        $docHistory->fill_forms = $req->fills;
+        $docHistory->subject = $req->subject;
+        $docHistory->message = $req->comment;
+        $docHistory->user_type = $req->userType;
+        $docHistory->to = $to;
+
+
+
+
+        if(!$docHistory->save()) {
+            \Session::put('error',"Internal Server Error. Please retry!");
+            return redirect()->back();
+        }
+
+        // Send Email
+        $link = $this->generateLink($docHistory->id);
+
+        dd($link);die();
+        if(!$this->sendEmail($req->subject, $req->comment,  $docHistory->from, $docHistory->to, $link, $doc->isCompleted)) {
+            \Session::put('error',"Can't send email. Please retry!");
+            return redirect()->back();
+        } 
+
+        if($req->id) {
+            \Session::put('success',"Document is completed successfully!");
+            return redirect()->back();
+        } else{
+            return redirect()->route('document.box.sent', [$this->type]);
+        }
     }
 
     /**
@@ -225,13 +200,16 @@ class PermitController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function sendEmail($email, $from, $link) 
+    public function sendEmail($subject, $msg,  $from, $to, $link,  $isCompleted) 
     {
         $details = [
             'type' => 'SHARE_DOCUMENT',
-            'email' => $email,
+            'subject' => $subject,
+            'msg' => $msg,
+            'to' => $to,
             'from' =>  $from,
-            'link' => $link
+            'link' => $link,
+            'isCompleted' => $isCompleted
         ];
         
         $job = (new \App\Jobs\SendQueueEmail($details))
@@ -274,18 +252,20 @@ class PermitController extends Controller
      */
     public function sign(Request $req) 
     {
-        $noneSubheader = true;
+       $noneSubheader = true;
         if(!isset($req->token)) {
             \Session::put('error',"Invaild Link. Please check your email again.");
             return view('pages.documents.permits.permitSign', compact('noneSubheader', 'doc'));
         }
 
-        $link = $this->decription($req->token);
-        $pieces = explode(".", $link);
-        $docid = $pieces[0];
-        $docHisid = $pieces[1];
-        $doc = Document::find($docid);
-        $docHistory = DocHistory::find($docHisid);
+        $id = $this->decription($req->token);
+        $id = $this->decription($id);
+        $id = $this->decription($id);
+
+
+        $docHistory = DocHistory::find($id);
+
+
 
         if($docHistory->user_type > 1 && Auth::guest()) {
             return  redirect('/login');
@@ -297,11 +277,6 @@ class PermitController extends Controller
             return back();
         }
 
-        if($doc->type != $this->type) {
-            \Session::put('error',"Invaild Link. Please check your email again.");
-            return view('pages.documents.permits.permitSign', compact('noneSubheader', 'doc'));
-        }
-
         if(!Auth::guest()) {
             if( Auth::user()->role == 1) {
                 $users = User::where('company_id', Auth::user()->id)->get();
@@ -311,18 +286,44 @@ class PermitController extends Controller
         } else {
             $users = User::where('company_id', $doc->user_id)->get();
         }
-        if(is_null($doc) || is_null($docHistory)) {
-            \Session::put('error',"Invaild Link or Link is expired.");
-            return view('pages.documents.permits.permitSign', compact('noneSubheader', 'doc'));
+
+        if(is_null($docHistory)) {
+            // \Session::put('error',"Invaild Link or Link is expired.");
+            $message = "This document is already deleted";
+            return view('errors.documentError', compact('message'));
         }
 
-        return view('pages.documents.permits.permitSign', compact('noneSubheader', 'doc', 'docHistory', 'users'));
+        if($docHistory->document->type != $this->type) {
+            $message = "Invaild Link. Please check your email again.";
+            return view('errors.documentError', compact('message'));
+        }
+
+        if(\Session::get('success') || \Session::get('error')) {
+        }
+        else {
+            if($docHistory->status !=  $docHistory->document->status) {
+                $message = "You have already signed to this document or this document is expired!";
+                return view('errors.documentError', compact('message'));
+            }
+        }
+
+        if($docHistory->document->isCompleted) {
+            $filepath = $docHistory->document->file;
+            return view('pages.documents.preview', compact('noneSubheader', 'filepath'));
+        } else {
+            return view('pages.documents.permits.permitSign', compact('noneSubheader', 'docHistory', 'users'));
+        }
+
         
 
     }
 
-    public function generateLink($docid, $hisid) {
-        $encryption = openssl_encrypt($docid.'.'.$hisid, $this->ciphering,
+    public function generateLink($id) {
+        $encryption = openssl_encrypt($id, $this->ciphering,
+            $this->encryption_key, $this->options, $this->encryption_iv);
+        $encryption = openssl_encrypt($encryption, $this->ciphering,
+            $this->encryption_key, $this->options, $this->encryption_iv);
+        $encryption = openssl_encrypt($encryption, $this->ciphering,
             $this->encryption_key, $this->options, $this->encryption_iv);
         return 'https://'.request()->getHost().'/document/permit/sign/'.$encryption;
     }
@@ -332,39 +333,11 @@ class PermitController extends Controller
         return $decryption;
     }
 
-    public function getFiles($type) {
-        $path = 'Policies';
+    public function getFiles() {
+        $path = 'Permits';
         $files = array();
-
-        switch ($type) {
-            case 1:
-                $path = "RA";
-                break;
-
-            case 2:
-                $path = "AUDIT";
-                break;
-
-            case 3:
-                $path = "Permits";
-                break;
-
-            case 4:
-                $path = "Guidances";
-                break;
-
-            case 5:
-                $path = "Incidents";
-                break;
-            case 6:
-                $path = "Inductions";
-                break;
-            default:
-                // code...
-                break;
-        }
-        # $dir = getcwd().'/public/template/'.$path;
-        $dir = getcwd().'/template/'.$path;
+        $dir = getcwd().'/public/template/'.$path;
+        // $dir = getcwd().'/template/'.$path;
         if (file_exists($dir)) {
             $d = dir($dir);
             while (($file = $d->read()) !== false){
@@ -374,6 +347,7 @@ class PermitController extends Controller
                 }
             }
             $d->close();
+            sort($files);
             return $files;
         } else {
             return array();

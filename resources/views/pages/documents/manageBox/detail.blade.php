@@ -49,7 +49,7 @@
 
                     <div class="card-header flex-wrap border-0 pt-6 pb-0">
                         <div class="card-title">
-                            <h1 class="card-label text-dark h3"> {{$doc->subject}} Please Sign:FSDFS
+                            <h1 class="card-label text-dark h3"> {{$doc->subject}}
                             	<span class="d-block text-dark-50 pt-5 font-size-sm">From: <label >{{$doc->from}}<label></span>
                             	<span class="d-block text-dark-50 font-size-sm">Received on {{ date('m/d/Y   h:i:s', strtotime($doc->updated_at))}}</span>
                             	<span class="d-block text-dark-50 pt-2 font-size-sm">Created on {{ date('m/d/Y  h:i:s', strtotime($doc->document->created_at))}}</span>
@@ -84,7 +84,13 @@
 						<blockquote class="blockquote mt-4 mb-10 bg-gray-100 p-5 success-bar">
 						    <p class="mb-0 h6"><i class="text-dark-75 far fa-comment-dots"></i> Message</p>
 						    <footer class="blockquote-footer pt-3">
-						        <cite title="Source Title">{{$doc->message}}fdsfds</cite>
+						        <cite title="Source Title">
+									@if(is_null($doc->message))
+				        			No message have been entered
+									@else
+				        			{{$doc->message}}
+									@endif
+						        </cite>
 						    </footer>
 						</blockquote>
 

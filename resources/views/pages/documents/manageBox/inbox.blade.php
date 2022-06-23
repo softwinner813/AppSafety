@@ -96,7 +96,7 @@
 		                            	<td>
 		                            		<div class="left-border">
 		                            			<div class="p-3">
-				                            		<a href="{!! Route('document.box.detail', [$doc->id]) !!}" class="font-size-h6">{{$doc->subject}}SSSS</a><br>
+				                            		<a href="{!! Route('document.box.detail', [$doc->id]) !!}" class="font-size-h6">{{$doc->subject}}</a><br>
 				                            		<span>From: {{$doc->from}}</span>
 		                            			</div>
 		                            		</div>

@@ -98,29 +98,32 @@ Route::group(['prefix' => 'document'], function () {
 
     Route::group(['prefix' => 'induction'], function () {
         Route::get('/', 'Documents\Induction\InductionController@index')->name('document.induction')->middleware('auth');
-        Route::get('/edit', 'Documents\Induction\InductionController@edit')->name('document.induction.edit')->middleware('auth');
+        Route::post('/edit', 'Documents\Induction\InductionController@edit')->name('document.induction.edit')->middleware('auth');
+        Route::post('/upload', 'Documents\Induction\InductionController@upload')->name('document.induction.upload');
         Route::post('/save', 'Documents\Induction\InductionController@save')->name('document.induction.save');
         Route::post('/resend', 'Documents\Induction\InductionController@resendEmail')->name('document.induction.resend');
-        Route::get('/sign/{token}', 'Documents\Induction\InductionController@sign')->name('document.induction.sign');
+        Route::get('/sign/{token}', 'Documents\Induction\GuidanceController@sign')->name('document.induction.sign');
     });
 
+
     Route::group(['prefix' => 'incident'], function () {
-        Route::get('/', 'Incident\IncidentController@index')->name('document.incident')->middleware('auth');
-        Route::get('/edit', 'Incident\IncidentController@edit')->name('document.incident.edit')->middleware('auth');
-        Route::post('/save', 'Incident\IncidentController@save')->name('document.incident.save');
-        Route::post('/resend', 'Incident\IncidentController@resendEmail')->name('document.incident.resend')->middleware('auth');
-        Route::get('/sign/{token}', 'Incident\IncidentController@sign')->name('document.incident.sign');
-        Route::get('/history/{docid}', 'Incident\IncidentController@history')->name('document.incident.history');
+        Route::get('/', 'Documents\Incident\IncidentController@index')->name('document.incident')->middleware('auth');
+        Route::post('/edit', 'Documents\Incident\IncidentController@edit')->name('document.incident.edit')->middleware('auth');
+        Route::post('/upload', 'Documents\Incident\IncidentController@upload')->name('document.incident.upload');
+        Route::post('/save', 'Documents\Incident\IncidentController@save')->name('document.incident.save');
+        Route::post('/resend', 'Documents\Incident\IncidentController@resendEmail')->name('document.incident.resend');
+        Route::get('/sign/{token}', 'Documents\Incident\IncidentController@sign')->name('document.incident.sign');
     });
 
     Route::group(['prefix' => 'permit'], function () {
-        Route::get('/', 'Permit\PermitController@index')->name('document.permit')->middleware('auth');
-        Route::get('/edit', 'Permit\PermitController@edit')->name('document.permit.edit')->middleware('auth');
-        Route::post('/save', 'Permit\PermitController@save')->name('document.permit.save');
-        Route::post('/resend', 'Permit\PermitController@resendEmail')->name('document.permit.resend')->middleware('auth');
-        Route::get('/sign/{token}', 'Permit\PermitController@sign')->name('document.permit.sign');
-        Route::get('/history/{docid}', 'Permit\PermitController@history')->name('document.permit.history');
+        Route::get('/', 'Documents\Permit\PermitController@index')->name('document.permit')->middleware('auth');
+        Route::post('/edit', 'Documents\Permit\PermitController@edit')->name('document.permit.edit')->middleware('auth');
+        Route::post('/upload', 'Documents\Permit\PermitController@upload')->name('document.permit.upload');
+        Route::post('/save', 'Documents\Permit\PermitController@save')->name('document.permit.save');
+        Route::post('/resend', 'Documents\Permit\PermitController@resendEmail')->name('document.permit.resend');
+        Route::get('/sign/{token}', 'Documents\Permit\PermitController@sign')->name('document.permit.sign');
     });
+
 
 
     Route::group(['prefix' => 'box', 'middleware' => 'auth'], function () {

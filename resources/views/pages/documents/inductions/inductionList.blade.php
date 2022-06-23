@@ -78,13 +78,13 @@
                                             {{  $doc->name }}    
                                         </a>
                                     </td>
-                                    <td>{{ $doc->to}}</td>
+                                    <td>{{ $doc->to }}</td>
                                     <td>{{ $doc->created_at }}</td>
                                     <td >
                                         @if($doc->status == 1)
                                         <span class="label label-danger label-inline font-weight-lighter text-white text-center"><i class="far fa-envelope text-white font-size-sm"></i>&nbsp; Signing</span>
                                         @elseif($doc->status == 2)
-                                        <span class="label label-primary label-inline font-weight-lighter text-white text-center">Completed</span>
+                                        <span class="label label-primary label-inline font-weight-lighter text-white text-center"><i class="fas fa-check text-white font-size-sm"></i>&nbsp;Completed</span>
                                         @endif
                                     </td>
                                     <td class="col-md-2">

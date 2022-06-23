@@ -1,26 +1,13 @@
-var pdfRowData ;
+var pdf;
+var file;
 var isSignActive = false;
-var signData;
-// var pdf = new PDFAnnotate("pdf-container", '/'+ filepath, {
-//   onPageUpdated(page, oldData, newData) {
-//     console.log(page, oldData, newData);
-//   },
-//   ready() {
-//     console.log("Plugin initialized successfully");
-//   },
-//   scale: 1.5,
-//   pageImageCompression: "MEDIUM", // FAST, MEDIUM, SLOW(Helps to control the new PDF file size)
-// });
-
-// $('input[type=file]').change(function () {
 
 
-function selectTemplate(filename) {
-    path = "Incidents";
-    var dir = '/template/' + path + '/' + filename; 
-    console.log(dir);
+// Load Document
+function loadDocument(path , callback) {
+    
 
-    pdf = new PDFAnnotate("pdf-container", dir, {
+    pdf = new PDFAnnotate("pdf-container", path, {
       onPageUpdated(page, oldData, newData) {
         console.log(page, oldData, newData);
       },
@@ -28,63 +15,30 @@ function selectTemplate(filename) {
         console.log("Plugin initialized successfully");
         file = filename;
 
-        $('#template_board').removeClass('d-flex').addClass('d-none');
-        $('#sendBtn').removeClass('d-none');
-        $('#showTmpBtn').removeClass('d-none');
+        // $('#template_board').removeClass('d-flex').addClass('d-none');
+        // $('#sendBtn').removeClass('d-none');
+        // $('#showTmpBtn').removeClass('d-none');
 
-        $('#filename').val(filename);
+        // Init Singature Text
+        pdf.enableAddText('', true);
+        $('canvas').trigger('click');
+
+        return callback();
+
       },
       scale: 2,
-      pageImageCompression: "MEDIUM", // FAST, MEDIUM, SLOW(Helps to control the new PDF file size)
+      pageImageCompression: "FAST", // FAST, MEDIUM, SLOW(Helps to control the new PDF file size)
     });
 
 }
 
-function showTemplates() {
-    $('#pdf-container').html('');
-    $('#showTmpBtn').addClass('d-none');
-    $('#sendBtn').addClass('d-none');
-    $('#template_board').removeClass('d-none').addClass('d-flex');
-
-}
-
-$('.loadPDF').change(function (e) {
-    // document.querySelector(domID).addEventListener("change", function(e){
-        var canvasElement = document.querySelector("canvas")
-        var file = e.target.files[0]
-        if(file.type != "application/pdf"){
-            console.error(file.name, "is not a pdf file.")
-            return
-        }
-        
-        var fileReader = new FileReader();
-
-        fileReader.onload = function() {
-            var typedarray = new Uint8Array(this.result);
-            console.log("ARRAY", typedarray);
-
-            pdf = new PDFAnnotate("pdf-container", typedarray, {
-              onPageUpdated(page, oldData, newData) {
-                console.log(page, oldData, newData);
-              },
-              ready() {
-                console.log("Plugin initialized successfully");
-              },
-              scale: 1.5,
-              pageImageCompression: "MEDIUM", // FAST, MEDIUM, SLOW(Helps to control the new PDF file size)
-            });
-        };
-
-        fileReader.readAsArrayBuffer(file);
-    // })
-});
-
 
 function changeActiveTool(event) {
-    var element = $(event.target).hasClass("tool-button")
+    var element = $(event.target).hasClass(".menu-item")
       ? $(event.target)
-      : $(event.target).parents(".tool-button").first();
-    $(".tool-button.active").removeClass("active");
+      : $(event.target).parents(".menu-item").first();
+    // var element = event.target;
+    $(".menu-item.active").removeClass("active");
     $(element).addClass("active");
 }
 
@@ -100,10 +54,10 @@ function enablePencil(event) {
     pdf.enablePencil();
 }
 
-function enableAddText(event) {
+function enableAddText(event, text, isSign = false) {
     event.preventDefault();
     changeActiveTool(event);
-    pdf.enableAddText();
+    pdf.enableAddText(text, isSign);
 }
 
 function enableAddArrow(event) {
@@ -130,31 +84,17 @@ function deleteSelectedObject(event) {
   pdf.deleteSelectedObject();
 }
 
-function savePDF() {
-    filename = "Incident" + '-' + `${new Date().getTime()}.pdf`;
+
+function savePDF(callback) {
     if(pdf != undefined) {
-        $('#progressModal').modal('show');
         setTimeout(function(){
-            pdf.savePdf(filename, function(){
-                $('#progressModal').modal('hide');
-                $('#uploadModal').modal('show');
+            pdf.getBlob(function(blob){
+                return callback(blob);
             }); // save with given file name
         }, 500);
     }
 
 }
-
-function clearPage() {
-    pdf.clearActivePage();
-}
-
-function showPdfData() {
-    var string = pdf.serializePdf();
-    $('#dataModal .modal-body pre').first().text(string);
-    PR.prettyPrint();
-    $('#dataModal').modal('show');
-}
-
 
 
 function changeUserType(myRadio) {
@@ -169,56 +109,261 @@ function changeUserType(myRadio) {
     }
 }
 
-$(function () {
-    $('.color-tool').click(function () {
-        $('.color-tool.active').removeClass('active');
-        $(this).addClass('active');
-        color = $(this).get(0).style.backgroundColor;
-        pdf.setColor(color);
-    });
 
-    $('#brush-size').change(function () {
-        var width = $(this).val();
-        pdf.setBrushSize(width);
-    });
+// Get Fill-Form 
+function getFillForm(callback) {
+    if(pdf != undefined) {
+        var json = pdf.serializePdf();
+        return callback(json);
+    }
+}
 
-    $('#font-size').change(function () {
-        var font_size = $(this).val();
-        pdf.setFontSize(font_size);
+function showModal(id, show) {
+    $(id).modal(show);
+}
 
-    });
+function clearPage() {
+    pdf.clearActivePage();
+}
 
-    $('#documentFile').change(function(e){
-        var filename = e.target.files[0];
-        $('#uploadFileTxt').text(filename.name);
-    });
+function showPdfData() {
+    var string = pdf.serializePdf();
+    $('#dataModal .modal-body pre').first().text(string);
+    PR.prettyPrint();
+    $('#dataModal').modal('show');
+}
 
-    $('#selected_sign').click(function(){
+// Show/Hide Next&Finish Button
+function toggleNextFinish(isNext) {
+    if(isNext) {
+        $('#finishBtnPanel').hide();
+        $('#nextBtnPanel').show();
+        
+        $('#fill-form-field').hide();
+        $('#standard-field').show();
 
-        signData = $(this).attr('src');
-        console.log("SignData", signData);
-        if(signData != undefined && signData != '') {
-            isSignActive = true;
-        }
-    });
+    } else {
+        $('#nextBtnPanel').hide();
+        $('#finishBtnPanel').show();
 
-    $('#pdf-container').mouseup(function(e) {
-        if(isSignActive) {
-            const target = e.target;
+        $('#standard-field').hide();
+        $('#fill-form-field').show();
+    }
+}
 
-            // Get the bounding rectangle of target
-            const rect = target.getBoundingClientRect();
+// Handle Document
+var KTHandleDocument = function() {
+    var _initLoad = function() {
+        var path = '/template/Permits/' + filename; 
+        console.log(path);
 
-            // Mouse position
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            console.log("Mouse Position: ", x, y);
-            pdf.addSignature(signData, x, y, function(){
-                signData = '';
-                isSignActive = false;
+        showModal('#progressModal', 'show')
+
+        loadDocument(path, function() {
+            showModal('#progressModal', 'hide')
+            
+            // Show Next Button
+            toggleNextFinish(true);
+
+        });
+
+    }
+
+    var _handleDocument = function() {
+
+        var validation;
+        // var filepath;
+        // Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
+        validation = FormValidation.formValidation(
+            KTUtil.getById('kt_add_email_form'),
+            {
+                fields: {
+                    email: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Email is required'
+                            }
+                        },
+                        emailAddress: {
+                            message: 'The value is not a valid email address'
+                        }
+                    },
+                    subject: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Subject is required'
+                            }
+                        },
+                    },
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    bootstrap: new FormValidation.plugins.Bootstrap()
+                }
+            }
+        );
+
+        // Next Button
+        $('.next-btn').on('click', function (e) {
+            e.preventDefault();
+            // Show Progress Dialog
+            showModal('#progressModal', 'show');
+
+            // Disable button
+            // $(this).attr('disabled', true);
+
+            savePDF(function(blob){
+                console.log("========>", blob);
+
+                // Upload Document to server
+                filename = "Permit" + '-' + `${new Date().getTime()}`;
+                var fd = new FormData();
+                fd.append('filename', filename);
+                fd.append('document', blob);
+                $.ajax({
+                    type: 'POST',
+                    url: '/document/permit/upload',
+                    data: fd,
+                    processData: false,
+                    contentType: false
+                }).done(function(data) {
+                       console.log(data);
+                       if(data.result) {
+                            filepath = data.file;
+                            $('#filepath').val(filepath);
+                            loadDocument('/' + filepath, function() {
+                                showModal('#progressModal', 'hide');
+
+                                // Show Message
+                                toastr.info("Your signature saved successfully!", "SUCCESS");
+
+                                // Show Finish Button
+                                toggleNextFinish(false);
+                            });
+
+                       }
+                }).fail(function(xhr, status, error) {
+                      //Ajax request failed.
+                      var errorMessage = xhr.status + ': ' + xhr.statusText
+                      // alert('Error - ' + errorMessage);
+                      showModal('#progressModal', 'hide');
+
+                      // Show Message
+                      toastr.error(errorMessage, "ERROR");
+                });
+
+            })
+
+        });
+
+
+        // Submit Button
+        $('#sendEm_btn').on('click', function (e) {
+            e.preventDefault();
+
+            validation.validate().then(function(status) {
+                if (status == 'Valid') {
+                    $('#sendEm_btn').attr('disabled', true);
+                    showModal('#progressModal', 'show');
+
+                    getFillForm(function(json) {
+                        var jsonData = JSON.parse(json);
+                        $('#fills').val(JSON.stringify(jsonData));
+                        
+
+                        // Hide Email Modal
+                        showModal('#sendEmailModal', 'hide');
+
+                        // Show Progress Modal
+                        showModal('#progressModal', 'show');
+                        
+                        // Submit Data
+                        $('#kt_add_email_form').submit();
+
+                    });
+
+                } else {
+                    swal.fire({
+                        text: "Sorry, looks like there are some errors detected, please try again.",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        confirmButtonClass: "btn font-weight-bold btn-light"
+                    }).then(function() {
+                        KTUtil.scrollTop();
+                    });
+                }
             });
+        });
+
+        // Change Color
+        $('.color-tool').click(function () {
+            $('.color-tool.active').removeClass('active');
+            $(this).addClass('active');
+            color = $(this).get(0).style.backgroundColor;
+            pdf.setColor(color);
+        });
+
+        // Change Brush Size
+        $('#brush-size').change(function () {
+            var width = $(this).val();
+            pdf.setBrushSize(width);
+        });
+
+        // Change Font Size
+        $('#font-size').change(function () {
+            var font_size = $(this).val();
+            pdf.setFontSize(font_size);
+
+        });
+
+
+        // Change Document
+        $('#documentFile').change(function(e){
+            var filename = e.target.files[0];
+            $('#uploadFileTxt').text(filename.name);
+        });
+
+        // Change Draw Signature        
+        $('#selected_sign').click(function(){
+            signData = $(this).attr('src');
+            if(signData != undefined && signData != '') {
+                isSignActive = true;
+            }
+        });
+
+        // Attach Draw Signature when mouse click
+        $('#pdf-container').mouseup(function(e) {
+            if(isSignActive) {
+                const target = e.target;
+
+                // Get the bounding rectangle of target
+                const rect = target.getBoundingClientRect();
+
+                // Mouse position
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                console.log("Mouse Position: ", x, y);
+                pdf.addSignature(signData, x, y, function(){
+                    signData = '';
+                    isSignActive = false;
+                });
+            }
+        });
+
+    }
+
+    // Public Functions
+    return {
+        // public functions
+        init: function() {
+            _initLoad();
+            _handleDocument();
         }
-    });
+    };
+}();
+
+
+jQuery(document).ready(function() {
+    KTHandleDocument.init();
 });
-
-
