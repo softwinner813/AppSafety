@@ -3,6 +3,7 @@
 @section('content')
 <!-- <div class="body"> -->
 	<!-- <div  class="body"> -->
+
 		@if ($message = Session::get('success'))
 		<div class="container" >
 	   	<div class="alert alert-custom alert-notice alert-light-success mt-10 fade show" role="alert">
@@ -47,7 +48,6 @@
 				<div class="col-md-10 col-xs-9 bg-green " id="pdf-wrapper" style="background-color: #c0c0c0; position: relative; min-height:100% ; height: calc(100% + 20px); overflow-y: auto;">
 					<div>
 						<!-- <span style="width:10px; height:10px; background-color: red;z-index: 10000000; border-radius: 100%; position: absolute; top: 106px; left: 575.44px;"></span> -->
-						
 					</div>
 					<div id="nextBtnPanel" style="display: none;">
 						<div style=" height: 70px; width: 100%; background-color: #005cb9; position: fixed; bottom: 0px;left: 0px; z-index: 10000000;" class="d-flex justify-content-between align-items-center py-2 px-5">
@@ -203,6 +203,8 @@
 <script type="text/javascript">
 	var filepath = `{!! $docHistory ? $docHistory->document->file : '' !!}`;
 	var jsonObjects = `{!! $docHistory ? $docHistory->fill_forms : '[]' !!}`;
+	console.log("SSSSSSSSSSSSSSSS=>\r\n");
+	console.log(jsonObjects);
 </script>
 <script src="/js/pdfjs/pdf.js"></script>
 <script src="/js/pdfjs/pdf.worker.js"></script>

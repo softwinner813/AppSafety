@@ -99,7 +99,7 @@ function savePDF(callback) {
 // Get Fill-Form 
 function getFillForm(callback) {
     if(pdf != undefined) {
-        let json = pdf.serializePdf();
+        var json = pdf.serializePdf();
         return callback(json);
     }
 }

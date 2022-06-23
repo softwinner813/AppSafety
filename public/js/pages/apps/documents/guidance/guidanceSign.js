@@ -8,7 +8,7 @@ function loadDocument(path, callback) {
 
     pdf = new PDFAnnotate("pdf-container", path, {
       onPageUpdated(page, oldData, newData) {
-        console.log(page, oldData, newData);
+        // console.log(page, oldData, newData);
       },
       ready() {
         console.log("Plugin initialized successfully");
@@ -93,7 +93,7 @@ function savePDF(callback) {
 // Get Fill-Form 
 function getFillForm(callback) {
     if(pdf != undefined) {
-        let json = pdf.serializePdf();
+        var json = pdf.serializePdf();
         return callback(json);
     }
 }
@@ -168,7 +168,7 @@ var KTHandleDocument = function() {
                 console.log("====================> Loaded successfully");
 
                 let jsonFills = JSON.parse(jsonObjects);
-                console.log("DATA--------->", jsonFills);
+                
                 pdf.loadFromJSON(jsonFills);
 
                 // Get Fills Positions
