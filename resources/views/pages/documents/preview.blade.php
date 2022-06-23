@@ -1,6 +1,9 @@
 @extends('layout.default')
 
 @section('content')
+	@if ($message = Session::get('success'))
+	<?php Session::forget('success');?>
+	@endif
 
     <div class="container-fluid p-0"  style='background-color: #eef0f8; font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif"; height: 100% ; '>
 		<div class="row" style="height: 100%;">

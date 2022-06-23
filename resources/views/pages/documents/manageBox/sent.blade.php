@@ -97,7 +97,7 @@
 		                            		<div class="left-border">
 		                            			<div class="p-3">
 				                            		<a href="{!! Route('document.box.detail', [$doc->id]) !!}" class="font-size-h6">{{$doc->subject}}SSSS</a><br>
-				                            		<span>From: {{$doc->from}}</span>
+				                            		<span>To: {{$doc->to}}</span>
 		                            			</div>
 		                            		</div>
 		                            	</td>

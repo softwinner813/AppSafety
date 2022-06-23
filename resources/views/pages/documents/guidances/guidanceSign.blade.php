@@ -202,8 +202,6 @@
 <script type="text/javascript">
 	var filepath = `{!! $docHistory ? $docHistory->document->file : '' !!}`;
 	var jsonObjects = `{!! $docHistory ? $docHistory->fill_forms : '[]' !!}`;
-	console.log("SSSSSSSSSSSSSSSS=>\r\n");
-	console.log(jsonObjects);
 </script>
 <script src="/js/pdfjs/pdf.js"></script>
 <script src="/js/pdfjs/pdf.worker.js"></script>
