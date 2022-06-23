@@ -3,39 +3,39 @@
 @section('content')
 <div class="d-flex flex-column-fluid">
     <div class="{{ Metronic::printClasses('content-container', false) }}">
-        <h1 class="mt-10 text-white" style="font-size: 40px; font-family: fantasy;">{{$page_title}}</h1>
-        <h6 class="text-white mb-5" style="font-size: 20px;font-family: monospace;">{{$page_description}}</h6>
+        <h1 class="mt-10 text-white" style="font-size: 40px;">{{$page_title}}</h1>
+        <h6 class="text-white mb-5 font-weight-lighter" style="font-size: 20px;">{{$page_description}}</h6>
         <div class="row">
             <div class="col-md-8 p-15  bg-white">
                 <form action="{!! Route('contact.send') !!}" method="POST" id="contact_form">
-                    <h1 style="font-size: 30px; color: #126bca; font-family: serif;font-weight: bold;">Send your request</h1>
+                    <h1 style="font-size: 30px; color: #126bca; ">Send your request</h1>
                     <div class="form-group row fv-plugins-icon-container mt-10">
                         <div class="col-lg-6">
-                            <label class="font-size-h4">* Full Name:</label>
+                            <label class="font-size-h5">* Full Name:</label>
                             <input type="text" name="name" class="form-control" placeholder="Full Name" value="" required autocomplete="name" autofocus>
                             <div class="fv-plugins-message-container"></div>
                         </div>
                         <div class="col-lg-6">
-                            <label class="font-size-h4">* Phone Number:</label>
+                            <label class="font-size-h5">* Phone Number:</label>
                             <input type="text" name="phonenumber" class="form-control" placeholder="+1 (312) 342 2345" value="" required autocomplete="phonenumber" autofocus>
                             <div class="fv-plugins-message-container"></div>
                         </div>
                     </div>
                     <div class="form-group row fv-plugins-icon-container">
                         <div class="col-lg-6">
-                            <label class="font-size-h4">* E-mail:</label>
+                            <label class="font-size-h5">* E-mail:</label>
                             <input type="email" name="email" class="form-control" placeholder="appsafely@sale.com" value="" required autocomplete="email">
                             <div class="fv-plugins-message-container"></div>
                         </div>
                         <div class="col-lg-6">
-                            <label class="font-size-h4">* Company:</label>
+                            <label class="font-size-h5">* Company:</label>
                             <input type="text" name="company" class="form-control" placeholder="AppSafely" value="" required autocomplete="company">
                             <div class="fv-plugins-message-container"></div>
                         </div>
                     </div>
                     <div class="form-group row fv-plugins-icon-container">
                         <div class="col-lg-12">
-                            <label class="font-size-h4">* Comments:</label>
+                            <label class="font-size-h5">* Comments:</label>
                             <textarea class="form-control" name="comment" placeholder="Enter your comment" rows="5" required autocomplete="comment"></textarea>
                             <div class="fv-plugins-message-container"></div>
                         </div>
@@ -54,17 +54,17 @@
                 </form>
             </div>            
             <div class="col-md-4 p-15" style="background-color: #d9e3fd;">
-                <h1 class="mb-10 text-center " style="font-size: 30px; color: #126bca; font-family: serif;font-weight: bold;">Contact Information</h1>
-                <div class="font-size-h3 mt-20 " style=" font-family: serif;font-weight: bold;">
+                <h1 class="mb-10 text-center " style="font-size: 30px; color: #126bca;">Contact Information</h1>
+                <div class="font-size-h5 mt-20 " st >
                     <label>Address: &nbsp;&nbsp;</label>
-                    <label style="color: #126bca;">1 Dunraven Dr, Newport, NP10 8HS</label>
+                    <label style="color: #126bca; ">1 Dunraven Dr, Newport, NP10 8HS</label>
                 </div>
-                <div class="font-size-h3 mt-20 " style=" font-family: serif;font-weight: bold;">
+                <div class="font-size-h5 mt-20 " >
                     <label>Phone: &nbsp;&nbsp;</label>
                     <label style="color: #126bca;">+44 078 2577 8944</label>
                 </div>
 
-                <div class="font-size-h3 mt-20 " style=" font-family: serif;font-weight: bold;">
+                <div class="font-size-h5 mt-20 " >
                     <label>E-mail: &nbsp;&nbsp;</label>
                     <label style="color: #126bca;">Info@appsafely.co.uk</label>
                 </div>
