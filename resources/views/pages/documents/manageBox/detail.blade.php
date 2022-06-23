@@ -60,9 +60,23 @@
 
                     <div class="card-body">
                         <div class="ds-center d-flex justify-content-between align-items-center">
+                        	@if($doc->document->isCompleted)
                         	<span><i class="fa fa-check text-success"></i> Completed</span>
+                        	@elseif($doc->to == Auth::user()->email)
+                        	<span class="label label-primary label-inline font-weight-lighter text-white text-center"><i class="fas fa-marker text-white font-size-sm"></i>&nbsp;Need to sign</span>
+                        	@else
+                        	<span class="label label-danger label-inline font-weight-lighter text-white text-center"><i class="fas fa-marker text-white font-size-sm"></i>&nbsp;Waiting signing...</span>
+                        	@endif
+
+
                         	<div class="d-flex justify-content-center ">
+	                        	@if($doc->document->isCompleted)
+                        		<a class="btn btn-secondary btn-sm mr-2" href="{{Route('document.box.download', [$doc->id])}}"><i class="fas fa-download icon-sm"></i>&nbsp;DOWNLOAD</a>
+                        		@elseif($doc->to == Auth::user()->email)
                         		<a class="btn btn-primary btn-sm mr-2" href="{{Route('document.box.sign', [$doc->id])}}"><i class="fas fa-pencil-alt icon-sm"></i>&nbsp;SIGN</a>
+	                        	@else
+	                        	<a class="btn btn-primary btn-sm mr-2" href="{{Route('document.box.resend', [$doc->id])}}"><i class="far fa-paper-plane icon-sm"></i>&nbsp;RESEND</a>
+	                        	@endif
 								<a class="btn btn-danger btn-sm" href="{{Route('document.box.moveDel', [$doc->id])}}"><i class="fa fa-trash icon-sm"></i> &nbsp;DELETE</a>
                         	</div>
                         </div>
