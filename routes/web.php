@@ -133,6 +133,7 @@ Route::group(['prefix' => 'document'], function () {
         Route::get('/moveDel/{id}', 'DocumentController@moveDel')->name('document.box.moveDel');
         Route::get('/preview/{id}', 'DocumentController@preview')->name('document.box.preview');
         Route::get('/download/{id}', 'DocumentController@download')->name('document.box.download');
+        Route::get('/resend/{id}', 'DocumentController@resendEmail')->name('document.box.resend');
         Route::get('/restore/{id}', 'DocumentController@restore')->name('document.box.restore');
         Route::get('/delete/{id}', 'DocumentController@delete')->name('document.box.delete');
 

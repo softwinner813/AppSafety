@@ -106,7 +106,7 @@
 		                               			@if($doc->document->isCompleted)
 		                               			<span class="label label-primary label-inline font-weight-lighter text-white text-center"><i class="fas fa-check text-white font-size-sm"></i>&nbsp;Completed</span>
 		                               			@else
-		                               			<span class="label label-danger label-inline font-weight-lighter text-white text-center"><i class="fas fa-pencil-alt text-white font-size-sm"></i>&nbsp; Need to Sign</span>
+		                               			<span class="label label-danger label-inline font-weight-lighter text-white text-center"><i class="fas fa-pencil-alt text-white font-size-sm"></i>&nbsp; Waiting Signing...</span>
 		                               			@endif
 		                               		</div>
 		                               	</td>
@@ -131,12 +131,12 @@
 												</div>
 												@else
 												<div class="btn-group">
-												    <a href="{{Route('document.box.sign', [$doc->id])}}" class="btn btn-primary btn-sm">SIGN</a>
+												    <a href="{{Route('document.box.resend', [$doc->id])}}" class="btn btn-primary btn-sm">RESEND</a>
 												    <button type="button" class="btn btn-primary btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 												        <span class="sr-only">Toggle Dropdown</span>
 												    </button>
 												    <div class="dropdown-menu" style="">
-														<a class="dropdown-item" href="{{Route('document.box.sign', [$doc->id])}}"><i class="fas fa-pencil-alt font-size-sm text-danger"></i>&nbsp;&nbsp; SIGN</a>
+														<a class="dropdown-item" href="{{Route('document.box.resend', [$doc->id])}}"><i class="fas fa-pencil-alt font-size-sm text-danger"></i>&nbsp;&nbsp; RESEND</a>
 														<a class="dropdown-item" href="{{Route('document.box.moveDel', [$doc->id])}}"><i class="fa fa-trash font-size-sm text-danger"></i> &nbsp;&nbsp; DELETE</a>
 													</div>
 												</div>

@@ -435,52 +435,42 @@ class DocumentController extends Controller
      */
     public function resendEmail(Request $req) 
     {
-        $doc = Document::find($req->id);
+        $doc = DocHistory::find($req->id);
         $link = $this->generateLink($req->id);
+
         $details = [
             'type' => 'SHARE_DOCUMENT',
-            'email' => $doc->to,
-            'from' =>  Auth::user()->name,
-            'link' => $link
+            'subject' => $doc->subject,
+            'msg' => $doc->message,
+            'to' => $doc->to,
+            'from' =>  $doc->from,
+            'link' => $link,
+            'isCompleted' => $doc->document->isCompleted
         ];
         
         $job = (new \App\Jobs\SendQueueEmail($details))
                 ->delay(now()->addSeconds(1)); 
 
-        if(dispatch($job)) {
-            return response()->json([
-              'status' => 200,
-              'result' => true,
-              'data' => $doc
-            ], 200);
-        } else {
-            return response()->json([
-              'status' => 500,
-              'result' => false,
-              'message' => "Can't send email. Please retry!"
-            ], 500);
+        dispatch($job);
 
+
+        if(dispatch($job)) {
+           \Session::put('success',"Resend Successfully!");
+            return back();
+        } else {
+            \Session::put('error',"Ooops, Please retry!");
+            return back();
         }
     }
 
-    /**
-     * Share document with Employee email
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function sendEmail($email, $from, $link) 
-    {
-        $details = [
-            'type' => 'SHARE_DOCUMENT',
-            'email' => $email,
-            'from' =>  $from,
-            'link' => $link
-        ];
-        
-        $job = (new \App\Jobs\SendQueueEmail($details))
-                ->delay(now()->addSeconds(1)); 
-
-        return dispatch($job);
+    public function generateLink($id) {
+        $encryption = openssl_encrypt($id, $this->ciphering,
+            $this->encryption_key, $this->options, $this->encryption_iv);
+        $encryption = openssl_encrypt($encryption, $this->ciphering,
+            $this->encryption_key, $this->options, $this->encryption_iv);
+        $encryption = openssl_encrypt($encryption, $this->ciphering,
+            $this->encryption_key, $this->options, $this->encryption_iv);
+        return 'https://'.request()->getHost().'/document/guidance/sign/'.$encryption;
     }
 
 
@@ -510,41 +500,8 @@ class DocumentController extends Controller
         return view('emails.docEmail', compact('from', 'link', 'isCompleted', 'subject', 'msg' ));
     }
 
-    public function generateLink($id) {
-        $encryption = openssl_encrypt($id, $this->ciphering,
-            $this->encryption_key, $this->options, $this->encryption_iv);
-        $encryption = openssl_encrypt($encryption, $this->ciphering,
-            $this->encryption_key, $this->options, $this->encryption_iv);
-        $encryption = openssl_encrypt($encryption, $this->ciphering,
-            $this->encryption_key, $this->options, $this->encryption_iv);
-        return 'https://'.request()->getHost().'/document/guidance/sign/'.$encryption;
-    }
+ 
 
-    public function test(Request $req)
-    {
-        $file = $req->file('data');
-
-        if($file) {
-            $filename =$file->getClientOriginalName().date('his').'.'.$file->extension();
-            $path='uploads/documents';
-            $fullpath = $path.'/'.$filename;
-            // if (file_exists($fullpath)) {
-            //     unlink($fullpath);
-            // }
-            $file->move($path,$filename );
-            return response()->json([
-              'status' => 200,
-              'result' => true,
-            ], 200);
-        } else {
-            return response()->json([
-              'status' => 500,
-              'result' => false,
-              'message' => "Can't send email. Please retry!"
-            ], 500);
-
-        }
-    }
 
     
 }
