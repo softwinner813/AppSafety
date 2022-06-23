@@ -87,7 +87,6 @@ function savePDF(callback) {
             }); // save with given file name
         }, 500);
     }
-
 }
 
 // Get Fill-Form 

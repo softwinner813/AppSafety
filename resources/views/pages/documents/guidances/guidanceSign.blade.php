@@ -1,9 +1,6 @@
 @extends('layout.default')
 
 @section('content')
-<!-- <div class="body"> -->
-	<!-- <div  class="body"> -->
-
 		@if ($message = Session::get('success'))
 		<div class="container" >
 	   	<div class="alert alert-custom alert-notice alert-light-success mt-10 fade show" role="alert">
@@ -115,6 +112,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 
