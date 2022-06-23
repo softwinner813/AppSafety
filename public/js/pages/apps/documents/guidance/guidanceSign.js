@@ -21,7 +21,7 @@ function loadDocument(path, callback) {
         return callback();
       },
       scale: 2,
-      pageImageCompression: "SLOW", // FAST, MEDIUM, SLOW(Helps to control the new PDF file size)
+      pageImageCompression: "FAST", // FAST, MEDIUM, SLOW(Helps to control the new PDF file size)
     });
 
 }
