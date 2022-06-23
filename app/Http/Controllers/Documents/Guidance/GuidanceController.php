@@ -276,9 +276,12 @@ class GuidanceController extends Controller
             return view('errors.documentError', compact('message'));
         }
 
-        if($docHistory->status !=  $docHistory->document->status) {
-            $message = "You have already signed to this document or this document is expired!";
-            return view('errors.documentError', compact('message'));
+        if(Session::get('success') || Session::get('error')) {}
+        else {
+            if($docHistory->status !=  $docHistory->document->status) {
+                $message = "You have already signed to this document or this document is expired!";
+                return view('errors.documentError', compact('message'));
+            }
         }
 
         if($docHistory->document->isCompleted) {
