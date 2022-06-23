@@ -146,13 +146,16 @@ class DocumentController extends Controller
             case $this->AUDIT:
                 break;
             case $this->PERMIT:
+                return redirect()->route('document.permit');
                 break;
             case $this->GUIDANCE:
                 return redirect()->route('document.guidance');
                 break;
             case $this->INCIDENT:
+                return redirect()->route('document.incident');
                 break;
             case $this->INDUCTION:
+                return redirect()->route('document.induction');
                 break;
             
             default:
