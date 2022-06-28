@@ -102,7 +102,7 @@ Route::group(['prefix' => 'document'], function () {
         Route::post('/upload', 'Documents\Induction\InductionController@upload')->name('document.induction.upload');
         Route::post('/save', 'Documents\Induction\InductionController@save')->name('document.induction.save');
         Route::post('/resend', 'Documents\Induction\InductionController@resendEmail')->name('document.induction.resend');
-        Route::get('/sign/{token}', 'Documents\Induction\GuidanceController@sign')->name('document.induction.sign');
+        Route::get('/sign/{token}', 'Documents\Induction\InductionController@sign')->name('document.induction.sign');
     });
 
 
