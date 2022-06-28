@@ -181,7 +181,7 @@ class PermitController extends Controller
         // Send Email
         $link = $this->generateLink($docHistory->id);
 
-        dd($link);die();
+        // dd($link);die();
         if(!$this->sendEmail($req->subject, $req->comment,  $docHistory->from, $docHistory->to, $link, $doc->isCompleted)) {
             \Session::put('error',"Can't send email. Please retry!");
             return redirect()->back();
