@@ -284,7 +284,7 @@
 @if (!is_null(Session::get('success')) && Session::get('success') != '')
 	<script src="/js/pages/apps/documents/permit/permitSign.js"></script>
 	<script src="/js/pages/apps/documents/sign.js"></script>
-@else
+@endif
 
 @endsection
 
