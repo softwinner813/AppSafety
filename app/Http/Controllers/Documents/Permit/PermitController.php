@@ -188,8 +188,11 @@ class PermitController extends Controller
         } 
 
         if($req->id) {
-            \Session::put('success',"Document is completed successfully!");
-            return redirect()->back();
+            // \Session::put('success',"Document is completed successfully!");
+            // return redirect()->back();
+            $noneSubheader = true;
+            $filepath = $docHistory->document->file;
+            return view('pages.documents.preview', compact('noneSubheader', 'filepath'));
         } else{
             return redirect()->route('document.box.sent', [$this->type]);
         }
