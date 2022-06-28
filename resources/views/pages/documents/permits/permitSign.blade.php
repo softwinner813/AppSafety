@@ -88,24 +88,35 @@
                 <div class="modal-body">
                                   	<div class="form-group">
 						<div class="radio-inline">
-						@if(!Auth::guest() && Auth::user()->role == 1)
+						@if(Auth::guest())
+							<label class="radio radio-lg">
+							<input type="radio" name="userType" value="3" onchange="changeUserType(this);">
+							<span></span>To Company Admin</label>
 							<label class="radio radio-lg">
 							<input type="radio" name="userType" value="2" onchange="changeUserType(this);">
 							<span></span>To Company Users</label>
 							<label class="radio radio-lg">
 							<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
 							<span></span>To Employee</label>
-							<label class="radio radio-lg">
-						@else 
-							<label class="radio radio-lg">
-							<input type="radio"  name="userType" value="3" onchange="changeUserType(this);">
-							<span></span>To Company Admin</label>
-							<label class="radio radio-lg">
-							<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
-							<span></span>To Employee</label>
-							<label class="radio radio-lg">
+						@else
+							@if(Auth::user()->role == 1)
+								<label class="radio radio-lg">
+								<input type="radio" name="userType" value="2" onchange="changeUserType(this);">
+								<span></span>To Company Users</label>
+								<label class="radio radio-lg">
+								<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
+								<span></span>To Employee</label>
+								
+							@else 
+								<label class="radio radio-lg">
+								<input type="radio"  name="userType" value="3" onchange="changeUserType(this);">
+								<span></span>To Company Admin</label>
+								<label class="radio radio-lg">
+								<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
+								<span></span>To Employee</label>
+								
+							@endif
 						@endif
-						
 						</div>
 					</div>
 					<div class="form-group mb-2" id="nonePaidEmail" style="display: none;">
