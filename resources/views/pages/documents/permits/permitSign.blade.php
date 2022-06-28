@@ -69,9 +69,10 @@
 					
 			</div>
     </div>
-		@endif
 
-@include('layout.partials.extras._progressModal')
+
+    @include('layout.partials.extras._progressModal')
+
 @include('layout.partials.extras._signPanelModal')
 
 <!-- Modal-->
@@ -178,6 +179,9 @@
         </div>
     </div>
 </div>
+
+
+		@endif
 
 
 
