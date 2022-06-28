@@ -284,7 +284,7 @@ class PermitController extends Controller
                 $users = User::find(Auth::user()->company_id)->get();
             }
         } else {
-            $users = User::where('company_id', $doc->user_id)->get();
+            $users = User::where('company_id', $docHistory->document->user_id)->get();
         }
 
         if(is_null($docHistory)) {
