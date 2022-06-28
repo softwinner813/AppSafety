@@ -86,67 +86,66 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                                  	<div class="form-group">
-						<div class="radio-inline">
-						@if(Auth::guest())
-							<label class="radio radio-lg">
-							<input type="radio" name="userType" value="3" onchange="changeUserType(this);">
-							<span></span>To Company Admin</label>
-							<label class="radio radio-lg">
-							<input type="radio" name="userType" value="2" onchange="changeUserType(this);">
-							<span></span>To Company Users</label>
-							<label class="radio radio-lg">
-							<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
-							<span></span>To Employee</label>
-						@else
-							@if(Auth::user()->role == 1)
-								<label class="radio radio-lg">
-								<input type="radio" name="userType" value="2" onchange="changeUserType(this);">
-								<span></span>To Company Users</label>
-								<label class="radio radio-lg">
-								<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
-								<span></span>To Employee</label>
-								
-							@else 
-								<label class="radio radio-lg">
-								<input type="radio"  name="userType" value="3" onchange="changeUserType(this);">
-								<span></span>To Company Admin</label>
-								<label class="radio radio-lg">
-								<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
-								<span></span>To Employee</label>
-								
-							@endif
-						@endif
-						</div>
-					</div>
-					<div class="form-group mb-2" id="nonePaidEmail" style="display: none;">
-						<label>Email To
-						<span class="text-danger">*</span></label>
-						<input type="email" class="form-control mb-2" placeholder="Enter email" name="nonePaidEmail">
-						<!-- <span class="form-text text-muted">We'll never share your email with anyone else.</span> -->
-					</div>
+                  	<div class="form-group">
+											<div class="radio-inline">
+											@if(Auth::guest())
+												<label class="radio radio-lg">
+												<input type="radio" name="userType" value="3" onchange="changeUserType(this);">
+												<span></span>To Company Admin</label>
+												<label class="radio radio-lg">
+												<input type="radio" name="userType" value="2" onchange="changeUserType(this);">
+												<span></span>To Company Users</label>
+												<label class="radio radio-lg">
+												<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
+												<span></span>To Employee</label>
+											@else
+												@if(Auth::user()->role == 1)
+													<label class="radio radio-lg">
+													<input type="radio" name="userType" value="2" onchange="changeUserType(this);">
+													<span></span>To Company Users</label>
+													<label class="radio radio-lg">
+													<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
+													<span></span>To Employee</label>
+													
+												@else 
+													<label class="radio radio-lg">
+													<input type="radio"  name="userType" value="3" onchange="changeUserType(this);">
+													<span></span>To Company Admin</label>
+													<label class="radio radio-lg">
+													<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
+													<span></span>To Employee</label>
+													
+												@endif
+											@endif
+											</div>
+										</div>
+										<div class="form-group mb-2" id="nonePaidEmail" style="display: none;">
+											<label>Email To
+											<span class="text-danger">*</span></label>
+											<input type="email" class="form-control mb-2" placeholder="Enter email" name="nonePaidEmail">
+											<!-- <span class="form-text text-muted">We'll never share your email with anyone else.</span> -->
+										</div>
 
-					@if(!Auth::guest() && Auth::user()->role == 0)
-					<div class="form-group mb-2" id="adminEmail" style="display: none;">
-						<label>Email To
-						<span class="text-danger">*</span></label>
-						<input type="email" class="form-control " placeholder="Enter email" name="adminEmail"  value="{{Auth::user()->company->email}}">
-						<!-- <span class="form-text text-muted">We'll never share your email with anyone else.</span> -->
-					</div>
-					@endif
-					<div class="dropdown bootstrap-select form-control mb-2" id="paidEmail" style="display: none;">
-						<label for="email">Email To </label>
-						<span class="text-danger">*</span></label>
-						<select class="form-control selectpicker" name="paidEmail" data-size="7" data-live-search="true" tabindex="null">
-							@foreach($users as $key => $user)
-							<option value="{{$user->email}}">{{$user->email}}
-								@if($user->role == 1)
-								&nbsp;<span class="label label-primary label-inline font-weight-lighter text-white text-center">({{$user->name}})</span>
-								@endif
-							</option>
-							@endforeach
-						</select>
-					</div>
+										<div class="form-group mb-2" id="adminEmail" style="display: none;">
+											<label>Email To
+											<span class="text-danger">*</span></label>
+											<input type="email" class="form-control " placeholder="Enter email" name="adminEmail"  value="{{$docHistory->document->user->company->email}}">
+											<!-- <span class="form-text text-muted">We'll never share your email with anyone else.</span> -->
+										</div>
+
+										<div class="dropdown bootstrap-select form-control mb-2" id="paidEmail" style="display: none;">
+											<label for="email">Email To </label>
+											<span class="text-danger">*</span></label>
+											<select class="form-control selectpicker" name="paidEmail" data-size="7" data-live-search="true" tabindex="null">
+												@foreach($users as $key => $user)
+												<option value="{{$user->email}}">{{$user->email}}
+													@if($user->role == 1)
+													&nbsp;<span class="label label-primary label-inline font-weight-lighter text-white text-center">({{$user->name}})</span>
+													@endif
+												</option>
+												@endforeach
+											</select>
+										</div>
 					
                   <label for="subject">Email Subject<span class="text-danger">*</span></label>
                   <div class="form-group">
