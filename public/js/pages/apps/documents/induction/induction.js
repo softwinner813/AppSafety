@@ -208,7 +208,7 @@ var KTHandleDocument = function() {
                 fd.append('document', blob);
                 $.ajax({
                     type: 'POST',
-                    url: '/document/guidance/upload',
+                    url: '/document/induction/upload',
                     data: fd,
                     processData: false,
                     contentType: false

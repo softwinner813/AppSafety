@@ -154,7 +154,7 @@ function toggleNextFinish(isNext) {
 // Handle Document
 var KTHandleDocument = function() {
     var _initLoad = function() {
-        var path = '/template/Incidents/' + filename; 
+        var path = '/template/Permits/' + filename; 
         console.log(path);
 
         showModal('#progressModal', 'show')
@@ -216,13 +216,13 @@ var KTHandleDocument = function() {
                 console.log("========>", blob);
 
                 // Upload Document to server
-                filename = "Incident" + '-' + `${new Date().getTime()}`;
+                filename = "Permit" + '-' + `${new Date().getTime()}`;
                 var fd = new FormData();
                 fd.append('filename', filename);
                 fd.append('document', blob);
                 $.ajax({
                     type: 'POST',
-                    url: '/document/incident/upload',
+                    url: '/document/permit/upload',
                     data: fd,
                     processData: false,
                     contentType: false
