@@ -88,7 +88,7 @@
                 <div class="modal-body">
                                   	<div class="form-group">
 						<div class="radio-inline">
-						@if(Auth::user()->role == 1)
+						@if(!Auth::guest() && Auth::user()->role == 1)
 							<label class="radio radio-lg">
 							<input type="radio" name="userType" value="2" onchange="changeUserType(this);">
 							<span></span>To Company Users</label>
