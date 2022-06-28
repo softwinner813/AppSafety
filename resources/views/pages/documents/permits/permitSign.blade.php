@@ -133,7 +133,7 @@
 											<input type="email" class="form-control " placeholder="Enter email" name="adminEmail"  value="{{$docHistory->document->user->email}}">
 											<!-- <span class="form-text text-muted">We'll never share your email with anyone else.</span> -->
 										</div>
-										@if($docHistory->document->user->role == 1)
+										@elseif($docHistory->document->user->role == 1)
 										<div class="form-group mb-2" id="adminEmail" style="display: none;">
 											<label>Email To
 											<span class="text-danger">*</span></label>
