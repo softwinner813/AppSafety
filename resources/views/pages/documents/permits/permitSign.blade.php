@@ -281,11 +281,10 @@
 <script src="/js/pages/apps/documents/arrow.fabric.js"></script>
 <script src="/js/pages/apps/documents/pdfannotate.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
-@if ($message = Session::get('success'))
-@else
+@if (!is_null(Session::get('success')) && Session::get('success') != '')
 	<script src="/js/pages/apps/documents/permit/permitSign.js"></script>
 	<script src="/js/pages/apps/documents/sign.js"></script>
-@endif
+@else
 
 @endsection
 
