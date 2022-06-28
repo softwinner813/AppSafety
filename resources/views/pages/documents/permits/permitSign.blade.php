@@ -34,7 +34,7 @@
 		</div>
 		<?php Session::forget('error');?>
 		
-		@else
+		
     <div class="container-fluid p-0"  style='background-color: #eef0f8; font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif"; height: 100% ; '>
 		
 
@@ -280,8 +280,11 @@
 <script src="/js/pages/apps/documents/arrow.fabric.js"></script>
 <script src="/js/pages/apps/documents/pdfannotate.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
-<script src="/js/pages/apps/documents/permit/permitSign.js"></script>
-<script src="/js/pages/apps/documents/sign.js"></script>
+@if ($message = Session::get('success'))
+@else
+	<script src="/js/pages/apps/documents/permit/permitSign.js"></script>
+	<script src="/js/pages/apps/documents/sign.js"></script>
+@endif
 
 @endsection
 
