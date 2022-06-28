@@ -115,7 +115,7 @@
 						<!-- <span class="form-text text-muted">We'll never share your email with anyone else.</span> -->
 					</div>
 
-					@if(Auth::user()->role == 0)
+					@if(!Auth::guest() && Auth::user()->role == 0)
 					<div class="form-group mb-2" id="adminEmail" style="display: none;">
 						<label>Email To
 						<span class="text-danger">*</span></label>
