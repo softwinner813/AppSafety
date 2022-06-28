@@ -126,7 +126,7 @@
 
                         <li class="menu-item menu-item-submenu {{ request()->is('document/induction') || request()->is('document/box/inbox/6') ? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">
                             <a href="javascript;" class="menu-link menu-toggle">
-                                <span class="menu-text">Inducions</span>
+                                <span class="menu-text">Inductions</span>
                                 <span class="menu-desc"></span>
                                 <i class="menu-arrow"></i>
                             </a>
