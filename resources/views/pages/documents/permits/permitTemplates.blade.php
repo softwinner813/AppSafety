@@ -35,7 +35,7 @@
 	</div>
 </div>
 
-<form action="{!! Route('document.incident.edit') !!}" id="docForm" method="POST" style="display: none;">
+<form action="{!! Route('document.permit.edit') !!}" id="docForm" method="POST" style="display: none;">
 	@csrf
 	<input type="text" name="docName" id="docName">
 </form>
