@@ -17,7 +17,8 @@
 			</div>
 		</div>
 		<?php Session::forget('success');?>
-		@elseif ($message = Session::get('error'))
+		@else
+		@if ($message = Session::get('error'))
 		<div class="container" >
 	   	<div class="alert alert-custom alert-notice alert-light-danger mt-10 fade show" role="alert">
 		    <div class="alert-icon"><i class="flaticon-warning"></i></div>
@@ -33,7 +34,7 @@
 			</div>
 		</div>
 		<?php Session::forget('error');?>
-		
+		@endif
 		
     <div class="container-fluid p-0"  style='background-color: #eef0f8; font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif"; height: 100% ; '>
 		
