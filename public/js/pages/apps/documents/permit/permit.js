@@ -160,10 +160,11 @@ var KTHandleDocument = function() {
         showModal('#progressModal', 'show')
 
         loadDocument(path, function() {
-            showModal('#progressModal', 'hide')
-            
-            // Show Next Button
-            toggleNextFinish(true);
+            setTimeout(function() {
+                showModal('#progressModal', 'hide')
+                // Show Next Button
+                toggleNextFinish(true);
+            }, 300);
 
         });
 
