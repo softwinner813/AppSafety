@@ -3,7 +3,7 @@
  * Author: Ravisha Heshan
  */
 
-var PDFAnnotate = function(container_id, url, options = {}) {
+var PDFAnnotate = function (container_id, url, options = {})   {
 	this.number_of_pages = 0;
 	this.pages_rendered = 0;
 	this.active_tool = 1; // 1 - Free hand, 2 - Text, 3 - Arrow, 4 - Rectangle
@@ -25,13 +25,13 @@ var PDFAnnotate = function(container_id, url, options = {}) {
 	var inst = this;
 
 	var loadingTask = pdfjsLib.getDocument(this.url);
-	loadingTask.promise.then(function (pdf) {
+	loadingTask.promise.then(async function  (pdf) {
 		var scale = options.scale ? options.scale : 1.3;
 	    inst.number_of_pages = pdf.numPages;
 
 	    document.getElementById(inst.container_id).innerHTML = '';
 	    for (var i = 1; i <= pdf.numPages; i++) {
-	        pdf.getPage(i).then(function (page) {
+	        await pdf.getPage(i).then(function (page) {
 	            var viewport = page.getViewport({scale: scale});
 	            var canvas = document.createElement('canvas');
 	            document.getElementById(inst.container_id).appendChild(canvas);
