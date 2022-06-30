@@ -60,9 +60,9 @@ class SettingController extends Controller
             $path='uploads/logos';
             $fullpath = $path.'/'.$photo_name;
             // if (file_exists($fullpath)) {
-            // if (file_exists('public/'.$fullpath)) {
-            //     unlink($fullpath);
-            // }
+            if (file_exists('public/'.$fullpath)) {
+                unlink('public/'.$fullpath);
+            }
             $image->move('public/'.$path,$photo_name );
             // $image->move($path,$photo_name );
           }
