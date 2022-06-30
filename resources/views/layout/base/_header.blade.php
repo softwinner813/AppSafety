@@ -211,7 +211,6 @@
                                 </ul>
                             </div>
                         </li>
-                        @endauth
 
                         <li class="menu-item menu-item-submenu {{ request()->is('policy') ? 'menu-item-here' : '' }}" data-menu-toggle="click" aria-haspopup="true">
                             <a href="{!! Route('policy') !!}" class="menu-link ">
@@ -220,6 +219,9 @@
                                 <i class="menu-arrow"></i>
                             </a>
                         </li>
+                        @endauth
+
+                        
                         
                         <li class="menu-item menu-item-submenu {{ request()->is('contact') ? 'menu-item-here' : '' }} " data-menu-toggle="click" aria-haspopup="true">
                             <a href="{!! Route('contact') !!}" class="menu-link ">
