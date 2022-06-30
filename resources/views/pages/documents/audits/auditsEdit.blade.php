@@ -35,33 +35,6 @@
                         <div class="mt-20">
                             <h1 class="mb-5 text-center">Audit Forms</h1>
                             <div class="row">
-                                <div class="col-md-3 mb-5">
-                                    <div class="card card-custom overlay">
-                                        <div class="card-body p-0 bg-secondary">
-                                            <div class="overlay-wrapper text-danger py-10 px-5 d-flex flex-column align-items-center justify-content-center">
-                                                <i class="fas fa-file-alt text-danger" style="font-size: 100px;"></i>
-                                                <h6 class="text-dark pt-5">Daily Safety Brief to Cast & Crew - Film & Production</h6>
-                                            </div>
-                                            <div class="overlay-layer">
-                                                <a href="#" class="btn font-weight-bold btn-primary btn-shadow" onclick="selectTemplate(`https://docs.google.com/forms/d/e/1FAIpQLSe56fKrGrnjTIDvBfY3JyM0aNCYWnUIImFl9rpICQ8SSmAMQg/viewform?embedded=true`);" ><i class="fas fa-edit"></i> Edit</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3 mb-5">
-                                    <div class="card card-custom overlay">
-                                        <div class="card-body p-0 bg-secondary">
-                                            <div class="overlay-wrapper text-danger py-10 px-5 d-flex flex-column align-items-center justify-content-center">
-                                                <i class="fas fa-file-alt text-danger" style="font-size: 100px;"></i>
-                                                <h6 class="text-dark pt-5">Fire Audit</h6>
-                                            </div>
-                                            <div class="overlay-layer">
-                                                <a href="#" class="btn font-weight-bold btn-primary btn-shadow" onclick="selectTemplate(`https://docs.google.com/forms/d/e/1FAIpQLScU19nXmTMtXwgIWiUCeJt3oawgFqr3Wjg8k_Rn9ZhNCYcZ1Q/viewform?embedded=true`);" ><i class="fas fa-edit"></i> Edit</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div class="col-md-3 mb-5">
                                     <div class="card card-custom overlay">
@@ -82,10 +55,25 @@
                                         <div class="card-body p-0 bg-secondary">
                                             <div class="overlay-wrapper text-danger py-10 px-5 d-flex flex-column align-items-center justify-content-center">
                                                 <i class="fas fa-file-alt text-danger" style="font-size: 100px;"></i>
-                                                <h6 class="text-dark pt-5">H&S Fire Checklist - Film & Production 'Master'</h6>
+                                                <h6 class="text-dark pt-5">H&S Fire inspection</h6>
                                             </div>
                                             <div class="overlay-layer">
-                                                <a href="#" class="btn font-weight-bold btn-primary btn-shadow" onclick="selectTemplate(`https://docs.google.com/forms/d/e/1FAIpQLSfCgBTu1c3HTkk1mS58Bj0fFgtFnKU3j_oQA2gxDkKq2qybpg/viewform?embedded=true`);" ><i class="fas fa-edit"></i> Edit</a>
+                                                <a href="#" class="btn font-weight-bold btn-primary btn-shadow" onclick="selectTemplate(`https://docs.google.com/forms/d/e/1FAIpQLSfCgBTu1c3HTkk1mS58Bj0fFgtFnKU3j_oQA2gxDkKq2qybpg/viewform?embedded=true`);"  ><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-3 mb-5">
+                                    <div class="card card-custom overlay">
+                                        <div class="card-body p-0 bg-secondary">
+                                            <div class="overlay-wrapper text-danger py-10 px-5 d-flex flex-column align-items-center justify-content-center">
+                                                <i class="fas fa-file-alt text-danger" style="font-size: 100px;"></i>
+                                                <h6 class="text-dark pt-5">Stage H&S Audit</h6>
+                                            </div>
+                                            <div class="overlay-layer">
+                                                <a href="#" class="btn font-weight-bold btn-primary btn-shadow" onclick="selectTemplate(`https://docs.google.com/forms/d/e/1FAIpQLSf7osdx8rxUa-fnbPi0f8mltLtHjZIvQDIlH1pwUq87pHCk9Q/viewform?embedded=true`);"  ><i class="fas fa-edit"></i> Edit</a>
                                             </div>
                                         </div>
                                     </div>
@@ -96,20 +84,97 @@
                                         <div class="card-body p-0 bg-secondary">
                                             <div class="overlay-wrapper text-danger py-10 px-5 d-flex flex-column align-items-center justify-content-center">
                                                 <i class="fas fa-file-alt text-danger" style="font-size: 100px;"></i>
-                                                <h6 class="text-dark pt-5">H&S inspection audit</h6>
+                                                <h6 class="text-dark pt-5">Workshop H&S Audit</h6>
                                             </div>
                                             <div class="overlay-layer">
-                                                <a href="https://docs.google.com/forms/d/12rPtQAlObgz4Ga8-JgKMQBycIrxYn7nP1ATyYMZZSRU/edit?usp=sharing" class="btn font-weight-bold btn-primary btn-shadow" ><i class="fas fa-edit"></i> Edit</a>
+                                                <a href="#" class="btn font-weight-bold btn-primary btn-shadow" onclick="selectTemplate(`https://docs.google.com/forms/d/e/1FAIpQLSesO_wvX6KTeWmwihEztApLdy3ZE4sPYjQVXCw3NcTrmFzrsg/viewform?embedded=true`);"  ><i class="fas fa-edit"></i> Edit</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
+
+                                <div class="col-md-3 mb-5">
+                                    <div class="card card-custom overlay">
+                                        <div class="card-body p-0 bg-secondary">
+                                            <div class="overlay-wrapper text-danger py-10 px-5 d-flex flex-column align-items-center justify-content-center">
+                                                <i class="fas fa-file-alt text-danger" style="font-size: 100px;"></i>
+                                                <h6 class="text-dark pt-5">Office H&S Audit</h6>
+                                            </div>
+                                            <div class="overlay-layer">
+                                                <a href="#" class="btn font-weight-bold btn-primary btn-shadow" onclick="selectTemplate(`https://docs.google.com/forms/d/e/1FAIpQLSeaSDiD8aP-xLa_NLGGtE2eOkCMhXgNk-fBBMnEIyw4rRgoLQ/viewform?embedded=true`);"  ><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-3 mb-5">
+                                    <div class="card card-custom overlay">
+                                        <div class="card-body p-0 bg-secondary">
+                                            <div class="overlay-wrapper text-danger py-10 px-5 d-flex flex-column align-items-center justify-content-center">
+                                                <i class="fas fa-file-alt text-danger" style="font-size: 100px;"></i>
+                                                <h6 class="text-dark pt-5">Ancillary Building H&S Audit</h6>
+                                            </div>
+                                            <div class="overlay-layer">
+                                                <a href="#" class="btn font-weight-bold btn-primary btn-shadow" onclick="selectTemplate(`https://docs.google.com/forms/d/e/1FAIpQLSdAeiwxGqTVA_TU1vtGthBzMUEaVStdpXEGDzCom9EEVg72fg/viewform?embedded=true`);"  ><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-3 mb-5">
+                                    <div class="card card-custom overlay">
+                                        <div class="card-body p-0 bg-secondary">
+                                            <div class="overlay-wrapper text-danger py-10 px-5 d-flex flex-column align-items-center justify-content-center">
+                                                <i class="fas fa-file-alt text-danger" style="font-size: 100px;"></i>
+                                                <h6 class="text-dark pt-5">Fire Audit</h6>
+                                            </div>
+                                            <div class="overlay-layer">
+                                                <a href="#" class="btn font-weight-bold btn-primary btn-shadow" onclick="selectTemplate(`https://docs.google.com/forms/d/e/1FAIpQLScU19nXmTMtXwgIWiUCeJt3oawgFqr3Wjg8k_Rn9ZhNCYcZ1Q/viewform?embedded=true`);" ><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 mb-5">
+                                    <div class="card card-custom overlay">
+                                        <div class="card-body p-0 bg-secondary">
+                                            <div class="overlay-wrapper text-danger py-10 px-5 d-flex flex-column align-items-center justify-content-center">
+                                                <i class="fas fa-file-alt text-danger" style="font-size: 100px;"></i>
+                                                <h6 class="text-dark pt-5">Production Drone Request</h6>
+                                            </div>
+                                            <div class="overlay-layer">
+                                                <a href="https://docs.google.com/forms/d/e/1FAIpQLScApNnV_wdGsCR1f62DnXvgJU-9M7D0DR7v42gLGvaUrO9zvA/viewform?usp=sf_link" target="_blank" class="btn font-weight-bold btn-primary btn-shadow" ><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                          
+
+                                <div class="col-md-3 mb-5">
+                                    <div class="card card-custom overlay">
+                                        <div class="card-body p-0 bg-secondary">
+                                            <div class="overlay-wrapper text-danger py-10 px-5 d-flex flex-column align-items-center justify-content-center">
+                                                <i class="fas fa-file-alt text-danger" style="font-size: 100px;"></i>
+                                                <h6 class="text-dark pt-5">Daily Set & Location Safety Brief</h6>
+                                            </div>
+                                            <div class="overlay-layer">
+                                                <a href="#" class="btn font-weight-bold btn-primary btn-shadow" onclick="selectTemplate(`https://docs.google.com/forms/d/e/1FAIpQLSe56fKrGrnjTIDvBfY3JyM0aNCYWnUIImFl9rpICQ8SSmAMQg/viewform?embedded=true`);" ><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
                             </div>
                         </div>
                     </div>
 
                     <div id="form_board" class="mt-5">
-                        <iframe id="form_frame" src="https://docs.google.com/forms/d/e/1FAIpQLSfCgBTu1c3HTkk1mS58Bj0fFgtFnKU3j_oQA2gxDkKq2qybpg/viewform?usp=sf_link/viewform?embedded=true" width="100%" height="100%" style="overflow-y: auto;" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+                        <iframe id="form_frame" src="https://docs.google.com/forms/d/e/1FAIpQLSdJKX-yBRYTKhNjpgT-6D37VP-rLNvW4TLgYEJlQSg2mY4tdQ/viewform?embedded=true" width="100%" height="100%" style="overflow-y: auto;" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
                     </div>
                 </div>
             </div>
