@@ -56,7 +56,7 @@ class SettingController extends Controller
           $image = $req->file('profile_avatar');
           $fullpath = null;
           if($image) {
-            $photo_name =$req->name.'_logo'.'.'.$image->extension();
+            $photo_name ='logo'.date('Ymdhis').'.'.$image->extension();
             $path='uploads/logos';
             $fullpath = $path.'/'.$photo_name;
             // if (file_exists($fullpath)) {
