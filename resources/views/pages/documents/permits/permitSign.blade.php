@@ -37,8 +37,6 @@
 		@endif
 		
     <div class="container-fluid p-0"  style='background-color: #eef0f8; font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif"; height: 100% ; '>
-		
-
 			<div class="row" style="height: 100%;">
 				
 				@include('layout.partials.extras._signToolbar')
@@ -73,115 +71,121 @@
 
     @include('layout.partials.extras._progressModal')
 
-@include('layout.partials.extras._signPanelModal')
+	@include('layout.partials.extras._signPanelModal')
 
-<!-- Modal-->
-<div class="modal fade" id="sendEmailModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-    <div class="modal-dialog " role="document">
-        <div class="modal-content">
-            <form class="form" id="kt_add_email_form"  method="POST" action="{{ route('document.permit.save') }}">
-                @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Document Share Dialog</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                  	<div class="form-group">
-											<div class="radio-inline">
-											@if(Auth::guest())
-												<label class="radio radio-lg">
-												<input type="radio" name="userType" value="3" onchange="changeUserType(this);">
-												<span></span>To Company Admin</label>
-												<label class="radio radio-lg">
-												<input type="radio" name="userType" value="2" onchange="changeUserType(this);">
-												<span></span>To Company Users</label>
-												<label class="radio radio-lg">
-												<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
-												<span></span>To Employee</label>
-											@else
-												@if(Auth::user()->role == 1)
-													<label class="radio radio-lg">
-													<input type="radio" name="userType" value="2" onchange="changeUserType(this);">
-													<span></span>To Company Users</label>
-													<label class="radio radio-lg">
-													<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
-													<span></span>To Employee</label>
-													
-												@else 
-													<label class="radio radio-lg">
-													<input type="radio"  name="userType" value="3" onchange="changeUserType(this);">
-													<span></span>To Company Admin</label>
-													<label class="radio radio-lg">
-													<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
-													<span></span>To Employee</label>
-													
-												@endif
-											@endif
-											</div>
-										</div>
-										<div class="form-group mb-2" id="nonePaidEmail" style="display: none;">
-											<label>Email To
-											<span class="text-danger">*</span></label>
-											<input type="email" class="form-control mb-2" placeholder="Enter email" name="nonePaidEmail">
-											<!-- <span class="form-text text-muted">We'll never share your email with anyone else.</span> -->
-										</div>
+	<!-- Modal-->
+	<div class="modal fade" id="sendEmailModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+	    <div class="modal-dialog " role="document">
+	        <div class="modal-content">
+	            <form class="form" id="kt_add_email_form"  method="POST" action="{{ route('document.permit.save') }}">
+	                @csrf
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="exampleModalLabel">Document Share Dialog</h5>
+	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                        <i aria-hidden="true" class="ki ki-close"></i>
+	                    </button>
+	                </div>
+	                <div class="modal-body">
+	                  	<div class="form-group">
+							<div class="radio-inline">
+							@if(Auth::guest())
+								<label class="radio radio-lg">
+								<input type="radio" name="userType" value="3" onchange="changeUserType(this);">
+								<span></span>To Company Admin</label>
+								<label class="radio radio-lg">
+								<input type="radio" name="userType" value="2" onchange="changeUserType(this);">
+								<span></span>To Company Users</label>
+								<label class="radio radio-lg">
+								<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
+								<span></span>To Employee</label>
+							@else
+								@if(Auth::user()->role == 1)
+									<label class="radio radio-lg">
+									<input type="radio" name="userType" value="2" onchange="changeUserType(this);">
+									<span></span>To Company Users</label>
+									<label class="radio radio-lg">
+									<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
+									<span></span>To Employee</label>
+									
+								@else 
+									<label class="radio radio-lg">
+									<input type="radio"  name="userType" value="3" onchange="changeUserType(this);">
+									<span></span>To Company Admin</label>
+									<label class="radio radio-lg">
+									<input type="radio" name="userType" value="1" onchange="changeUserType(this);">
+									<span></span>To Employee</label>
+									
+								@endif
+							@endif
+							</div>
+						</div>
 
-										@if($docHistory->document->user->role == 1)
-										<div class="form-group mb-2" id="adminEmail" style="display: none;">
-											<label>Email To
-											<span class="text-danger">*</span></label>
-											<input type="email" class="form-control " placeholder="Enter email" name="adminEmail"  value="{{$docHistory->document->user->email}}">
-											<!-- <span class="form-text text-muted">We'll never share your email with anyone else.</span> -->
-										</div>
-										@elseif($docHistory->document->user->role == 0)
-										<div class="form-group mb-2" id="adminEmail" style="display: none;">
-											<label>Email To
-											<span class="text-danger">*</span></label>
-											<input type="email" class="form-control " placeholder="Enter email" name="adminEmail"  value="{{$docHistory->document->user->company->email}}">
-											<!-- <span class="form-text text-muted">We'll never share your email with anyone else.</span> -->
-										</div>
-										@endif
-										<div class="dropdown bootstrap-select form-control mb-2" id="paidEmail" style="display: none;">
-											<label for="email">Email To </label>
-											<span class="text-danger">*</span></label>
-											<select class="form-control selectpicker" name="paidEmail" data-size="7" data-live-search="true" tabindex="null">
-												@foreach($users as $key => $user)
-												<option value="{{$user->email}}">{{$user->email}}
-													@if($user->role == 1)
-													&nbsp;<span class="label label-primary label-inline font-weight-lighter text-white text-center">({{$user->name}})</span>
-													@endif
-												</option>
-												@endforeach
-											</select>
-										</div>
-					
-                  <label for="subject">Email Subject<span class="text-danger">*</span></label>
-                  <div class="form-group">
-                      <input class="form-control h-auto text-dark placeholder-dark bg-dark-o-20  border-0 py-4 px-8 mb-5 "  placeholder="Email Subject" id="subject" type="subject" name="subject" value="Completed Sign: {{$docHistory->document->name}}"  required autocomplete="subject" autofocus />
-                  </div>
-                  <label for="comment">Email Message<span class="text-danger">*</span></label>
-                  <div class="form-group">
-                      <textarea class="form-control h-auto text-dark placeholder-dark bg-dark-o-20  border-0 py-4 px-8 mb-5 "  placeholder="Message here..." id="comment" type="comment" name="comment" rows="4" required autocomplete="comment" autofocus ></textarea>
-                  </div>
-                  <textarea name="fills" id="fills" style="display: none;"></textarea>
-                  <input type="text" name="filepath" id="filepath" style="display: none;">
-                  <input type="text" name="id" value="{{$docHistory->id}}" style="display: none;">
-                  <input type="text" name="filename" id="filename" value="" style="display: none;">
+						<div class="form-group mb-2" id="nonePaidEmail" style="display: none;">
+							<label>Email To
+							<span class="text-danger">*</span></label>
+							<input type="email" class="form-control mb-2" placeholder="Enter email" name="nonePaidEmail">
+							<!-- <span class="form-text text-muted">We'll never share your email with anyone else.</span> -->
+						</div>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger font-weight-bold" data-dismiss="modal">CLOSE</button>
-                    <button type="submit" class="btn btn-primary font-weight-bold" id="sendEm_btn"><i class="fab fa-telegram-plane"></i>&nbsp;SEND</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+						@if($docHistory->document->user->role == 1)
+						<div class="form-group mb-2" id="adminEmail" style="display: none;">
+							<label>Email To
+							<span class="text-danger">*</span></label>
+							<input type="email" class="form-control " placeholder="Enter email" name="adminEmail"  value="{{$docHistory->document->user->email}}">
+							<!-- <span class="form-text text-muted">We'll never share your email with anyone else.</span> -->
+						</div>
+						@elseif($docHistory->document->user->role == 0)
+						<div class="form-group mb-2" id="adminEmail" style="display: none;">
+							<label>Email To
+							<span class="text-danger">*</span></label>
+							<input type="email" class="form-control " placeholder="Enter email" name="adminEmail"  value="{{$docHistory->document->user->company->email}}">
+							<!-- <span class="form-text text-muted">We'll never share your email with anyone else.</span> -->
+						</div>
+						@endif
+						<div class="dropdown bootstrap-select form-control mb-2" id="paidEmail" style="display: none;">
+							<label for="email">Email To </label>
+							<span class="text-danger">*</span></label>
+							<select class="form-control selectpicker" name="paidEmail" data-size="7" data-live-search="true" tabindex="null">
+								@foreach($users as $key => $user)
+								<option value="{{$user->email}}">{{$user->email}}
+									@if($user->role == 1)
+									&nbsp;<span class="label label-primary label-inline font-weight-lighter text-white text-center">({{$user->name}})</span>
+									@endif
+								</option>
+								@endforeach
+							</select>
+						</div>
+						
+	                  <label for="subject">Email Subject<span class="text-danger">*</span></label>
+	                  <div class="form-group">
+	                      <input class="form-control h-auto text-dark placeholder-dark bg-dark-o-20  border-0 py-4 px-8 mb-5 "  placeholder="Email Subject" id="subject" type="subject" name="subject" value="Completed Sign: {{$docHistory->document->name}}"  required autocomplete="subject" autofocus />
+	                  </div>
+	                  <label for="comment">Email Message<span class="text-danger">*</span></label>
+	                  <div class="form-group">
+	                      <textarea class="form-control h-auto text-dark placeholder-dark bg-dark-o-20  border-0 py-4 px-8 mb-5 "  placeholder="Message here..." id="comment" type="comment" name="comment" rows="4" required autocomplete="comment" autofocus ></textarea>
+	                  </div>
+	                  <dic class="form-group">
+							<label class="checkbox checkbox-lg">
+							<input type="checkbox"  name="isCompleted" value="1">
+							<span></span> &nbsp;&nbsp;Is Completed?</label>
+	                  </dic>
+	                  <textarea name="fills" id="fills" style="display: none;"></textarea>
+	                  <input type="text" name="filepath" id="filepath" style="display: none;">
+	                  <input type="text" name="id" value="{{$docHistory->id}}" style="display: none;">
+	                  <input type="text" name="filename" id="filename" value="" style="display: none;">
+
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" class="btn btn-danger font-weight-bold" data-dismiss="modal">CLOSE</button>
+	                    <button type="submit" class="btn btn-primary font-weight-bold" id="sendEm_btn"><i class="fab fa-telegram-plane"></i>&nbsp;SEND</button>
+	                </div>
+	            </form>
+	        </div>
+	    </div>
+	</div>
 
 
-		@endif
+	@endif
 
 
 

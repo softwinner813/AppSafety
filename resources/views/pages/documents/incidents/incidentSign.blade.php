@@ -164,6 +164,11 @@
 			                  <div class="form-group">
 			                      <textarea class="form-control h-auto text-dark placeholder-dark bg-dark-o-20  border-0 py-4 px-8 mb-5 "  placeholder="Message here..." id="comment" type="comment" name="comment" rows="4" required autocomplete="comment" autofocus ></textarea>
 			                  </div>
+			                  <dic class="form-group">
+									<label class="checkbox checkbox-lg">
+									<input type="checkbox"  name="isCompleted" value="1">
+									<span></span> &nbsp;&nbsp;Is Completed?</label>
+			                  </dic>
 			                  <textarea name="fills" id="fills" style="display: none;"></textarea>
 			                  <input type="text" name="filepath" id="filepath" style="display: none;">
 			                  <input type="text" name="id" value="{{$docHistory->id}}" style="display: none;">

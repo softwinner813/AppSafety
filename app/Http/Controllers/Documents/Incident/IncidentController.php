@@ -139,7 +139,9 @@ class IncidentController extends Controller
             $doc = $dochis->document;
             $doc->status = 2;
             $doc->file = $req->filepath;
-            // $doc->isCompleted = 1;
+            if($req->isCompleted) {
+                $doc->isCompleted = 1;
+            }
 
             $docHistory->from = $dochis->to;
             $docHistory->status = 2;
@@ -188,7 +190,7 @@ class IncidentController extends Controller
         } 
 
         if($req->id) {
-            \Session::put('success',"Document is completed successfully!");
+            \Session::put('success',"Document is sent successfully!");
             return redirect()->back();
         } else{
             return redirect()->route('document.box.sent', [$this->type]);

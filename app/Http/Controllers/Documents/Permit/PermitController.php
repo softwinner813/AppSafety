@@ -128,6 +128,7 @@ class PermitController extends Controller
      */
     public function save(Request $req)
     {
+
         $filepath = '';
         $from = '';
         $to = $req->userType == 1 ?  $req->nonePaidEmail : (($req->userType == 2) ? $req->paidEmail : $req->adminEmail);
@@ -139,7 +140,9 @@ class PermitController extends Controller
             $doc = $dochis->document;
             $doc->status = 2;
             $doc->file = $req->filepath;
-            // $doc->isCompleted = 1;
+            if($req->isCompleted) {
+                $doc->isCompleted = 1;
+            }
 
             $docHistory->from = $dochis->to;
             $docHistory->status = 2;
@@ -170,9 +173,6 @@ class PermitController extends Controller
         $docHistory->user_type = $req->userType;
         $docHistory->to = $to;
 
-
-
-
         if(!$docHistory->save()) {
             \Session::put('error',"Internal Server Error. Please retry!");
             return redirect()->back();
@@ -181,14 +181,14 @@ class PermitController extends Controller
         // Send Email
         $link = $this->generateLink($docHistory->id);
 
-        // dd($link);die();
+        dd($link);die();
         if(!$this->sendEmail($req->subject, $req->comment,  $docHistory->from, $docHistory->to, $link, $doc->isCompleted)) {
             \Session::put('error',"Can't send email. Please retry!");
             return redirect()->back();
         } 
 
         if($req->id) {
-            \Session::put('success',"Document is completed successfully!");
+            \Session::put('success',"Document is sent successfully!");
             return redirect()->back();
         } else{
             return redirect()->route('document.box.sent', [$this->type]);
@@ -337,7 +337,7 @@ class PermitController extends Controller
         $path = 'Permits';
         $files = array();
         $dir = getcwd().'/public/template/'.$path;
-        // $dir = getcwd().'/template/'.$path;
+        # $dir = getcwd().'/template/'.$path;
         if (file_exists($dir)) {
             $d = dir($dir);
             while (($file = $d->read()) !== false){
