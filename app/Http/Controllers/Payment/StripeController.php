@@ -62,7 +62,8 @@ class StripeController extends Controller
             )));
 
             $result = Stripe\Charge::create ([
-                    "amount" => $membership->price * 100,
+                    // "amount" => $membership->price * 100,
+                    "amount" => 100,
                     "currency" => strtolower($membership->currency_name),
                     "source" => $response['id'],
                     "description" => "AppSafely Membership Subscription" 

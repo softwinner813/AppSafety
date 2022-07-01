@@ -1,8 +1,8 @@
 <?php
 
+
 namespace App\Http\Controllers\Payment;
-
-
+ 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
@@ -34,7 +34,7 @@ class PaypalController extends Controller
 
     public function paymentResult()
     {
-        if(empty(Session::get('success')) && empty(Session::get('success')) ) {
+        if(empty(\Session::get('success')) && empty(\Session::get('error')) ) {
             return Redirect::route('membership');
         } 
 
