@@ -52,8 +52,7 @@ class ContactController extends Controller
 
         try {
             \Mail::send('emails.contactEmail', $data, function($message) use($input){
-                $message->to('geniusdev0813@gmail.com', "AppSafely Support Team")
-                // $message->to('hsappsafely@gmail.com', "AppSafely Support Team")
+                $message->to('hsappsafely@gmail.com', "AppSafely Support Team")
                     ->subject($input['subject']);
             });
 

@@ -63,8 +63,8 @@ class PaypalController extends Controller
         $data['items'] = [
             [
                 'name' => env('APP_NAME', 'AppSafely'). ' Membreship Subscription',
-                // 'price' => $membership->price,
-                'price' => 10,
+                'price' => $membership->price,
+                // 'price' => 10,
                 'desc'  => 'Membership subscription for '.env('APP_NAME','AppSafely'),
                 'qty' => 1
             ]
