@@ -227,7 +227,7 @@
                                                             <div class="v-text-align"
                                                                 style="color: #ffffff; line-height: 140%; text-align: center; word-wrap: break-word;">
                                                                 <p style="font-size: 14px; line-height: 140%;"><span
-                                                                        style="font-family: 'comic sans ms', sans-serif; font-size: 18px; line-height: 25.2px;">www.appsafely.co.uk</span>
+                                                                        style="color: white; font-family: 'comic sans ms', sans-serif; font-size: 18px; line-height: 25.2px;">www.appsafely.co.uk</span>
                                                                 </p>
                                                             </div>
 

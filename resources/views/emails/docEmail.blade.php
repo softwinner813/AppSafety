@@ -48,7 +48,7 @@
 	                                                style="font-family: Lato, sans-serif;">Your document has been completed</span></p>
 	                                        @else
 	                                        <p style="font-size: 14px; line-height: 140%; text-align: center;"><span
-	                                                style="font-family: Lato, sans-serif;"><strong>{{ $from }}</strong> sent you a document to review and sign.</span></p>
+	                                                style="font-family: Lato, sans-serif;"><strong class="text-white">{{ $from }}</strong> sent you a document to review and sign.</span></p>
 	                                        @endif
 	                                    </div>
 
