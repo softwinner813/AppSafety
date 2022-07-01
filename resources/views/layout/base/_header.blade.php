@@ -56,7 +56,7 @@
                                                 </svg>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-text">Create</span>
+                                            <span class="menu-text">Document Templates</span>
                                         </a>
                                     </li>
                                     <li class="menu-item {{ request()->is('document/box/inbox/4') ? 'menu-item-here' : '' }}" aria-haspopup="true">
@@ -72,7 +72,7 @@
                                                 </svg>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-text">Manage</span>
+                                            <span class="menu-text">Signed Forms</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -100,7 +100,7 @@
                                                 </svg>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-text">Create</span>
+                                            <span class="menu-text">Document Templates</span>
                                         </a>
                                     </li>
                                     <li class="menu-item {{ request()->is('document/box/inbox/5') ? 'menu-item-here' : '' }}" aria-haspopup="true">
@@ -116,7 +116,7 @@
                                                 </svg>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-text">Manage</span>
+                                            <span class="menu-text">Signed Forms</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -145,7 +145,7 @@
                                                 </svg>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-text">Create</span>
+                                            <span class="menu-text">Document Templates</span>
                                         </a>
                                     </li>
                                     <li class="menu-item {{ request()->is('document/box/inbox/6') ? 'menu-item-here' : '' }}" aria-haspopup="true">
@@ -161,7 +161,7 @@
                                                 </svg>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-text">Manage</span>
+                                            <span class="menu-text">Signed Forms</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -189,7 +189,7 @@
                                                 </svg>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-text">Create</span>
+                                            <span class="menu-text">Document Templates</span>
                                         </a>
                                     </li>
                                     <li class="menu-item {{ request()->is('document/box/inbox/3') ? 'menu-item-here' : '' }}" aria-haspopup="true">
@@ -205,7 +205,7 @@
                                                 </svg>
                                                 <!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-text">Manage</span>
+                                            <span class="menu-text">Signed Forms</span>
                                         </a>
                                     </li>
                                 </ul>

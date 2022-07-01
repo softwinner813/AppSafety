@@ -255,6 +255,13 @@ var KTHandleDocument = function() {
                             message: 'The value is not a valid email address'
                         }
                     },
+                    userType: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please select user to send email'
+                            }
+                        },
+                    },
                     subject: {
                         validators: {
                             notEmpty: {

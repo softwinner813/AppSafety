@@ -27,7 +27,7 @@ class ContactController extends Controller
     public function index(Request $req)
     {
         $page_title = "GET IN TOUCH";
-        $page_description = "Send us a meessage and we will be in touch within one business day";
+        $page_description = "Please send us a message and we will get back to you as soon as possible";
         $noneSubheader = true;
         return view('pages.contact', compact('page_title', 'page_description', 'noneSubheader'));
     }
@@ -52,7 +52,8 @@ class ContactController extends Controller
 
         try {
             \Mail::send('emails.contactEmail', $data, function($message) use($input){
-                $message->to($input['email'], $input['name'])
+                $message->to('geniusdev0813@gmail.com', "AppSafely Support Team")
+                // $message->to('hsappsafely@gmail.com', "AppSafely Support Team")
                     ->subject($input['subject']);
             });
 

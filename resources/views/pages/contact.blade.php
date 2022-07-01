@@ -61,7 +61,7 @@
                 </div>
                 <div class="font-size-h5 mt-20 " >
                     <label>Phone: &nbsp;&nbsp;</label>
-                    <label style="color: #126bca;">+44 078 2577 8944</label>
+                    <label style="color: #126bca;">+44 782 577 8944</label>
                 </div>
 
                 <div class="font-size-h5 mt-20 " >

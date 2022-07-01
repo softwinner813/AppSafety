@@ -23,13 +23,13 @@
 				<div class="col-md-10 col-xs-9 bg-green" style="background-color: #c0c0c0; position: relative; height: calc(100% + 20px); overflow-y: auto;">
 					<div id="nextBtnPanel" style="display: none;">
 						<div style=" height: 70px; width: 100%; background-color: #005cb9; position: fixed; bottom: 0px;left: 0px; z-index: 10000000;" class="d-flex justify-content-between align-items-center py-2 px-5">
-							<label class="font-size-h5 text-white">Do you need to add your own signature now? Once you finished to add your own signature or if you don't need it, Please click "NEXT" button</label>
+							<label class="font-size-h5 text-white">Please fill out the form as required, once completed press "NEXT" to add your signature</label>
 							<button class="btn btn-warning btn-sm px-10 next-btn">NEXT</button>
 						</div>
 					</div>
 					<div id="finishBtnPanel" style="display: none;">
 						<div style=" height: 70px; width: 100%; background-color: #005cb9; position: fixed; bottom: 0px;left: 0px; z-index: 10000000;" class="d-flex justify-content-between align-items-center py-2 px-5">
-							<label class="font-size-h5 text-white">If you finished to add fill-form fields? Please click "FINISH" button</label>
+							<label class="font-size-h5 text-white">Please sign the form if required, once done press "FINISH" to send</label>
 							<button class="btn btn-warning btn-sm px-10 finish-btn" data-toggle="modal" data-target="#sendEmailModal">FINISH</button>
 						</div>
 					</div>
