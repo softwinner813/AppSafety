@@ -49,7 +49,7 @@
 						</div>
 						<div id="nextBtnPanel" style="display: none;">
 							<div style=" height: 70px; width: 100%; background-color: #005cb9; position: fixed; bottom: 0px;left: 0px; z-index: 10000000;" class="d-flex justify-content-between align-items-center py-2 px-5">
-								<label class="font-size-h5 text-white">If you finished to add your signature, Please click "FINISH" button</label>
+								<label class="font-size-h5 text-white">Please sign the form if required, once done press "FINISH" to send</label>
 								<button class="btn btn-warning btn-sm px-10 next-btn">FINISH</button>
 							</div>
 						</div>
