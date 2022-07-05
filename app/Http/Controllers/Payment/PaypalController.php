@@ -129,6 +129,7 @@ class PaypalController extends Controller
         $history->user_id = Auth::user()->id;
         $history->payment_id = $payment_id;
         $history->membership_id = $membershipID;
+        $history->type = 1;
         
         $user = Auth::user();
         $user->membership_id = $membershipID;

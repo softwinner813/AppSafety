@@ -124,6 +124,7 @@ class StripeController extends Controller
         $history->user_id = Auth::user()->id;
         $history->payment_id = $payment_id;
         $history->membership_id = $membership->id;
+        $history->type = 2;
         
         $user = Auth::user();
         $user->membership_id = $membership->id;
